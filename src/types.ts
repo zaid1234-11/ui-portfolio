@@ -25,6 +25,9 @@ export interface TimelineItem {
   role: string;
   company: string;
   description: string;
+  projects?: string[];
+  focus?: string[];
+  offerLetter?: string;
 }
 
 export interface SkillGroup {

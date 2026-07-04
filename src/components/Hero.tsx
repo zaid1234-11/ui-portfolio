@@ -3,6 +3,7 @@ import { ArrowDown, Sparkles, Globe } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import InkRevealText from './InkRevealText';
 import VariableProximity from './VariableProximity';
+import TextType from './TextType';
 
 interface HeroProps {
   onExploreClick: () => void;
@@ -181,21 +182,64 @@ export default function Hero({ onExploreClick }: HeroProps) {
         <span>ROT: -2.00°</span>
       </motion.div>
 
-      {/* Top Architectural Draft Header Bar (Double-bordered just like reference image) */}
+      {/* Top Architectural Draft Header Bar with Variable Proximity and Thick Font */}
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-6 md:pt-10">
-        <div className="border-t border-b border-[#B8925A]/15 py-3.5 flex items-center justify-between font-mono text-[10px] md:text-xs tracking-widest text-[#1c1c1b]">
-          <div className="font-bold flex items-center gap-2">
+        <div className="border-t border-b border-[#B8925A]/15 py-3.5 flex items-center justify-between font-display font-black text-[11px] md:text-[13px] tracking-widest text-[#1c1c1b] uppercase">
+          <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
-            THE DIGITAL DIARY // VOL. 04
+            <VariableProximity
+              label="THE DIGITAL DIARY // VOL. 04"
+              fromFontVariationSettings="'wght' 500"
+              toFontVariationSettings="'wght' 900"
+              containerRef={containerRef}
+              radius={100}
+              falloff="gaussian"
+            />
           </div>
           <div className="text-center hidden sm:block pr-36">
-            <span className="font-bold block tracking-[0.2em] text-[#1c1c1b]">31 / 12 / 2025</span>
-            <span className="text-[8px] text-[#4E4842]/60 tracking-wider">MOMENTS, THOUGHTS & MEMORIES</span>
+            <span className="block tracking-[0.2em] text-[#1c1c1b]">
+              <VariableProximity
+                label="31 / 12 / 2025"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={100}
+                falloff="gaussian"
+              />
+            </span>
+            <span className="text-[10px] text-[#4E4842]/60 tracking-wider block mt-1">
+              <VariableProximity
+                label="MOMENTS, THOUGHTS & MEMORIES"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={100}
+                falloff="gaussian"
+              />
+            </span>
           </div>
           <div className="flex items-center gap-4 text-[#4E4842]/70">
-            <span>PAGE // 01</span>
+            <span>
+              <VariableProximity
+                label="PAGE // 01"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={100}
+                falloff="gaussian"
+              />
+            </span>
             <span className="opacity-40">✦</span>
-            <span className="font-bold text-[#B8925A]">ACTIVE</span>
+            <span className="text-[#B8925A]">
+              <VariableProximity
+                label="ACTIVE"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={100}
+                falloff="gaussian"
+              />
+            </span>
           </div>
         </div>
       </div>
@@ -224,7 +268,34 @@ export default function Hero({ onExploreClick }: HeroProps) {
         >
           {/* Subheader Title */}
           <h2 className="font-sans text-[11px] sm:text-xs text-[#8A9A86] tracking-[0.35em] uppercase mb-4 font-normal">
-            ALEX <span className="font-syne font-black text-[#1c1c1b]">VANCE</span><span className="text-[#1c1c1b]/40">'s</span>
+            <VariableProximity
+              label="ZAID"
+              fromFontVariationSettings="'wght' 300"
+              toFontVariationSettings="'wght' 700"
+              containerRef={containerRef}
+              radius={80}
+              falloff="gaussian"
+            />{' '}
+            <span className="font-syne font-black text-[#1c1c1b]">
+              <VariableProximity
+                label="SAIFI"
+                fromFontVariationSettings="'wght' 400"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={80}
+                falloff="gaussian"
+              />
+            </span>
+            <span className="text-[#1c1c1b]/40">
+              <VariableProximity
+                label="'s"
+                fromFontVariationSettings="'wght' 300"
+                toFontVariationSettings="'wght' 700"
+                containerRef={containerRef}
+                radius={80}
+                falloff="gaussian"
+              />
+            </span>
           </h2>
 
           {/* Layered Heading Stack */}
@@ -273,16 +344,23 @@ export default function Hero({ onExploreClick }: HeroProps) {
         </div>
 
         {/* Minimal Subtext block */}
-        <p className="max-w-xl mx-auto mt-6 text-sm md:text-base text-[#4E4842] leading-relaxed font-light">
-          Sculpting high-contrast layouts, raw sketch architectures, and tactile grid presentations for brands seeking unforgettable digital prestige.
-        </p>
+        <div className="max-w-xl mx-auto mt-6 text-sm md:text-base text-[#4E4842] leading-relaxed font-light min-h-[4rem]">
+          <TextType 
+            as="p"
+            text="Sculpting high-contrast layouts, raw sketch architectures, and tactile grid presentations for brands seeking unforgettable digital prestige."
+            typingSpeed={40}
+            loop={false}
+            showCursor={true}
+            cursorCharacter="|"
+          />
+        </div>
 
         {/* Explore Button with a hand-drawn sketch look */}
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <button
             id="hero-explore-btn"
             onClick={onExploreClick}
-            className="group flex items-center gap-2.5 bg-[#1c1c1b] hover:bg-[#FAF6EE] text-[#FAF6EE] hover:text-[#1c1c1b] border-2 border-[#1c1c1b] hover:border-[#1c1c1b] font-mono text-xs tracking-widest uppercase px-8 py-4 rounded-full transition-all duration-300 shadow-lg cursor-pointer"
+            className="group flex items-center gap-2.5 bg-[#1c1c1b] hover:bg-[#FAF6EE] text-[#FAF6EE] hover:text-[#1c1c1b] border-2 border-[#1c1c1b] hover:border-[#1c1c1b] font-display font-bold text-xs tracking-widest uppercase px-8 py-4 rounded-full transition-all duration-300 shadow-lg cursor-pointer"
           >
             Explore Portfolio
             <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-1 transition-transform duration-300 text-[#B8925A]" />
@@ -292,16 +370,16 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       {/* Bottom Architectural Draft Bar (Double bordered footer bar styled like reference) */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="border-t border-b border-ivory/10 py-4 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-[9px] md:text-[10px] tracking-widest text-ivory-dim/60">
+        <div className="border-t border-b border-ivory/10 py-4 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-display font-bold text-[11px] tracking-widest text-ivory-dim/60">
           <div className="flex items-center gap-2">
             <span className="text-chai font-bold">✉</span>
-            <a href="mailto:alex@artefact.studio" className="hover:text-ivory transition-colors">
-              ALEX@ARTEFACT.STUDIO
+            <a href="mailto:zaidsaifi150105@gmail.com" className="hover:text-ivory transition-colors">
+              ZAIDSAIFI150105@GMAIL.COM
             </a>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-chai font-bold">☎</span>
-            <span className="select-all font-mono">+1 (415) 555-8294</span>
+            <span className="select-all font-display font-bold text-[12px]">9899582823</span>
           </div>
         </div>
 
@@ -309,20 +387,36 @@ export default function Hero({ onExploreClick }: HeroProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
           {/* Left: Design philosophy */}
           <div className="flex flex-col justify-between">
-            <span className="font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest mb-2">Philosophy</span>
-            <p className="text-xs text-ivory-dim/80 leading-relaxed italic">
-              "Eliminate the noise. Magnify the interaction. Treat the layout as an architect's canvas responding to physical space."
+            <span className="font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-2">
+              <VariableProximity
+                label="Philosophy"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={100}
+                falloff="gaussian"
+              />
+            </span>
+            <p className="text-[13px] font-display font-bold text-ivory-dim/80 leading-relaxed italic">
+              <VariableProximity
+                label="&quot;Eliminate the noise. Magnify the interaction. Treat the layout as an architect's canvas responding to physical space.&quot;"
+                fromFontVariationSettings="'wght' 500"
+                toFontVariationSettings="'wght' 900"
+                containerRef={containerRef}
+                radius={120}
+                falloff="gaussian"
+              />
             </p>
           </div>
 
           {/* Center: Tech stack capsules */}
           <div className="flex flex-col">
-            <span className="font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest mb-3">Core Stack Highlights</span>
+            <span className="font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-3">Core Stack Highlights</span>
             <div className="grid grid-cols-2 gap-2">
               {techStack.map((tech, i) => (
                 <div key={i} className="flex flex-col bg-brew/40 border border-ivory/5 px-3 py-1.5 rounded-xl">
-                  <span className="text-[10px] font-bold text-ivory">{tech.name}</span>
-                  <span className="text-[8px] font-mono text-roast/70">{tech.desc}</span>
+                  <span className="text-[11px] font-display font-bold text-ivory">{tech.name}</span>
+                  <span className="text-[10px] font-display font-bold text-roast/70">{tech.desc}</span>
                 </div>
               ))}
             </div>
@@ -332,11 +426,25 @@ export default function Hero({ onExploreClick }: HeroProps) {
           <div className="flex justify-between md:justify-around items-end">
             {stats.map((stat, i) => (
               <div key={i} className="text-right md:text-left">
-                <span className="block font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest mb-1">
-                  {stat.label}
+                <span className="block font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-1">
+                  <VariableProximity
+                    label={stat.label}
+                    fromFontVariationSettings="'wght' 500"
+                    toFontVariationSettings="'wght' 900"
+                    containerRef={containerRef}
+                    radius={100}
+                    falloff="gaussian"
+                  />
                 </span>
-                <span className="font-syne text-base font-bold text-ivory">
-                  {stat.val}
+                <span className="font-display text-lg font-bold text-ivory">
+                  <VariableProximity
+                    label={stat.val}
+                    fromFontVariationSettings="'wght' 600"
+                    toFontVariationSettings="'wght' 900"
+                    containerRef={containerRef}
+                    radius={100}
+                    falloff="gaussian"
+                  />
                 </span>
               </div>
             ))}

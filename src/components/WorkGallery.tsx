@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Project } from '../types';
 import { PROJECTS } from '../data';
 import VariableProximity from './VariableProximity';
+import TextType from './TextType';
 
 interface WorkGalleryProps {
   onSelectProject: (project: Project) => void;
@@ -97,9 +98,17 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
               </span>
             </h2>
           </div>
-          <p className="max-w-md text-sm text-[#4E4842] leading-relaxed font-light italic">
-            Each folder represents an elite digital case study: physical paper material weights containing highly tactile wireframes and responsive telemetry metrics.
-          </p>
+          <div className="max-w-md text-sm text-[#4E4842] leading-relaxed font-light italic min-h-[4rem]">
+            <TextType 
+              as="p"
+              text="Each folder represents an elite digital case study: physical paper material weights containing highly tactile wireframes and responsive telemetry metrics."
+              typingSpeed={40}
+              loop={false}
+              showCursor={true}
+              cursorCharacter="|"
+              startOnVisible={true}
+            />
+          </div>
         </div>
 
         {/* Filter Navigation */}

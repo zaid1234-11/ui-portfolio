@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Twitter, Sparkles, X } from 'lucide-react';
+import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Instagram, Sparkles, X } from 'lucide-react';
+import VariableProximity from './VariableProximity';
 
 export default function ConnectForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function ConnectForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Canvas Reference for Particle Confetti Explosion
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -168,7 +171,7 @@ export default function ConnectForm() {
   }, [isSubmitted]);
 
   return (
-    <section id="connect" className="relative py-24 px-6 md:px-12 bg-transparent">
+    <section ref={sectionRef} id="connect" className="relative py-24 px-6 md:px-12 bg-transparent">
       {/* Background Notebook Decorative Grid Lines */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
@@ -183,8 +186,26 @@ export default function ConnectForm() {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1c1c1b] tracking-tight leading-none">
-              <span className="font-display block uppercase tracking-tighter text-3d-ivory">Let's Build</span>
-              <span className="font-display font-bold italic text-[#B8925A] mt-1 block">something</span>
+              <span className="font-display block uppercase tracking-tighter text-3d-ivory">
+                <VariableProximity
+                  label="Let's Build"
+                  fromFontVariationSettings="'wght' 400"
+                  toFontVariationSettings="'wght' 900"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                />
+              </span>
+              <span className="font-display font-bold italic text-[#B8925A] mt-1 block">
+                <VariableProximity
+                  label="something"
+                  fromFontVariationSettings="'wght' 400"
+                  toFontVariationSettings="'wght' 900"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                />
+              </span>
             </h2>
           </div>
           <p className="max-w-md text-sm text-[#4E4842]/85 leading-relaxed font-light">
@@ -199,7 +220,14 @@ export default function ConnectForm() {
           <div className="lg:col-span-5 space-y-10">
             <div className="space-y-4">
               <h3 className="font-display text-2xl font-bold text-[#1c1c1b]">
-                The Discovery Phase starts with a single dialogue.
+                <VariableProximity
+                  label="The Discovery Phase starts with a single dialogue."
+                  fromFontVariationSettings="'wght' 400"
+                  toFontVariationSettings="'wght' 900"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                />
               </h3>
               <p className="text-sm text-[#4E4842]/85 leading-relaxed font-light">
                 Once submitted, I'll review your project goals, analyze market competitors, and propose a specific aesthetic and functional design strategy within 24 hours.
@@ -216,8 +244,8 @@ export default function ConnectForm() {
                   <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest font-bold">
                     DIRECT EMAIL
                   </span>
-                  <a href="mailto:alex@artefact.studio" className="text-xs font-semibold text-[#1c1c1b] hover:text-[#B8925A] transition-colors">
-                    alex@artefact.studio
+                  <a href="mailto:zaidsaifi150105@gmail.com" className="text-xs font-semibold text-[#1c1c1b] hover:text-[#B8925A] transition-colors">
+                    zaidsaifi150105@gmail.com
                   </a>
                 </div>
                 {/* Visual tape piece */}
@@ -248,9 +276,9 @@ export default function ConnectForm() {
               </span>
               <div className="flex gap-3">
                 {[
-                  { icon: <Github className="w-4 h-4" />, href: 'https://github.com' },
-                  { icon: <Linkedin className="w-4 h-4" />, href: 'https://linkedin.com' },
-                  { icon: <Twitter className="w-4 h-4" />, href: 'https://twitter.com' }
+                  { icon: <Github className="w-4 h-4" />, href: 'https://github.com/zaid1234-11' },
+                  { icon: <Linkedin className="w-4 h-4" />, href: 'https://linkedin.com/in/zaidsaifiai' },
+                  { icon: <Instagram className="w-4 h-4" />, href: 'https://instagram.com/__zaidsaifi__' }
                 ].map((social, idx) => (
                   <a
                     key={idx}
@@ -276,7 +304,7 @@ export default function ConnectForm() {
                   
                   {/* Category Type selector */}
                   <div className="space-y-3">
-                    <label className="block font-mono text-[9px] text-[#ECE3D2]/50 uppercase tracking-widest font-bold">
+                    <label className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
                       What can we help you solve?
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -286,9 +314,9 @@ export default function ConnectForm() {
                           type="button"
                           id={`type-btn-${type.toLowerCase().replace(/ /g, '-')}`}
                           onClick={() => setSelectedType(type)}
-                          className={`text-left p-3.5 rounded-xl border font-mono text-[10px] tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                          className={`text-left p-3.5 rounded-xl border font-display font-bold text-xs md:text-sm tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                             selectedType === type
-                              ? 'bg-[#B8925A] text-[#1c1c1b] border-[#B8925A] font-bold shadow-lg scale-[1.02]'
+                              ? 'bg-[#B8925A] text-[#1c1c1b] border-[#B8925A] shadow-lg scale-[1.02]'
                               : 'bg-white/5 text-[#FAF6EE]/70 border-white/10 hover:border-white/20 hover:text-white hover:bg-white/10'
                           }`}
                         >
@@ -298,41 +326,40 @@ export default function ConnectForm() {
                     </div>
                   </div>
 
-                  {/* Standard text Inputs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label htmlFor="name-input" className="block font-mono text-[9px] text-[#ECE3D2]/50 uppercase tracking-widest font-bold">
+                      <label htmlFor="name-input" className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
                         Your Name
                       </label>
                       <input
                         id="name-input"
                         name="name"
                         type="text"
-                        placeholder="Alex Johnson"
+                        placeholder="Zaid Saifi"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl px-4 py-3 text-sm text-[#FAF6EE] placeholder-white/20 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl px-4 py-3 text-base font-display font-bold text-[#FAF6EE] placeholder-white/30 transition-colors"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="email-input" className="block font-mono text-[9px] text-[#ECE3D2]/50 uppercase tracking-widest font-bold">
+                      <label htmlFor="email-input" className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
                         Email Address
                       </label>
                       <input
                         id="email-input"
                         name="email"
                         type="email"
-                        placeholder="alex@company.com"
+                        placeholder="zaidsaifi1505@gmail.com"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl px-4 py-3 text-sm text-[#FAF6EE] placeholder-white/20 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl px-4 py-3 text-base font-display font-bold text-[#FAF6EE] placeholder-white/30 transition-colors"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="message-input" className="block font-mono text-[9px] text-[#ECE3D2]/50 uppercase tracking-widest font-bold">
+                    <label htmlFor="message-input" className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
                       Describe the venture goals & scope
                     </label>
                     <textarea
@@ -342,7 +369,7 @@ export default function ConnectForm() {
                       placeholder="Share a brief overview of your product goals, budget parameter, timeline expectations, or design references."
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl p-4 text-sm text-[#FAF6EE] placeholder-white/20 transition-colors resize-none h-28"
+                      className="w-full bg-white/5 border border-white/10 focus:border-[#B8925A] focus:outline-none rounded-xl p-4 text-base font-display font-bold text-[#FAF6EE] placeholder-white/30 transition-colors resize-none h-28"
                     ></textarea>
                   </div>
 
@@ -358,7 +385,7 @@ export default function ConnectForm() {
                     id="submit-form-btn"
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 bg-[#FAF6EE] hover:bg-[#B8925A] disabled:bg-white/10 text-[#1c1c1b] hover:text-[#FAF6EE] font-mono text-xs tracking-wider uppercase font-bold py-4 rounded-full transition-all duration-300 active:scale-95 cursor-pointer shadow-lg"
+                    className="w-full flex items-center justify-center gap-2 bg-[#FAF6EE] hover:bg-[#B8925A] disabled:bg-white/10 text-[#1c1c1b] hover:text-[#FAF6EE] font-display text-sm tracking-widest uppercase font-black py-4 rounded-full transition-all duration-300 active:scale-95 cursor-pointer shadow-lg"
                   >
                     {isSubmitting ? (
                       <>

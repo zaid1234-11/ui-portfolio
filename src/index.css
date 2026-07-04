@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Caveat:wght@400..700&family=La+Belle+Aurore&family=Reenie+Beanie&family=Pinyon+Script&family=Didact+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Kaushan+Script&family=Rock+Salt&family=Herr+Von+Muellerhoff&family=Monsieur+La+Doulaise&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Caveat:wght@400..700&family=La+Belle+Aurore&family=Reenie+Beanie&family=Pinyon+Script&family=Didact+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Kaushan+Script&family=Rock+Salt&family=Herr+Von+Muellerhoff&family=Monsieur+La+Doulaise&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Didact Gothic", sans-serif;
-  --font-display: "Cormorant Garamond", serif;
-  --font-fraunces: "Cormorant Garamond", serif;
-  --font-syne: "Bodoni Moda", serif;
+  --font-display: "Fraunces", serif;
+  --font-fraunces: "Fraunces", serif;
+  --font-syne: "Fraunces", serif;
   --font-mono: "Caveat", cursive;
   --font-marker: "La Belle Aurore", cursive;
   --font-brush: "Reenie Beanie", cursive;
@@ -336,7 +336,7 @@
    ============================================================ */
 :root {
   --p1-face: #e6ddc6; --p1-shade: #c7bb98; --p1-tab: #3c3c26; --p1-ink: #2a2718;
-  --p2-face: #ece1c4; --p2-shade: #cdbe93; --p2-tab: #b9ac86; --p2-ink: #2a2515;
+  --p2-face: #525844; --p2-shade: #424637; --p2-tab: #35382b; --p2-ink: #FAF6EE;
   --p3-face: #7c848c; --p3-shade: #5b626a; --p3-tab: #454b52; --p3-ink: #efe9de;
   --p4-face: #4a2e18; --p4-shade: #331f0f; --p4-tab: #25160a; --p4-ink: #e9dcc5;
   --p5-face: #242019; --p5-shade: #151210; --p5-tab: #0e0c0a; --p5-ink: #e4dcc8;
@@ -535,8 +535,8 @@
 .folder-btn[data-paper="1"] .folder-tab { background-color: var(--p1-tab) !important; color: #efe9d4; }
 .folder-btn[data-paper="1"] .folder-mark { background-color: var(--p1-shade) !important; }
 
-.folder-btn[data-paper="2"] .folder-body { background-color: var(--p2-face) !important; color: #2a2515; }
-.folder-btn[data-paper="2"] .folder-tab { background-color: var(--p2-tab) !important; color: #2a2515; }
+.folder-btn[data-paper="2"] .folder-body { background-color: var(--p2-face) !important; color: var(--p2-ink); }
+.folder-btn[data-paper="2"] .folder-tab { background-color: var(--p2-tab) !important; color: var(--p2-ink); }
 .folder-btn[data-paper="2"] .folder-mark { background-color: var(--p2-shade) !important; }
 
 .folder-btn[data-paper="3"] .folder-body { background-color: var(--p3-face) !important; color: var(--p3-ink); }

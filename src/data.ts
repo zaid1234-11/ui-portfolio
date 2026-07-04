@@ -136,24 +136,50 @@ export const PROJECTS: Project[] = [
 export const TIMELINE: TimelineItem[] = [
   {
     id: '1',
-    year: '2023 - Present',
-    role: 'Lead Digital Designer & Creative Dev',
-    company: 'Artefact Studio',
-    description: 'Directing the digital design vision for fintech, art, and immersive web platforms. Implementing advanced interaction models with Framer Motion, D3, and bespoke shaders.'
+    year: '2026 – Present',
+    role: 'AI Web Developer Intern',
+    company: 'FlyRank',
+    description: 'Developing AI-powered web experiences using Next.js, React, TypeScript, Tailwind CSS, and modern AI workflows. Contributing production-ready interfaces, reusable component systems, and AI-integrated user experiences.',
+    focus: ['Next.js', 'React', 'AI Interfaces', 'TypeScript', 'Component Architecture'],
+    offerLetter: '/flyrank intern web_page-0001.jpg'
   },
   {
     id: '2',
-    year: '2020 - 2023',
-    role: 'UI/UX & Frontend Engineer',
-    company: 'Nexus Dynamics',
-    description: 'Created highly interactive data visualization systems and modular design language kits. Collaborated with core engineering to deliver responsive micro-frontends.'
+    year: '2026 – Present',
+    role: 'Web Developer Intern',
+    company: 'Thiranex',
+    description: 'Designing and developing modern web applications with an emphasis on responsive interfaces, scalable frontend architecture, and polished user experiences while collaborating on production features.',
+    focus: ['Frontend Development', 'Responsive Design', 'UI Engineering', 'Performance Optimization'],
+    offerLetter: '/thiranex intern web_page-0001.jpg'
+  },
+  {
+    id: 'codealpha',
+    year: '2026 – Present',
+    role: 'Full Stack Development Intern',
+    company: 'CodeAlpha',
+    description: 'Selected for a one-month Full Stack Development Internship focused on building practical web applications and strengthening end-to-end development skills. Working with modern frontend technologies while gaining hands-on experience in real-world software development workflows.',
+    focus: ['Full Stack Development', 'React Ecosystem', 'Modern JavaScript', 'API Integration', 'Project-Based Learning'],
+    offerLetter: '/codealpha intern web_page-0001.jpg'
   },
   {
     id: '3',
-    year: '2017 - 2020',
-    role: 'Brand & Visual Designer',
-    company: 'Synergy Creative',
-    description: 'Designed holistic visual brand assets, dynamic signage systems, and web portals. Specialized in high-contrast editorial typography and architectural bento structures.'
+    year: '2024 – Present',
+    role: 'Independent Creative Developer',
+    company: 'Self-Employed',
+    description: 'Designing and engineering personal products that combine UI/UX, frontend engineering, motion design, and AI. Building experimental interfaces, interactive portfolios, and immersive digital experiences using React, Next.js, Framer Motion, TypeScript, and creative web technologies.',
+    projects: [
+      'FinTrac AI — Personal Financial Operating System',
+      'SalesSphere — AI-powered sales platform',
+      'Peach Ink Memories — Digital memory experience',
+      'Personal Portfolio — Editorial journal-inspired portfolio'
+    ]
+  },
+  {
+    id: '5',
+    year: '2023 – Present',
+    role: 'B.Tech — CS (AI & ML)',
+    company: 'ABES Engineering College',
+    description: 'Exploring frontend engineering, artificial intelligence, creative development, interaction design, and human-centered digital experiences through academic work, internships, and independent projects.'
   }
 ];
 

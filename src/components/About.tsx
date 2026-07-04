@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Layers, Code, Zap, Award, Download, Check, Sparkles } from 'lucide-react';
+import { Layers, Code, Zap, Award, Download, Check, Sparkles, ExternalLink } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { TIMELINE, SKILL_GROUPS } from '../data';
 import AnimatedSignature from './AnimatedSignature';
 import VariableProximity from './VariableProximity';
+import AreasOfPractice from './AreasOfPractice';
 
 // --- Handdrawn Doodle Components in the spirit of Image 2 with Scroll Reactivity ---
 
@@ -11,7 +12,7 @@ interface ScrollProps {
   scrollProgress: any;
 }
 
-const DeadSmileDoodle = ({ scrollProgress }: ScrollProps) => {
+const RetroStarDoodle = ({ scrollProgress }: ScrollProps) => {
   const y = useTransform(scrollProgress, [0, 1], [30, -30]);
   const scale = useTransform(scrollProgress, [0, 0.5, 1], [0.85, 1.15, 0.95]);
   const rotate = useTransform(scrollProgress, [0, 1], [-12, 12]);
@@ -19,71 +20,161 @@ const DeadSmileDoodle = ({ scrollProgress }: ScrollProps) => {
   return (
     <motion.div
       style={{ y, scale, rotate }}
-      className="absolute -top-12 -left-8 w-16 h-16 select-none pointer-events-none drop-shadow-md z-20"
+      className="absolute -top-12 -left-8 w-20 h-20 select-none pointer-events-none drop-shadow-md z-20"
     >
-      <svg viewBox="0 0 100 100" className="w-full h-full text-[#B8925A] stroke-[3] fill-none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        {/* Left X eye */}
-        <line x1="20" y1="35" x2="40" y2="55" />
-        <line x1="40" y1="35" x2="20" y2="55" />
-        {/* Right X eye */}
-        <line x1="60" y1="35" x2="80" y2="55" />
-        <line x1="80" y1="35" x2="60" y2="55" />
-        {/* Smiling mouth */}
-        <path d="M 25,70 Q 50,92 75,70" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-[#1c1c1b] fill-current">
+        <path d="M50 0 L58 35 L93 25 L65 50 L93 75 L58 65 L50 100 L42 65 L7 75 L35 50 L7 25 L42 35 Z" />
       </svg>
     </motion.div>
   );
 };
 
-const TopFlameDoodle = ({ scrollProgress }: ScrollProps) => {
+const TimelineNode = ({ node, index }: { node: typeof TIMELINE[0]; index: number }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  
+  // Parallax effect: nodes float upwards slightly faster than the scroll, fading in/out
+  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+
+  return (
+    <motion.div ref={ref} style={{ y, opacity }} className="relative group">
+      {/* Visual Connector Dot */}
+      <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border border-[#B8925A] bg-[#FAF6EE] flex items-center justify-center transition-all duration-300 group-hover:scale-125 group-hover:bg-[#B8925A]">
+        <div className="w-1.5 h-1.5 rounded-full bg-[#1c1c1b]"></div>
+      </div>
+
+      {/* Date Left Margin Label */}
+      <div className="md:absolute md:-left-[180px] md:top-1 font-display text-sm text-[#B8925A] font-bold tracking-wider mb-2 md:mb-0">
+        {node.year}
+      </div>
+
+      {/* Content block */}
+      <div className="space-y-4 liquid-glass-card p-6 rounded-xl transition-all duration-300 shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <h4 className="font-display text-lg font-bold text-[#FAF6EE] tracking-tight">
+            {node.role}
+          </h4>
+          {node.company && node.company !== 'Self-Employed' && (
+            <span className="font-display text-[10px] text-[#B8925A] bg-white/10 border border-white/5 px-2.5 py-0.5 rounded-full self-start sm:self-auto uppercase tracking-wider font-bold">
+              {node.company}
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-[#ECE3D2]/80 leading-relaxed font-light">
+          {node.description}
+        </p>
+
+        {/* Highlighted Projects Render */}
+        {node.projects && node.projects.length > 0 && (
+          <div className="pt-4 mt-4 border-t border-[#B8925A]/15">
+            <h5 className="font-mono text-[9px] text-[#B8925A] tracking-widest uppercase mb-3 font-bold">
+              Highlighted Projects
+            </h5>
+            <ul className="space-y-2">
+              {node.projects.map((project, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-[#FAF6EE] text-xs font-light">
+                  <span className="text-[#B8925A] mt-0.5 text-[8px]">✦</span>
+                  <span className="leading-snug">{project}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Focus Render */}
+        {node.focus && node.focus.length > 0 && (
+          <div className="pt-4 mt-4 border-t border-[#B8925A]/15">
+            <h5 className="font-mono text-[9px] text-[#B8925A] tracking-widest uppercase mb-3 font-bold">
+              Focus
+            </h5>
+            <div className="flex flex-wrap gap-2">
+              {node.focus.map((item, idx) => (
+                <span key={idx} className="font-mono text-[8.5px] tracking-wider text-[#FAF6EE]/80 uppercase bg-white/5 border border-white/10 px-2 py-1 rounded-sm">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Offer Letter Link */}
+        {node.offerLetter && (
+          <a 
+            href={node.offerLetter} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="absolute bottom-6 right-6 text-[#B8925A]/60 hover:text-[#B8925A] transition-colors"
+            title="View Offer Letter"
+          >
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+const WireframeArchDoodle = ({ scrollProgress }: ScrollProps) => {
   const y = useTransform(scrollProgress, [0, 1], [-50, 50]);
   const scale = useTransform(scrollProgress, [0, 0.5, 1], [0.75, 1.2, 0.8]);
 
   return (
     <motion.div
       style={{ y, scale }}
-      className="absolute -top-20 left-12 flex flex-col items-center select-none pointer-events-none z-20"
+      className="absolute -top-20 left-16 flex flex-col items-center select-none pointer-events-none z-20"
     >
-      <svg viewBox="0 0 60 80" className="w-9 h-12 stroke-[2.5] fill-none text-[#1c1c1b] drop-shadow-sm" stroke="currentColor" strokeLinecap="round">
-        <path d="M 30,75 C 5,70 8,35 30,2 C 52,35 55,70 30,75 Z" />
-        <path d="M 30,65 C 15,60 18,42 30,20 C 42,42 45,60 30,65 Z" />
+      <svg viewBox="0 0 100 140" className="w-16 h-24 stroke-[1.5] fill-none text-[#4E4842]" stroke="currentColor">
+        <path d="M 20,130 L 20,50 A 30,30 0 0 1 80,50 L 80,130 Z" />
+        {/* Little star accents */}
+        <path d="M 20,40 Q 20,50 30,50 Q 20,50 20,60 Q 20,50 10,50 Q 20,50 20,40 Z" className="fill-current" />
+        <path d="M 80,40 Q 80,50 90,50 Q 80,50 80,60 Q 80,50 70,50 Q 80,50 80,40 Z" className="fill-current" />
       </svg>
-      <span className="absolute top-6 text-[9px] font-mono font-bold text-[#1c1c1b] tracking-widest">1</span>
     </motion.div>
   );
 };
 
-const BottomFlamePinkDoodle = ({ scrollProgress }: ScrollProps) => {
+const OverlappingOvalsDoodle = ({ scrollProgress }: ScrollProps) => {
   const y = useTransform(scrollProgress, [0, 1], [80, -80]);
   const scale = useTransform(scrollProgress, [0, 0.5, 1], [0.8, 1.15, 0.85]);
 
   return (
     <motion.div
       style={{ y, scale }}
-      className="absolute -bottom-12 -left-8 w-24 h-28 select-none pointer-events-none drop-shadow-md z-20"
+      className="absolute -bottom-12 -left-8 w-32 h-32 select-none pointer-events-none drop-shadow-md z-20"
     >
-      <svg viewBox="0 0 100 120" className="w-full h-full text-[#8A9A86] stroke-[3.5] fill-none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M 50,110 C 20,110 8,75 35,35 C 45,50 50,25 50,25 C 55,55 60,60 70,40 C 92,75 80,110 50,110 Z" />
-        <path d="M 50,100 C 35,100 25,82 40,62 C 45,72 50,72 50,52 C 55,72 60,72 65,62 C 75,82 65,100 50,100 Z" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-[#B8925A] stroke-[1] fill-none" stroke="currentColor">
+        <ellipse cx="50" cy="40" rx="45" ry="15" transform="rotate(-15 50 40)" />
+        <ellipse cx="50" cy="60" rx="45" ry="15" transform="rotate(15 50 60)" />
+        {/* Tiny stars */}
+        <path d="M 15,30 Q 15,35 20,35 Q 15,35 15,40 Q 15,35 10,35 Q 15,35 15,30 Z" className="fill-current stroke-none" />
+        <path d="M 85,70 Q 85,75 90,75 Q 85,75 85,80 Q 85,75 80,75 Q 85,75 85,70 Z" className="fill-current stroke-none" />
       </svg>
     </motion.div>
   );
 };
 
-const StarburstDoodle = ({ scrollProgress }: ScrollProps) => {
+const SunburstDoodle = ({ scrollProgress }: ScrollProps) => {
   const scale = useTransform(scrollProgress, [0, 0.5, 1], [0.6, 1.3, 0.6]);
   const rotate = useTransform(scrollProgress, [0, 1], [0, 180]);
 
   return (
     <motion.div
       style={{ scale, rotate }}
-      className="absolute -right-8 top-1/4 w-10 h-10 select-none pointer-events-none z-20"
+      className="absolute -right-8 top-1/4 w-16 h-16 select-none pointer-events-none z-20"
     >
-      <svg viewBox="0 0 100 100" className="w-full h-full text-[#1c1c1b] stroke-[3] fill-none" stroke="currentColor" strokeLinecap="round">
-        <line x1="50" y1="10" x2="50" y2="90" />
-        <line x1="10" y1="50" x2="90" y2="50" />
-        <line x1="22" y1="22" x2="78" y2="78" />
-        <line x1="78" y1="22" x2="22" y2="78" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-[#1c1c1b] stroke-[1] fill-none" stroke="currentColor">
+        <line x1="50" y1="5" x2="50" y2="95" />
+        <line x1="5" y1="50" x2="95" y2="50" />
+        <line x1="18" y1="18" x2="82" y2="82" />
+        <line x1="82" y1="18" x2="18" y2="82" />
+        <line x1="28" y1="10" x2="72" y2="90" />
+        <line x1="72" y1="10" x2="28" y2="90" />
+        <line x1="10" y1="28" x2="90" y2="72" />
+        <line x1="90" y1="28" x2="10" y2="72" />
       </svg>
     </motion.div>
   );
@@ -93,21 +184,23 @@ const RotatingTextBadge = ({ scrollProgress }: ScrollProps) => {
   const rotate = useTransform(scrollProgress, [0, 1], [0, 240]);
 
   return (
-    <div className="absolute -left-12 bottom-6 w-24 h-24 select-none pointer-events-none z-20">
+    <div className="absolute -left-12 bottom-6 w-28 h-28 select-none pointer-events-none z-20">
       <motion.svg viewBox="0 0 100 100" style={{ rotate }} className="w-full h-full">
         <path
           id="circlePath"
-          d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
+          d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"
           fill="transparent"
         />
-        <text className="font-mono text-[5.8px] uppercase fill-[#1c1c1b]/80 tracking-[0.25em] font-black">
+        <text className="font-display text-[6.5px] uppercase fill-[#1c1c1b] tracking-[0.25em] font-black">
           <textPath href="#circlePath" startOffset="0%">
-            DESIGNER • DEVELOPER • ARTIST • CREATIVE •
+            GIRU AESTHETIC • FRAUNCES FONT •
           </textPath>
         </text>
       </motion.svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-2 h-2 rounded-full bg-[#B8925A] animate-pulse"></div>
+        <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#B8925A] fill-current animate-pulse">
+          <path d="M 12,0 Q 12,12 24,12 Q 12,12 12,24 Q 12,12 0,12 Q 12,12 12,0 Z" />
+        </svg>
       </div>
     </div>
   );
@@ -198,10 +291,10 @@ export default function About() {
             
             {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
             <AboutMeScribble />
-            <DeadSmileDoodle scrollProgress={springScroll} />
-            <TopFlameDoodle scrollProgress={springScroll} />
-            <BottomFlamePinkDoodle scrollProgress={springScroll} />
-            <StarburstDoodle scrollProgress={springScroll} />
+            <RetroStarDoodle scrollProgress={springScroll} />
+            <WireframeArchDoodle scrollProgress={springScroll} />
+            <OverlappingOvalsDoodle scrollProgress={springScroll} />
+            <SunburstDoodle scrollProgress={springScroll} />
             <RotatingTextBadge scrollProgress={springScroll} />
 
             {/* Asymmetrical side marker "L" */}
@@ -224,7 +317,7 @@ export default function About() {
                   style={{
                     scale: innerPhotoScale,
                   }}
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
+                  src="/me.jpg"
                   alt="Zaid Saifi Portrait"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover grayscale contrast-[1.12] brightness-[0.93] transition-all duration-700 ease-out hover:grayscale-0"
@@ -234,10 +327,10 @@ export default function About() {
               
               {/* Polaroid bottom border felt-tip ink text */}
               <div className="mt-5 flex flex-row justify-between items-center px-1">
-                <div className="font-mono text-[10px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
+                <div className="font-display text-[11px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
                   DESIGN ARCHIVE
                 </div>
-                <div className="font-mono text-[9px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
+                <div className="font-display text-[10px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
                   EDITION: 2026
                 </div>
               </div>
@@ -252,29 +345,72 @@ export default function About() {
             {/* Punchy Block Header from Image 2 */}
             <div className="relative inline-block">
               <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] tracking-tighter">
-                HI!!
+                <VariableProximity
+                  label="HI!!"
+                  fromFontVariationSettings="'wght' 400"
+                  toFontVariationSettings="'wght' 900"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                  className="font-display font-bold"
+                />
               </h3>
               {/* Decorative gold dot detail */}
               <div className="absolute -right-8 bottom-3 w-4 h-4 rounded-full bg-[#B8925A] animate-ping"></div>
             </div>
 
             <p className="text-lg md:text-xl text-[#4E4842] font-medium leading-relaxed max-w-xl italic">
-              My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist.
+              <VariableProximity
+                label="My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist."
+                fromFontVariationSettings="'wght' 400"
+                toFontVariationSettings="'wght' 700"
+                containerRef={sectionRef}
+                radius={120}
+                falloff="gaussian"
+              />
             </p>
 
             {/* Paragraphs with playful serif drop-ins from Image 1 & 2 */}
             <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light max-w-xl">
               <p>
                 <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
-                  Ever since
+                  <VariableProximity
+                    label="Ever since"
+                    fromFontVariationSettings="'wght' 400"
+                    toFontVariationSettings="'wght' 800"
+                    containerRef={sectionRef}
+                    radius={100}
+                    falloff="gaussian"
+                  />
                 </span>{' '}
-                I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code.
+                <VariableProximity
+                  label="I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code."
+                  fromFontVariationSettings="'wght' 300"
+                  toFontVariationSettings="'wght' 700"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                />
               </p>
               <p>
                 <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
-                  I live to
+                  <VariableProximity
+                    label="I live to"
+                    fromFontVariationSettings="'wght' 400"
+                    toFontVariationSettings="'wght' 800"
+                    containerRef={sectionRef}
+                    radius={100}
+                    falloff="gaussian"
+                  />
                 </span>{' '}
-                discover, experiment, and craft immersive digital experiences that leave a lasting impact.
+                <VariableProximity
+                  label="discover, experiment, and craft immersive digital experiences that leave a lasting impact."
+                  fromFontVariationSettings="'wght' 300"
+                  toFontVariationSettings="'wght' 700"
+                  containerRef={sectionRef}
+                  radius={120}
+                  falloff="gaussian"
+                />
               </p>
             </div>
 
@@ -287,7 +423,7 @@ export default function About() {
             <div className="pt-6 border-t border-[#B8925A]/15 flex flex-wrap items-center gap-3">
               <a 
                 href="mailto:zaidsaifi150105@gmail.com" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-mono text-[10px] text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
               >
                 zaidsaifi150105@gmail.com
               </a>
@@ -296,7 +432,7 @@ export default function About() {
                 href="https://github.com/zaid1234-11" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-mono text-[10px] text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
               >
                 github.com/zaid1234-11
               </a>
@@ -305,7 +441,7 @@ export default function About() {
                 href="https://linkedin.com/in/zaidsaifiai" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-mono text-[10px] text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
               >
                 linkedin.com/in/zaidsaifiai
               </a>
@@ -315,45 +451,15 @@ export default function About() {
 
         </div>
 
-        {/* Dynamic Skills Bento Grid */}
-        <div className="mb-24 space-y-6">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
-            <span className="font-mono text-[10px] text-[#4E4842]/60 uppercase tracking-widest">
-              CORE CAPABILITIES
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {SKILL_GROUPS.map((group) => (
-              <div
-                key={group.id}
-                className="liquid-glass-card p-6 rounded-xl flex flex-col justify-between transition-all duration-300 group shadow-lg"
-              >
-                <div className="flex items-center gap-2 mb-4">
-                  {getCategoryIcon(group.category)}
-                  <span className="text-xs font-display font-bold text-[#FAF6EE] tracking-tight">{group.category}</span>
-                </div>
-
-                <ul className="space-y-2.5">
-                  {group.skills.map((skill, sIdx) => (
-                    <li key={sIdx} className="flex items-start gap-1.5 font-mono text-[9px] text-[#ECE3D2]/80">
-                      <span className="text-[#B8925A] font-bold select-none group-hover:scale-125 transition-transform">•</span>
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Editorial Areas of Practice Section */}
+        <AreasOfPractice />
 
         {/* Chronology of Growth Timeline */}
         <div className="border-t border-[#B8925A]/15 pt-20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-16">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
-              <span className="font-mono text-[10px] text-[#4E4842]/60 uppercase tracking-widest">
+              <span className="font-display font-bold text-[11px] text-[#4E4842]/60 uppercase tracking-widest">
                 THE CHRONOLOGY OF GROWTH
               </span>
             </div>
@@ -378,36 +484,9 @@ export default function About() {
             </button>
           </div>
 
-          <div className="relative border-l-2 border-dashed border-[#B8925A]/30 ml-4 md:ml-32 pl-8 md:pl-12 space-y-12">
-            {TIMELINE.map((node) => (
-              <div key={node.id} className="relative group">
-                
-                {/* Visual Connector Dot - Styled matching Image 2 */}
-                <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border border-[#B8925A] bg-[#FAF6EE] flex items-center justify-center transition-all duration-300 group-hover:scale-125 group-hover:bg-[#B8925A]">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1c1c1b]"></div>
-                </div>
-
-                {/* Date Left Margin Label */}
-                <div className="md:absolute md:-left-[150px] md:top-1 font-mono text-xs text-[#B8925A] font-semibold tracking-wider mb-2 md:mb-0">
-                  {node.year}
-                </div>
-
-                {/* Content block */}
-                <div className="space-y-2 liquid-glass-card p-6 rounded-xl transition-all duration-300 shadow-md">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <h4 className="font-display text-lg font-bold text-[#FAF6EE] tracking-tight">
-                      {node.role}
-                    </h4>
-                    <span className="font-mono text-[9px] text-[#B8925A] bg-white/10 border border-white/5 px-2.5 py-0.5 rounded-full self-start sm:self-auto uppercase tracking-wider font-bold">
-                      {node.company}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#ECE3D2]/80 leading-relaxed font-light">
-                    {node.description}
-                  </p>
-                </div>
-
-              </div>
+          <div className="relative border-l-2 border-dashed border-[#B8925A]/30 ml-4 md:ml-32 pl-8 md:pl-12 space-y-20">
+            {TIMELINE.map((node, index) => (
+              <TimelineNode key={node.id} node={node} index={index} />
             ))}
           </div>
         </div>

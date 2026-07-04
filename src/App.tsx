@@ -249,8 +249,8 @@ export default function App() {
                   </button>
                 </li>
                 <li>
-                  <a href="mailto:alex@artefact.studio" className="text-ivory-dim/55 hover:text-sage transition-colors">
-                    alex@artefact.studio
+                  <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/55 hover:text-sage transition-colors">
+                    zaidsaifi150105@gmail.com
                   </a>
                 </li>
               </ul>

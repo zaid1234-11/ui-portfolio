@@ -3,6 +3,7 @@ import { CheckCircle2, Grid } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
 import FuzzyText from './FuzzyText';
 import VariableProximity from './VariableProximity';
+import DecryptedText from './DecryptedText';
 
 export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
@@ -240,7 +241,14 @@ export default function Process() {
                           {steps[activeStep].title}
                         </FuzzyText>
                         <p className="text-xs sm:text-sm text-[#4E4842] leading-relaxed font-light mb-4">
-                          {steps[activeStep].description}
+                          <DecryptedText
+                            text={steps[activeStep].description}
+                            animateOn="view"
+                            speed={10}
+                            maxIterations={12}
+                            revealDirection="start"
+                            sequential={true}
+                          />
                         </p>
                       </div>
 
