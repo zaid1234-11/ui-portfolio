@@ -29,7 +29,7 @@ const RetroStarDoodle = ({ scrollProgress }: ScrollProps) => {
   );
 };
 
-const TimelineNode = ({ node, index }: { node: typeof TIMELINE[0]; index: number }) => {
+const TimelineNode: React.FC<{ node: typeof TIMELINE[0]; index: number }> = ({ node, index }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
