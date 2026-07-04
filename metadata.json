@@ -1,0 +1,6 @@
+{
+  "name": "Graphic Designer Portfolio",
+  "description": "A minimalist, high-end portfolio for a freelance graphic designer featuring an interactive bento project gallery, case studies, about timeline, and a liquid glass contact form.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
