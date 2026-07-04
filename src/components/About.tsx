@@ -138,7 +138,6 @@ const AboutMeScribble = () => {
 export default function About() {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const narrativeContainerRef = useRef<HTMLDivElement>(null);
 
   // Initialize scroll tracking inside the biography container
   const { scrollYProgress } = useScroll({
@@ -248,82 +247,34 @@ export default function About() {
           </div>
 
           {/* Right Typography & Narrative Column (7 cols) */}
-          <div ref={narrativeContainerRef} className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-8">
             
             {/* Punchy Block Header from Image 2 */}
-            <div className="relative inline-block cursor-pointer">
+            <div className="relative inline-block">
               <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] tracking-tighter">
-                <VariableProximity
-                  label="HI!!"
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 900"
-                  containerRef={narrativeContainerRef}
-                  radius={150}
-                  falloff="gaussian"
-                  className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] tracking-tighter uppercase"
-                />
+                HI!!
               </h3>
               {/* Decorative gold dot detail */}
               <div className="absolute -right-8 bottom-3 w-4 h-4 rounded-full bg-[#B8925A] animate-ping"></div>
             </div>
 
-            <p className="text-lg md:text-xl text-[#4E4842] font-medium leading-relaxed max-w-xl italic cursor-pointer">
-              <VariableProximity
-                label="My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist."
-                fromFontVariationSettings="'wght' 400"
-                toFontVariationSettings="'wght' 700"
-                containerRef={narrativeContainerRef}
-                radius={160}
-                falloff="gaussian"
-                className="text-lg md:text-xl text-[#4E4842] font-medium leading-relaxed max-w-xl italic"
-              />
+            <p className="text-lg md:text-xl text-[#4E4842] font-medium leading-relaxed max-w-xl italic">
+              My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist.
             </p>
 
             {/* Paragraphs with playful serif drop-ins from Image 1 & 2 */}
-            <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light max-w-xl cursor-pointer">
+            <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light max-w-xl">
               <p>
-                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight inline-block">
-                  <VariableProximity
-                    label="Ever since"
-                    fromFontVariationSettings="'wght' 400"
-                    toFontVariationSettings="'wght' 800"
-                    containerRef={narrativeContainerRef}
-                    radius={120}
-                    falloff="gaussian"
-                    className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A]"
-                  />
+                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                  Ever since
                 </span>{' '}
-                <VariableProximity
-                  label="I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code."
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 700"
-                  containerRef={narrativeContainerRef}
-                  radius={160}
-                  falloff="gaussian"
-                  className="text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light"
-                />
+                I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code.
               </p>
               <p>
-                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight inline-block">
-                  <VariableProximity
-                    label="I live to"
-                    fromFontVariationSettings="'wght' 400"
-                    toFontVariationSettings="'wght' 800"
-                    containerRef={narrativeContainerRef}
-                    radius={120}
-                    falloff="gaussian"
-                    className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A]"
-                  />
+                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                  I live to
                 </span>{' '}
-                <VariableProximity
-                  label="discover, experiment, and craft immersive digital experiences that leave a lasting impact."
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 700"
-                  containerRef={narrativeContainerRef}
-                  radius={160}
-                  falloff="gaussian"
-                  className="text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light"
-                />
+                discover, experiment, and craft immersive digital experiences that leave a lasting impact.
               </p>
             </div>
 

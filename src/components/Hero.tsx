@@ -310,16 +310,8 @@ export default function Hero({ onExploreClick }: HeroProps) {
           {/* Left: Design philosophy */}
           <div className="flex flex-col justify-between">
             <span className="font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest mb-2">Philosophy</span>
-            <p className="text-xs text-ivory-dim/80 leading-relaxed italic cursor-pointer">
-              <VariableProximity
-                label='"Eliminate the noise. Magnify the interaction. Treat the layout as an architect\'s canvas responding to physical space."'
-                fromFontVariationSettings="'wght' 300"
-                toFontVariationSettings="'wght' 700"
-                containerRef={containerRef}
-                radius={150}
-                falloff="gaussian"
-                className="text-xs text-ivory-dim/80 leading-relaxed italic"
-              />
+            <p className="text-xs text-ivory-dim/80 leading-relaxed italic">
+              "Eliminate the noise. Magnify the interaction. Treat the layout as an architect's canvas responding to physical space."
             </p>
           </div>
 
@@ -343,16 +335,8 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 <span className="block font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest mb-1">
                   {stat.label}
                 </span>
-                <span className="font-syne text-base font-bold text-ivory cursor-pointer">
-                  <VariableProximity
-                    label={stat.val}
-                    fromFontVariationSettings="'wght' 400"
-                    toFontVariationSettings="'wght' 900"
-                    containerRef={containerRef}
-                    radius={120}
-                    falloff="gaussian"
-                    className="font-syne text-base font-bold text-ivory"
-                  />
+                <span className="font-syne text-base font-bold text-ivory">
+                  {stat.val}
                 </span>
               </div>
             ))}

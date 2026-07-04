@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Twitter, Sparkles, X } from 'lucide-react';
-import VariableProximity from './VariableProximity';
 
 export default function ConnectForm() {
   const [formData, setFormData] = useState({
@@ -12,9 +11,6 @@ export default function ConnectForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-
-  // Section reference for proximity tracking
-  const sectionRef = useRef<HTMLDivElement>(null);
 
   // Canvas Reference for Particle Confetti Explosion
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -172,7 +168,7 @@ export default function ConnectForm() {
   }, [isSubmitted]);
 
   return (
-    <section id="connect" ref={sectionRef} className="relative py-24 px-6 md:px-12 bg-transparent">
+    <section id="connect" className="relative py-24 px-6 md:px-12 bg-transparent">
       {/* Background Notebook Decorative Grid Lines */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
@@ -187,28 +183,8 @@ export default function ConnectForm() {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1c1c1b] tracking-tight leading-none">
-              <span className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer">
-                <VariableProximity
-                  label="Let's Build"
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 900"
-                  containerRef={sectionRef}
-                  radius={140}
-                  falloff="gaussian"
-                  className="font-display block uppercase tracking-tighter text-3d-ivory"
-                />
-              </span>
-              <span className="font-display font-bold italic text-[#B8925A] mt-1 block cursor-pointer">
-                <VariableProximity
-                  label="something"
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 800"
-                  containerRef={sectionRef}
-                  radius={140}
-                  falloff="gaussian"
-                  className="font-display font-bold italic text-[#B8925A]"
-                />
-              </span>
+              <span className="font-display block uppercase tracking-tighter text-3d-ivory">Let's Build</span>
+              <span className="font-display font-bold italic text-[#B8925A] mt-1 block">something</span>
             </h2>
           </div>
           <p className="max-w-md text-sm text-[#4E4842]/85 leading-relaxed font-light">
@@ -222,16 +198,8 @@ export default function ConnectForm() {
           {/* Left Block: Contact Details and Metadata */}
           <div className="lg:col-span-5 space-y-10">
             <div className="space-y-4">
-              <h3 className="font-display text-2xl font-bold text-[#1c1c1b] cursor-pointer">
-                <VariableProximity
-                  label="The Discovery Phase starts with a single dialogue."
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 800"
-                  containerRef={sectionRef}
-                  radius={160}
-                  falloff="gaussian"
-                  className="font-display text-2xl font-bold text-[#1c1c1b]"
-                />
+              <h3 className="font-display text-2xl font-bold text-[#1c1c1b]">
+                The Discovery Phase starts with a single dialogue.
               </h3>
               <p className="text-sm text-[#4E4842]/85 leading-relaxed font-light">
                 Once submitted, I'll review your project goals, analyze market competitors, and propose a specific aesthetic and functional design strategy within 24 hours.
