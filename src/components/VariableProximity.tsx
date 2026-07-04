@@ -143,15 +143,18 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
       }
 
       const falloffValue = calculateFalloff(distance);
+      let fontWeightValue = "";
       const newSettings = parsedSettings
         .map(({ axis, fromValue, toValue }) => {
           const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue;
+          if (axis === 'wght') fontWeightValue = Math.round(interpolatedValue).toString();
           return `'${axis}' ${interpolatedValue}`;
         })
         .join(', ');
 
       interpolatedSettingsRef.current[index] = newSettings;
       letterRef.style.fontVariationSettings = newSettings;
+      if (fontWeightValue) letterRef.style.fontWeight = fontWeightValue;
     });
   });
 
