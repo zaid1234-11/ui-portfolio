@@ -99,8 +99,10 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+const lenisOptions = { lerp: 0.04, duration: 1.5, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.5, syncTouch: true };
+
   return (
-    <ReactLenis root options={{ lerp: 0.04, duration: 1.5, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.5, syncTouch: true }}>
+    <ReactLenis root options={lenisOptions}>
       <AnimatePresence mode="wait">
         {isLoading && <Preloader />}
       </AnimatePresence>
