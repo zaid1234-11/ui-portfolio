@@ -115,6 +115,8 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }
   };
 
+  const currentFalloffsRef = useRef<number[]>([]);
+
   useAnimationFrame(() => {
     const { x, y } = mousePositionRef.current;
 
@@ -133,13 +135,24 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         letterRef.dataset.baseColor = baseColor;
       }
 
-      if (distance >= radius) {
+      let targetFalloff = 0;
+      if (distance < radius) {
+        targetFalloff = calculateFalloff(distance);
+      }
+
+      // Smooth the falloff value (lerp) - tuned higher for snappier response
+      const currentFalloff = currentFalloffsRef.current[index] || 0;
+      const smoothedFalloff = currentFalloff + (targetFalloff - currentFalloff) * 0.45;
+      currentFalloffsRef.current[index] = smoothedFalloff;
+
+      // Skip DOM updates if completely settled outside radius
+      if (smoothedFalloff < 0.001 && targetFalloff === 0) {
         letterRef.style.fontVariationSettings = fromFontVariationSettings;
         letterRef.style.color = baseColor;
         return;
       }
 
-      const falloffValue = calculateFalloff(distance);
+      const falloffValue = smoothedFalloff;
       let fontWeightValue = "";
       const newSettings = parsedSettings
         .map(({ axis, fromValue, toValue }) => {

@@ -12,7 +12,6 @@ import { ArrowUp, Sparkles, Code, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import Preloader from './components/Preloader';
-import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -105,7 +104,6 @@ export default function App() {
       <AnimatePresence mode="wait">
         {isLoading && <Preloader />}
       </AnimatePresence>
-      <CustomCursor />
 
       <div className="relative min-h-screen bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
       
