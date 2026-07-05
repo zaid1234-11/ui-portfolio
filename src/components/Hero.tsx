@@ -252,7 +252,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         <div className="mb-6 flex items-center gap-2 bg-[#ECE3D2]/40 border border-[#B8925A]/15 px-4 py-1.5 rounded-full backdrop-blur-sm">
           <Sparkles className="w-3.5 h-3.5 text-[#B8925A]" />
           <span className="font-mono text-[9px] tracking-widest text-[#1c1c1b] uppercase">
-            Creative Portfolio Edition
+            Design Meets Frontend Engineering
           </span>
         </div>
 
