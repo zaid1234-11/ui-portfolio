@@ -10,11 +10,36 @@ import { Project } from './types';
 import { PROJECTS } from './data';
 import { ArrowUp, Sparkles, Code, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { ReactLenis } from 'lenis/react';
+import Preloader from './components/Preloader';
+import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const handleLoad = async () => {
+      // Wait for all custom fonts to be fully parsed and ready
+      await document.fonts.ready;
+      
+      // Keep a small minimum delay (800ms) to prevent aggressive flashing on fast connections/caches
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+    };
+
+    // If the browser already finished loading everything before the effect ran
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      // Otherwise, wait for the full page load event (images, CSS, scripts, etc.)
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
 
   // Monitor scroll height to show back-to-top and handle active section highlights
   useEffect(() => {
@@ -76,7 +101,13 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
+    <ReactLenis root options={{ lerp: 0.04, duration: 1.5, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.5, syncTouch: true }}>
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader />}
+      </AnimatePresence>
+      <CustomCursor />
+
+      <div className="relative min-h-screen bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
       
       {/* 1. Global Noise Texture Film overlay */}
       <div className="noise-overlay" aria-hidden="true"></div>
@@ -285,5 +316,6 @@ export default function App() {
       )}
 
     </div>
+    </ReactLenis>
   );
 }

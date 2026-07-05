@@ -41,38 +41,33 @@ export default function Hero({ onExploreClick }: HeroProps) {
     offset: ['start start', 'end start'],
   });
 
-  // Inertial spring smooth scroll progression
-  const springScroll = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 24,
-    restDelta: 0.001,
-  });
+  // Removed springScroll to allow Lenis direct scroll tracking
 
   // Core Zoom-Out & Translate Upwards Parallax (applied to main interactive block)
-  const yHeader = useTransform(springScroll, [0, 1], [0, -150]);
-  const scaleHeader = useTransform(springScroll, [0, 1], [1, 0.78]);
-  const opacityHeader = useTransform(springScroll, [0, 0.85], [1, 0]);
+  const yHeader = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const scaleHeader = useTransform(scrollYProgress, [0, 1], [1, 0.78]);
+  const opacityHeader = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
   // Dynamic Glow Layer: Zoom-In Parallax
-  const yGlow = useTransform(springScroll, [0, 1], [0, 220]);
-  const scaleGlow = useTransform(springScroll, [0, 1], [1, 1.8]);
-  const opacityGlow = useTransform(springScroll, [0, 1], [0.8, 0.1]);
+  const yGlow = useTransform(scrollYProgress, [0, 1], [0, 220]);
+  const scaleGlow = useTransform(scrollYProgress, [0, 1], [1, 1.8]);
+  const opacityGlow = useTransform(scrollYProgress, [0, 1], [0.8, 0.1]);
 
   // Left background element "01": Heavy Zoom-In Parallax
-  const yGhostLeft = useTransform(springScroll, [0, 1], [0, -320]);
-  const scaleGhostLeft = useTransform(springScroll, [0, 1], [0.9, 1.6]);
-  const opacityGhostLeft = useTransform(springScroll, [0, 1], [0.03, 0.08]);
+  const yGhostLeft = useTransform(scrollYProgress, [0, 1], [0, -320]);
+  const scaleGhostLeft = useTransform(scrollYProgress, [0, 1], [0.9, 1.6]);
+  const opacityGhostLeft = useTransform(scrollYProgress, [0, 1], [0.03, 0.08]);
 
   // Right background element "CRAFT": Heavy Zoom-Out Parallax
-  const yGhostRight = useTransform(springScroll, [0, 1], [0, -420]);
-  const scaleGhostRight = useTransform(springScroll, [0, 1], [1.3, 0.7]);
-  const opacityGhostRight = useTransform(springScroll, [0, 1], [0.02, 0.07]);
+  const yGhostRight = useTransform(scrollYProgress, [0, 1], [0, -420]);
+  const scaleGhostRight = useTransform(scrollYProgress, [0, 1], [1.3, 0.7]);
+  const opacityGhostRight = useTransform(scrollYProgress, [0, 1], [0.02, 0.07]);
 
   // Extra Parallax Layers: Floating sketched pencil crosses, compass circles, and grid anchors
-  const yFloatCross1 = useTransform(springScroll, [0, 1], [0, -280]);
-  const yFloatCross2 = useTransform(springScroll, [0, 1], [0, -520]);
-  const yFloatCross3 = useTransform(springScroll, [0, 1], [0, -180]);
-  const yFloatCross4 = useTransform(springScroll, [0, 1], [0, -620]);
+  const yFloatCross1 = useTransform(scrollYProgress, [0, 1], [0, -280]);
+  const yFloatCross2 = useTransform(scrollYProgress, [0, 1], [0, -520]);
+  const yFloatCross3 = useTransform(scrollYProgress, [0, 1], [0, -180]);
+  const yFloatCross4 = useTransform(scrollYProgress, [0, 1], [0, -620]);
 
   // Interactive mouse-follow rotation style
   const text3DStyle = {
@@ -306,6 +301,8 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 label="PORTFOLIO"
                 fromFontVariationSettings="'wght' 400"
                 toFontVariationSettings="'wght' 900"
+                fromColor="rgba(28, 28, 27, 0.05)"
+                toColor="rgba(28, 28, 27, 0.05)"
                 containerRef={containerRef}
                 radius={220}
                 falloff="gaussian"
@@ -328,7 +325,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                   containerRef={containerRef}
                   radius={180}
                   falloff="gaussian"
-                  className="font-symphonie text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#1c1c1b] leading-none tracking-normal text-center font-light"
+                  className="font-symphonie text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-light"
                 />
               </h1>
               

@@ -62,16 +62,10 @@ export default function Process() {
     }
   };
 
-  const springScroll = useSpring(scrollYProgress, {
-    stiffness: 85,
-    damping: 24,
-    restDelta: 0.001,
-  });
-
   // Zoom-in & out parallax for decorative background items
-  const bgSphereY = useTransform(springScroll, [0, 1], [-100, 100]);
-  const bgSphereScale = useTransform(springScroll, [0, 0.5, 1], [0.7, 1.4, 0.8]);
-  const bgSphereOpacity = useTransform(springScroll, [0, 0.5, 1], [0.1, 0.35, 0.1]);
+  const bgSphereY = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const bgSphereScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1.4, 0.8]);
+  const bgSphereOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.35, 0.1]);
 
   const steps = [
     {

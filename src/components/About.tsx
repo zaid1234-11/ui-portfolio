@@ -56,7 +56,17 @@ const TimelineNode: React.FC<{ node: typeof TIMELINE[0]; index: number }> = ({ n
       <div className="space-y-4 liquid-glass-card p-6 rounded-xl transition-all duration-300 shadow-md">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
           <h4 className="font-display text-lg font-bold text-[#FAF6EE] tracking-tight">
-            {node.role}
+            <VariableProximity
+              label={node.role}
+              fromFontVariationSettings="'wght' 400"
+              toFontVariationSettings="'wght' 800"
+              fromColor="#FAF6EE"
+              toColor="#dc6305"
+              containerRef={ref}
+              radius={120}
+              falloff="gaussian"
+              className="font-display font-bold text-[#FAF6EE]"
+            />
           </h4>
           {node.company && node.company !== 'Self-Employed' && (
             <span className="font-display text-[10px] text-[#B8925A] bg-white/10 border border-white/5 px-2.5 py-0.5 rounded-full self-start sm:self-auto uppercase tracking-wider font-bold">
@@ -238,19 +248,13 @@ export default function About() {
     offset: ['start end', 'end start'],
   });
 
-  const springScroll = useSpring(scrollYProgress, {
-    stiffness: 85,
-    damping: 24,
-    restDelta: 0.001,
-  });
-
   // Polaroid frame-level transitions: smooth scaling up as it enters viewport, and rolling tilt!
-  const polaroidY = useTransform(springScroll, [0, 1], [60, -60]);
-  const polaroidScale = useTransform(springScroll, [0, 0.5, 1], [0.85, 1.05, 0.9]);
-  const polaroidRotate = useTransform(springScroll, [0, 1], [-8, 6]);
+  const polaroidY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const polaroidScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.05, 0.9]);
+  const polaroidRotate = useTransform(scrollYProgress, [0, 1], [-8, 6]);
 
   // Photo Zoom inside: OPPOSES the polaroid scale (Ken Burns perspective parallax!)
-  const innerPhotoScale = useTransform(springScroll, [0, 1], [1.25, 1.0]);
+  const innerPhotoScale = useTransform(scrollYProgress, [0, 1], [1.25, 1.0]);
 
   const handleDownloadCV = () => {
     setDownloadSuccess(true);
@@ -291,11 +295,11 @@ export default function About() {
             
             {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
             <AboutMeScribble />
-            <RetroStarDoodle scrollProgress={springScroll} />
-            <WireframeArchDoodle scrollProgress={springScroll} />
-            <OverlappingOvalsDoodle scrollProgress={springScroll} />
-            <SunburstDoodle scrollProgress={springScroll} />
-            <RotatingTextBadge scrollProgress={springScroll} />
+            <RetroStarDoodle scrollProgress={scrollYProgress} />
+            <WireframeArchDoodle scrollProgress={scrollYProgress} />
+            <OverlappingOvalsDoodle scrollProgress={scrollYProgress} />
+            <SunburstDoodle scrollProgress={scrollYProgress} />
+            <RotatingTextBadge scrollProgress={scrollYProgress} />
 
             {/* Asymmetrical side marker "L" */}
             <div className="absolute right-0 bottom-4 font-display text-[110px] font-extrabold text-[#1c1c1b]/[0.03] select-none pointer-events-none tracking-tighter leading-none">

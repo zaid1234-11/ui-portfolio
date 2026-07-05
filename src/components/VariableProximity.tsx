@@ -1,5 +1,6 @@
 import React, { forwardRef, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { gsap } from 'gsap';
 
 function useAnimationFrame(callback: () => void) {
   useEffect(() => {
@@ -13,17 +14,12 @@ function useAnimationFrame(callback: () => void) {
   }, [callback]);
 }
 
-function useMousePositionRef(containerRef: React.RefObject<HTMLDivElement | null>) {
+function useMousePositionRef() {
   const positionRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const updatePosition = (x: number, y: number) => {
-      if (containerRef?.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        positionRef.current = { x: x - rect.left, y: y - rect.top };
-      } else {
-        positionRef.current = { x, y };
-      }
+      positionRef.current = { x, y };
     };
 
     const handleMouseMove = (ev: MouseEvent) => updatePosition(ev.clientX, ev.clientY);
@@ -40,7 +36,7 @@ function useMousePositionRef(containerRef: React.RefObject<HTMLDivElement | null
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [containerRef]);
+  }, []);
 
   return positionRef;
 }
@@ -55,6 +51,8 @@ interface VariableProximityProps {
   className?: string;
   onClick?: () => void;
   style?: React.CSSProperties;
+  fromColor?: string;
+  toColor?: string;
 }
 
 const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((props, ref) => {
@@ -68,13 +66,14 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     className = '',
     onClick,
     style,
+    fromColor,
+    toColor,
     ...restProps
   } = props;
 
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const interpolatedSettingsRef = useRef<string[]>([]);
-  const mousePositionRef = useMousePositionRef(containerRef);
-  const lastPositionRef = useRef<{ x: number | null; y: number | null }>({ x: null, y: null });
+  const mousePositionRef = useMousePositionRef();
 
   const parsedSettings = useMemo(() => {
     const parseSettings = (settingsStr: string) =>
@@ -98,6 +97,9 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }));
   }, [fromFontVariationSettings, toFontVariationSettings]);
 
+  // We'll compute the color interpolator dynamically per letter if fromColor is omitted.
+  const targetColor = toColor || "#dc6305";
+
   const calculateDistance = (x1: number, y1: number, x2: number, y2: number) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
   const calculateFalloff = (distance: number) => {
@@ -114,31 +116,26 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
   };
 
   useAnimationFrame(() => {
-    if (!containerRef?.current) return;
     const { x, y } = mousePositionRef.current;
-    if (lastPositionRef.current.x === x && lastPositionRef.current.y === y) {
-      return;
-    }
-    lastPositionRef.current = { x, y };
-
-    const containerRect = containerRef.current.getBoundingClientRect();
 
     letterRefs.current.forEach((letterRef, index) => {
       if (!letterRef) return;
 
       const rect = letterRef.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
-      const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
+      const letterCenterX = rect.left + rect.width / 2;
+      const letterCenterY = rect.top + rect.height / 2;
 
-      const distance = calculateDistance(
-        mousePositionRef.current.x,
-        mousePositionRef.current.y,
-        letterCenterX,
-        letterCenterY
-      );
+      const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
+
+      let baseColor = letterRef.dataset.baseColor;
+      if (!baseColor) {
+        baseColor = fromColor || getComputedStyle(letterRef).color;
+        letterRef.dataset.baseColor = baseColor;
+      }
 
       if (distance >= radius) {
         letterRef.style.fontVariationSettings = fromFontVariationSettings;
+        letterRef.style.color = baseColor;
         return;
       }
 
@@ -155,6 +152,9 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
       interpolatedSettingsRef.current[index] = newSettings;
       letterRef.style.fontVariationSettings = newSettings;
       if (fontWeightValue) letterRef.style.fontWeight = fontWeightValue;
+      
+      const colorInterpolator = gsap.utils.interpolate(baseColor, targetColor);
+      letterRef.style.color = colorInterpolator(falloffValue);
     });
   });
 
