@@ -287,7 +287,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
               transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 flex flex-col items-center justify-center select-none"
             >
-              <h1 className="font-symphonie text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#1c1c1b] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-light cursor-pointer">
+              <h1 className="font-magilio text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#1c1c1b] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-light cursor-pointer">
                 <VariableProximity
                   label="Zaid Saifi"
                   fromFontVariationSettings="'wght' 300"
@@ -295,7 +295,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                   containerRef={containerRef}
                   radius={180}
                   falloff="gaussian"
-                  className="font-symphonie text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-light"
+                  className="font-magilio text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-light"
                 />
               </h1>
               
