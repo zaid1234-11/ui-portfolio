@@ -409,7 +409,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           {/* Center: Tech stack capsules */}
           <div className="flex flex-col">
             <span className="font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-3">Core Stack Highlights</span>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {techStack.map((tech, i) => (
                 <div key={i} className="flex flex-col bg-brew/40 border border-ivory/5 px-3 py-1.5 rounded-xl">
                   <span className="text-[11px] font-display font-bold text-ivory">{tech.name}</span>

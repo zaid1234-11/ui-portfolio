@@ -377,7 +377,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 .folder-btn:first-child {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 
 .folder-inner {
@@ -400,6 +400,38 @@
 .folder-btn:focus-visible .folder-inner {
   box-shadow: 0 0 0 2px rgba(233, 220, 197, 0.9), 0 0 0 4px rgba(42, 39, 24, 0.5);
   border-radius: 2px;
+}
+
+/* 
+ * RESPONSIVE MOBILE FOLDER STACK 
+ * Stacks folders vertically instead of horizontally to prevent horizontal overflow and clipping
+ */
+@media (max-width: 820px) {
+  .folder-stack {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding-bottom: 60px;
+    padding-top: 20px;
+  }
+  
+  .folder-btn {
+    width: 100%;
+    max-width: 320px;
+    margin-left: 0 !important;
+    margin-top: -160px; /* Vertical stacking overlap */
+  }
+  
+  .folder-btn:first-child {
+    margin-top: 0 !important;
+  }
+
+  .folder-btn:hover .folder-inner,
+  .folder-btn.is-active .folder-inner {
+    --ty: -30px; /* Less pop-up needed on mobile */
+    --tx: 0px !important; /* Disable horizontal push */
+    --sc: 1.02;
+  }
 }
 
 .folder-body, .card-swap-card {

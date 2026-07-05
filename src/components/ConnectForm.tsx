@@ -307,7 +307,7 @@ export default function ConnectForm() {
                     <label className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
                       What can we help you solve?
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {requestTypes.map((type) => (
                         <button
                           key={type}
