@@ -109,7 +109,7 @@ export const PROJECTS: Project[] = [
     id: 'the-adrocket',
     title: 'The Adrocket',
     description: 'AI Application Launcher and creative playground dashboard integrated with Google Gemini API.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDgpUpwboTPoo5UzwhuBrno11H3uAsrX1WK88xq_fpNhJlXH-fKWqVOJoI60LAMeaNTsykr7T6_-Judv9lWMwdjmd7y0LsXv_BGWCWuC2EtjgY7ArRrwF5LJu4h-hn_VP5YCKHK2MTweQREf2LrFou6NmaKSD3h1-ybbCQ1kIyDrXFgF4Vtqt5ahI7Qnqcapb7MPgGUKSl4kjmVGZgIMnv5fatTGdGnA7BFC3LfeFmWtwOdIXl-5GRu',
+    image: '/adrocket.png',
     category: 'E-Commerce',
     tags: ['AI Integration', 'Model Playground', 'Rapid Prototyping'],
     role: 'Creative Developer',
@@ -125,7 +125,7 @@ export const PROJECTS: Project[] = [
       { label: 'Lighthouse Access', value: '95/100' }
     ],
     galleryImages: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDgpUpwboTPoo5UzwhuBrno11H3uAsrX1WK88xq_fpNhJlXH-fKWqVOJoI60LAMeaNTsykr7T6_-Judv9lWMwdjmd7y0LsXv_BGWCWuC2EtjgY7ArRrwF5LJu4h-hn_VP5YCKHK2MTweQREf2LrFou6NmaKSD3h1-ybbCQ1kIyDrXFgF4Vtqt5ahI7Qnqcapb7MPgGUKSl4kjmVGZgIMnv5fatTGdGnA7BFC3LfeFmWtwOdIXl-5GRu'
+      '/adrocket.png'
     ],
     nextProjectId: 'fintrac-ai',
     liveUrl: 'https://github.com/zaid1234-11/The-adrocket',
