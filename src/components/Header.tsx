@@ -52,14 +52,42 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
   };
 
   return (
-    <header
-      id="main-header"
-      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2.5rem)] max-w-7xl z-50 transition-all duration-500 rounded-2xl ${
-        isScrolled 
-          ? 'bg-[#1c1c1b] border border-[#B8925A]/25 py-3 shadow-[0_12px_36px_rgba(28,28,27,0.25)]' 
-          : 'bg-transparent border border-transparent py-5'
-      }`}
-    >
+    <>
+      {/* SVG Filter for Liquid Glass Navbar */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.02 0.02"
+              numOctaves={2} 
+              seed={92} 
+              result="noise" 
+            />
+            <feGaussianBlur 
+              in="noise" 
+              stdDeviation="2" 
+              result="blurred" 
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="blurred" 
+              scale="200"
+              xChannelSelector="R" 
+              yChannelSelector="G" 
+            />
+          </filter>
+        </defs>
+      </svg>
+
+      <header
+        id="main-header"
+        className={`fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2.5rem)] max-w-7xl z-50 transition-all duration-500 rounded-2xl ${
+          isScrolled 
+            ? 'liquid-glass-nav py-3' 
+            : 'bg-transparent border border-transparent py-5'
+        }`}
+      >
       <div className="w-full px-6 md:px-10 flex items-center justify-between">
         {/* Logo (Hand-crafted calligraphy-serif hybrid) */}
         <button
@@ -171,5 +199,6 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
         </div>
       )}
     </header>
+    </>
   );
 }

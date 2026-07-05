@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import InkRevealText from './InkRevealText';
 import VariableProximity from './VariableProximity';
 import TextType from './TextType';
+import HoverMaskReveal from './HoverMaskReveal';
 
 interface HeroProps {
   onExploreClick: () => void;
@@ -128,19 +129,25 @@ export default function Hero({ onExploreClick }: HeroProps) {
         CRAFT
       </motion.div>
 
-      {/* Dynamic Solar Background Glow with scroll-driven zoom in/out */}
-      <motion.div
-        style={{
-          y: yGlow,
-          scale: scaleGlow,
-          opacity: opacityGlow,
-          ...backdropGradientStyle,
-        }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] md:w-[600px] h-[350px] md:h-[600px] rounded-full bg-gradient-to-tr from-mocha/10 via-chai/5 to-transparent blur-[120px] pointer-events-none z-0"
-      ></motion.div>
+      {/* Full-screen Hover Mask Reveal Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-90">
+        <HoverMaskReveal 
+          imageBase={{ src: '/front.webp', positionX: '50%', positionY: '50%' }} 
+          imageHover={{ src: '/back.webp', positionX: '50%', positionY: '50%' }} 
+          radius={150}
+          blur={0.5}
+          splatRadius={0.08}
+          circleBoost={0.6}
+          parallax={true}
+          parallaxAmount={15}
+        />
+      </div>
 
-      {/* Sketchbook Grid Background Pattern (using Chai sepia colors for architectural graph paper feel) */}
+      {/* Sketchbook Grid Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(126,105,87,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(126,105,87,0.08)_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_85%,transparent_100%)] pointer-events-none z-0"></div>
+
+
+
 
       {/* Parallax Floating Sketched pencil coordinates and crosshairs */}
       <motion.div
@@ -179,7 +186,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       {/* Top Architectural Draft Header Bar with Variable Proximity and Thick Font */}
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-6 md:pt-10">
-        <div className="border-t border-b border-[#B8925A]/15 py-3.5 flex items-center justify-between font-display font-black text-[11px] md:text-[13px] tracking-widest text-[#1c1c1b] uppercase">
+        <div className="border-t border-b border-[#B8925A]/15 py-3.5 flex items-center justify-between font-display font-black text-[11px] md:text-[13px] tracking-widest text-[#1c1c1b] uppercase [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
             <VariableProximity
@@ -202,7 +209,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 falloff="gaussian"
               />
             </span>
-            <span className="text-[10px] text-[#4E4842]/60 tracking-wider block mt-1">
+            <span className="text-[10px] text-[#4E4842]/70 tracking-wider block mt-1 font-bold">
               <VariableProximity
                 label="MOMENTS, THOUGHTS & MEMORIES"
                 fromFontVariationSettings="'wght' 500"
@@ -213,7 +220,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
               />
             </span>
           </div>
-          <div className="flex items-center gap-4 text-[#4E4842]/70">
+          <div className="flex items-center gap-4 text-[#4E4842]/80 font-bold">
             <span>
               <VariableProximity
                 label="PAGE // 01"
@@ -249,9 +256,9 @@ export default function Hero({ onExploreClick }: HeroProps) {
         className="relative z-10 max-w-7xl mx-auto w-full my-auto flex flex-col items-center text-center py-12"
       >
         {/* Subtle Decorative Capsule */}
-        <div className="mb-6 flex items-center gap-2 bg-[#ECE3D2]/40 border border-[#B8925A]/15 px-4 py-1.5 rounded-full backdrop-blur-sm">
-          <Sparkles className="w-3.5 h-3.5 text-[#B8925A]" />
-          <span className="font-mono text-[9px] tracking-widest text-[#1c1c1b] uppercase">
+        <div className="mb-6 flex items-center gap-2 text-[#1c1c1b] [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
+          <Sparkles className="w-4 h-4 text-[#B8925A]" />
+          <span className="font-mono text-[11px] font-bold tracking-widest uppercase">
             Design Meets Frontend Engineering
           </span>
         </div>
@@ -265,42 +272,29 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
           {/* Layered Heading Stack */}
           <div className="relative flex flex-col items-center justify-center min-h-[180px] sm:min-h-[220px] w-full">
-            {/* Backdrop elegant solid block text matching the reference image */}
-            <span className="absolute inset-0 flex items-center justify-center font-sans font-black text-[13vw] sm:text-[12vw] md:text-[11vw] lg:text-[130px] tracking-[0.05em] uppercase text-[#1c1c1b]/5 select-none pointer-events-none leading-none">
-              <VariableProximity
-                label="PORTFOLIO"
-                fromFontVariationSettings="'wght' 400"
-                toFontVariationSettings="'wght' 900"
-                fromColor="rgba(28, 28, 27, 0.05)"
-                toColor="rgba(28, 28, 27, 0.05)"
-                containerRef={containerRef}
-                radius={220}
-                falloff="gaussian"
-                className="font-sans font-black text-[13vw] sm:text-[12vw] md:text-[11vw] lg:text-[130px] tracking-[0.05em] uppercase text-[#1c1c1b]/5 leading-none"
-              />
-            </span>
-
-            {/* Foreground: Giant Organic Hand-Painted/Cursive/Ink Brush "Portfolio" Text with underline */}
+            {/* Foreground: Giant Organic Hand-Painted/Cursive/Ink Brush "Zaid Saifi" Text with underline */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, rotate: -2 }}
               animate={{ opacity: 1, scale: 1, rotate: -1.5 }}
               transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 flex flex-col items-center justify-center select-none"
             >
-              <h1 className="font-magilio text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#1c1c1b] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-light cursor-pointer">
+              <h1 className="font-geraldine text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#20321e] [text-shadow:0_0_24px_rgba(250,246,238,0.8)] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-normal cursor-pointer">
                 <VariableProximity
                   label="Zaid Saifi"
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 800"
+                  fromFontVariationSettings="'wght' 400"
+                  toFontVariationSettings="'wght' 400"
+                  fromColor="#20321e"
+                  toColor="#20321e"
                   containerRef={containerRef}
                   radius={180}
                   falloff="gaussian"
-                  className="font-magilio text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-light"
+                  className="font-geraldine text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-normal"
                 />
               </h1>
               
               {/* Hand-drawn ink/brush stroke underline matching the reference image */}
-              <div className="w-56 sm:w-72 md:w-80 mt-1 opacity-80 text-[#1c1c1b] flex justify-center">
+              <div className="w-56 sm:w-72 md:w-80 mt-1 opacity-80 text-[#20321e] drop-shadow-[0_0_12px_rgba(250,246,238,0.8)] flex justify-center">
                 <svg viewBox="0 0 400 20" className="w-full h-auto fill-current" preserveAspectRatio="none">
                   {/* Organic distressed brush stroke underline */}
                   <path d="M10,12 C80,14 160,11 240,9 C300,7.5 360,10 390,11.5 C340,13 280,14 220,13.5 C150,13 80,16 10,12 Z" />

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ArrowUpRight, Grid, Layout, Tag } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Project } from '../types';
 import { PROJECTS } from '../data';
 import VariableProximity from './VariableProximity';
@@ -23,6 +23,15 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const headingContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"]
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
 
   const filters = ['All', 'UI/UX', 'Web App', 'Branding', 'E-Commerce', 'Data Vis'];
 
@@ -59,11 +68,11 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   };
 
   return (
-    <section id="work" className="relative py-28 px-6 md:px-12 bg-transparent overflow-hidden">
+    <section ref={sectionRef} id="work" className="relative py-28 px-6 md:px-12 bg-transparent overflow-hidden">
       {/* Background Notebook Architectural Draft Grid Lines */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.03)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <motion.div style={{ scale, y }} className="relative z-10 max-w-7xl mx-auto transform-gpu">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -246,7 +255,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 }

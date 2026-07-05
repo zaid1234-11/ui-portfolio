@@ -248,6 +248,13 @@ export default function About() {
     offset: ['start end', 'end start'],
   });
 
+  const { scrollYProgress: zoomProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'start start'],
+  });
+  const sectionScale = useTransform(zoomProgress, [0, 1], [1.15, 1]);
+  const sectionY = useTransform(zoomProgress, [0, 1], [60, 0]);
+
   // Polaroid frame-level transitions: smooth scaling up as it enters viewport, and rolling tilt!
   const polaroidY = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const polaroidScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.05, 0.9]);
@@ -285,7 +292,7 @@ export default function About() {
       {/* Background Grids */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10">
+      <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 transform-gpu origin-top">
         
         {/* Overhaul Core Grid: Collage and Typo details */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-28">
@@ -495,7 +502,7 @@ export default function About() {
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }
