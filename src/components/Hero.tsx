@@ -261,37 +261,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           style={text3DStyle}
           className="select-none cursor-default transition-transform duration-300 transform-gpu relative w-full max-w-4xl"
         >
-          {/* Subheader Title */}
-          <h2 className="font-sans text-[11px] sm:text-xs text-[#8A9A86] tracking-[0.35em] uppercase mb-4 font-normal">
-            <VariableProximity
-              label="ZAID"
-              fromFontVariationSettings="'wght' 300"
-              toFontVariationSettings="'wght' 700"
-              containerRef={containerRef}
-              radius={80}
-              falloff="gaussian"
-            />{' '}
-            <span className="font-syne font-black text-[#1c1c1b]">
-              <VariableProximity
-                label="SAIFI"
-                fromFontVariationSettings="'wght' 400"
-                toFontVariationSettings="'wght' 900"
-                containerRef={containerRef}
-                radius={80}
-                falloff="gaussian"
-              />
-            </span>
-            <span className="text-[#1c1c1b]/40">
-              <VariableProximity
-                label="'s"
-                fromFontVariationSettings="'wght' 300"
-                toFontVariationSettings="'wght' 700"
-                containerRef={containerRef}
-                radius={80}
-                falloff="gaussian"
-              />
-            </span>
-          </h2>
+
 
           {/* Layered Heading Stack */}
           <div className="relative flex flex-col items-center justify-center min-h-[180px] sm:min-h-[220px] w-full">
