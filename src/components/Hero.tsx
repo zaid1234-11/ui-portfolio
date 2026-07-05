@@ -130,7 +130,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
       </motion.div>
 
       {/* Full-screen Hover Mask Reveal Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-90">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
         <HoverMaskReveal 
           imageBase={{ src: '/front.webp', positionX: '50%', positionY: '50%' }} 
           imageHover={{ src: '/back.webp', positionX: '50%', positionY: '50%' }} 
@@ -139,7 +139,8 @@ export default function Hero({ onExploreClick }: HeroProps) {
           splatRadius={0.08}
           circleBoost={0.6}
           parallax={true}
-          parallaxAmount={15}
+          parallaxAmount={10}
+          pressureIterations={5}
         />
       </div>
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Sparkles, Menu, X, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
 interface HeaderProps {
   activeSection: string;
@@ -9,196 +9,149 @@ interface HeaderProps {
 
 export default function Header({ activeSection, setActiveSection, onNavigateToConnect }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState('');
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
+  const { scrollY } = useScroll();
 
-    // Live clock in UTC
-    const updateTime = () => {
-      const now = new Date();
-      const hours = String(now.getUTCHours()).padStart(2, '0');
-      const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-      const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-      setCurrentTime(`${hours}:${minutes}:${seconds} UTC`);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50);
+  });
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearInterval(interval);
-    };
-  }, []);
-
-  const menuItems = [
-    { id: 'work', label: 'Work' },
-    { id: 'process', label: 'Process' },
-    { id: 'about', label: 'About' },
-    { id: 'connect', label: 'Connect' },
+  const navItems = [
+    { name: 'Home', id: 'hero' },
+    { name: 'Work', id: 'work' },
+    { name: 'Process', id: 'process' },
+    { name: 'About', id: 'about' },
   ];
 
   const handleNavClick = (id: string) => {
+    // setActiveSection here triggers App.tsx's handleSetActiveSection
+    // which handles clearing the case study and scrolling to the right place.
     setActiveSection(id);
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   };
 
   return (
     <>
-      {/* SVG Filter for Liquid Glass Navbar */}
-      <svg width="0" height="0" style={{ position: 'absolute' }}>
-        <defs>
-          <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
-            <feTurbulence 
-              type="fractalNoise" 
-              baseFrequency="0.02 0.02"
-              numOctaves={2} 
-              seed={92} 
-              result="noise" 
-            />
-            <feGaussianBlur 
-              in="noise" 
-              stdDeviation="2" 
-              result="blurred" 
-            />
-            <feDisplacementMap 
-              in="SourceGraphic" 
-              in2="blurred" 
-              scale="200"
-              xChannelSelector="R" 
-              yChannelSelector="G" 
-            />
-          </filter>
-        </defs>
+      {/* SVG Filter for Liquidmorphism */}
+      <svg width="0" height="0" className="absolute hidden">
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="
+            1 0 0 0 0  
+            0 1 0 0 0  
+            0 0 1 0 0  
+            0 0 0 20 -8" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
       </svg>
 
-      <header
-        id="main-header"
-        className={`fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2.5rem)] max-w-7xl z-50 transition-all duration-500 rounded-2xl ${
-          isScrolled 
-            ? 'liquid-glass-nav py-3' 
-            : 'bg-transparent border border-transparent py-5'
-        }`}
-      >
-      <div className="w-full px-6 md:px-10 flex items-center justify-between">
-        {/* Logo (Hand-crafted calligraphy-serif hybrid) */}
-        <button
-          id="logo-btn"
-          onClick={() => handleNavClick('hero')}
-          className="group flex items-center gap-2.5 text-left focus:outline-none"
+      <header className="fixed top-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+        <motion.div 
+          className={`pointer-events-auto flex items-center justify-between p-1.5 rounded-full transition-all duration-500 ease-out border shadow-xl backdrop-blur-md w-full max-w-4xl transform-gpu
+            ${isScrolled 
+              ? 'bg-white/80 border-stone-200/50 shadow-black/5' 
+              : 'bg-[#1c1c1b]/90 border-[#B8925A]/20 shadow-black/20'}`}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
         >
-          <div className="relative w-8 h-8 rounded-full border border-[#B8925A]/45 flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:border-[#B8925A] bg-[#1c1c1b]">
-            <span className="font-display italic text-sm font-semibold text-[#FAF6EE]">a.</span>
-          </div>
-          <div className="flex flex-col justify-start leading-none">
-            <span className="font-display font-bold tracking-widest text-xs text-[#1c1c1b] dark-text-swap group-hover:text-[#B8925A] transition-colors uppercase">
-              ARTEFACT
-            </span>
-            <span className="font-mono text-[8px] tracking-widest text-[#B8925A] italic">
-              the journal
-            </span>
-          </div>
-        </button>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              id={`nav-${item.id}`}
-              onClick={() => handleNavClick(item.id)}
-              className={`relative py-1 text-xs tracking-widest uppercase font-medium focus:outline-none transition-colors duration-300 ${
-                activeSection === item.id 
-                  ? 'text-[#1c1c1b] font-semibold' 
-                  : 'text-[#4E4842]/60 hover:text-[#1c1c1b]'
-              }`}
-              style={{
-                color: isScrolled ? '#FAF6EE' : undefined
-              }}
+          
+          {/* Logo */}
+          <button 
+            onClick={() => handleNavClick('hero')}
+            className="flex items-center gap-2 text-left focus:outline-none relative z-20 pl-2 group"
+          >
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#FAF6EE]'}`}>
+              <span className={`font-display italic text-sm font-semibold ${isScrolled ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]'}`}>a.</span>
+            </div>
+            <div className="flex flex-col justify-start leading-none">
+              <span className={`font-display font-bold tracking-widest text-xs uppercase transition-colors duration-300 ${isScrolled ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
+              <span className="font-mono text-[8px] tracking-widest text-[#B8925A] italic">the journal</span>
+            </div>
+          </button>
+          
+          {/* Nav Container */}
+          <div 
+            className="hidden md:flex relative px-2"
+            onMouseLeave={() => setHoveredSection(null)}
+          >
+            {/* Liquid Background Layer (Goo Filter applied) */}
+            <div 
+              className="absolute inset-0 flex items-center gap-1 px-2 pointer-events-none z-0" 
+              style={{ filter: 'url(#goo)' }}
             >
-              {item.label}
-              {activeSection === item.id && (
-                <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#B8925A] rounded-full"></span>
-              )}
-            </button>
-          ))}
-        </nav>
+              {navItems.map((item) => (
+                <div key={`bg-${item.id}`} className="relative px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-transparent select-none">
+                  {item.name}
+                  
+                  {/* Active Dot Background */}
+                  {activeSection === item.id && (
+                    <motion.div
+                      layoutId="navbar-active"
+                      className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
 
-        {/* Right side Metadata & Action Button */}
-        <div className="hidden md:flex items-center gap-6">
-          <div className="font-mono text-[10px] text-[#B8925A] tracking-widest bg-[#1c1c1b] border border-[#B8925A]/20 px-3.5 py-1.5 rounded-full">
-            {currentTime}
+                  {/* Hover Pill Background */}
+                  {hoveredSection === item.id && (
+                    <motion.div
+                      layoutId="navbar-hover"
+                      className={`absolute inset-0 rounded-full ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Foreground Text Layer */}
+            <nav className="flex items-center gap-1 relative z-10">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                const isHovered = hoveredSection === item.id;
+                
+                let textColor = '';
+                if (isScrolled) {
+                  // Light theme
+                  textColor = isHovered ? 'text-white' : (isActive ? 'text-[#1c1c1b] font-bold' : 'text-stone-500 hover:text-[#1c1c1b]');
+                } else {
+                  // Dark theme
+                  textColor = isHovered ? 'text-[#1c1c1b] font-bold' : (isActive ? 'text-[#FAF6EE] font-bold' : 'text-stone-400 hover:text-[#FAF6EE]');
+                }
+                
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    onMouseEnter={() => setHoveredSection(item.id)}
+                    className={`relative px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 focus:outline-none rounded-full ${textColor}`}
+                  >
+                    {item.name}
+                  </button>
+                );
+              })}
+            </nav>
           </div>
 
-          <button
-            id="hire-me-btn"
+          {/* CTA Button */}
+          <button 
             onClick={onNavigateToConnect}
-            className="relative flex items-center gap-1.5 bg-[#1c1c1b] text-[#FAF6EE] border border-[#B8925A]/60 text-xs tracking-widest uppercase font-semibold px-5 py-2.5 rounded-full hover:bg-[#FAF6EE] hover:text-[#1c1c1b] hover:border-[#1c1c1b] transition-all duration-300 active:scale-95 shadow-md cursor-pointer"
+            className={`hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300 group focus:outline-none relative z-20
+            ${isScrolled 
+              ? 'bg-[#1c1c1b] text-[#FAF6EE] hover:bg-[#B8925A]' 
+              : 'bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE]'}`}
           >
-            Hire Me
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span className="font-semibold">Hire Me</span>
           </button>
-        </div>
 
-        {/* Mobile menu Toggle */}
-        <div className="flex items-center gap-3 md:hidden">
-          <div className="font-mono text-[10px] text-[#B8925A] tracking-widest bg-[#1c1c1b] border border-[#B8925A]/15 px-2.5 py-1 rounded-full">
-            {currentTime ? currentTime.split(' ')[0] : ''}
+          {/* Mobile Nav Toggle fallback */}
+          <div className="md:hidden pr-4 font-mono text-[10px] uppercase tracking-widest text-[#B8925A] relative z-20">
+            Menu
           </div>
-          <button
-            id="mobile-menu-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#4E4842] hover:text-[#1c1c1b] transition-colors duration-300 rounded-full border border-[#B8925A]/20 bg-[#FAF6EE]/50 focus:outline-none"
-            style={{
-              color: isScrolled ? '#FAF6EE' : undefined,
-              borderColor: isScrolled ? 'rgba(184, 146, 90, 0.25)' : undefined,
-              backgroundColor: isScrolled ? '#1c1c1b' : undefined,
-            }}
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-[#1c1c1b] border border-[#B8925A]/20 py-8 px-6 md:hidden z-40 animate-fade-in rounded-2xl shadow-2xl">
-          <div className="flex flex-col gap-6 text-center">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                id={`mobile-nav-${item.id}`}
-                onClick={() => handleNavClick(item.id)}
-                className={`text-sm tracking-widest uppercase font-medium py-2 border-b border-[#FAF6EE]/10 ${
-                  activeSection === item.id ? 'text-[#B8925A] font-semibold' : 'text-[#FAF6EE]/70'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <button
-              id="mobile-hire-me-btn"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateToConnect();
-              }}
-              className="bg-[#FAF6EE] text-[#1c1c1b] text-xs tracking-wider uppercase font-semibold py-3.5 rounded-full mt-2 flex items-center justify-center gap-2 hover:bg-[#B8925A] hover:text-white transition-colors duration-300"
-            >
-              Hire Me
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-    </header>
+        </motion.div>
+      </header>
     </>
   );
 }

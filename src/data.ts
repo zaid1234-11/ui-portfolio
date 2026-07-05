@@ -5,7 +5,7 @@ export const PROJECTS: Project[] = [
     id: 'fintrac-ai',
     title: 'FinTrac AI',
     description: 'AI-Powered Financial Behavioral Coaching Platform addressing the high churn of rigid budgeting systems.',
-    image: '/fintrac project front.png',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBB6kz7fbnn0D5rfaZO7cLZAgCUcgM7geBx3wLgkwPfuqHgEft1H9_08DSSZWpGEEvDwRno1U4xhKkE_J7NzWrVYcIdd3M5PHxXHwn-tFOyEBBzLDmaN-AAgy9EbgGs2AoOsWTrmqXXDva-8_RGQRVzqD0Krr0P1_DO2PcIJ1zdK7y6hLsAwshWf3DRLexvTMUWlzN_ZVmD0hHURgxURrW-ScPBkF-hcjdVZvxjHqm8enxEJj-BfUnn',
     category: 'UI/UX',
     tags: ['Fintech', 'POMDP RL', 'Behavioral Coaching'],
     role: 'Lead Product Designer & UI Engineer',
@@ -21,7 +21,7 @@ export const PROJECTS: Project[] = [
       { label: 'Lighthouse Accessibility', value: '98/100' }
     ],
     galleryImages: [
-      '/fintrac project front.png'
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBB6kz7fbnn0D5rfaZO7cLZAgCUcgM7geBx3wLgkwPfuqHgEft1H9_08DSSZWpGEEvDwRno1U4xhKkE_J7NzWrVYcIdd3M5PHxXHwn-tFOyEBBzLDmaN-AAgy9EbgGs2AoOsWTrmqXXDva-8_RGQRVzqD0Krr0P1_DO2PcIJ1zdK7y6hLsAwshWf3DRLexvTMUWlzN_ZVmD0hHURgxURrW-ScPBkF-hcjdVZvxjHqm8enxEJj-BfUnn'
     ],
     nextProjectId: 'personal-portfolio',
     liveUrl: 'https://fintrac-ai-landing.vercel.app/',
@@ -31,7 +31,7 @@ export const PROJECTS: Project[] = [
     id: 'personal-portfolio',
     title: 'Personal Portfolio',
     description: 'Cinematic developer portfolio with custom staggered motion reveals and premium dark micro-animations.',
-    image: '/personal portfolio.png',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAATjfco-QabRylfVMQYc-wjC0BuRJT7DE0I3FsL9BQGl0Cihv3rBzx21tSeajGlsOgcwr7mRvCESLa-6cDl5sknsGiK-tXsCinmpowbT3ZulrVuMEKIxmSoc2gFqbTGKOG_CRtcklm4l8ADJUiHbZPub--wVE3Azt0u9zd5AWu5aOXuTXeejsCJDrGYil_tngN_JoX8VgxbrwOOteU8WYoJJ3GM-hGsUpb0JY95OE-MfA-9OOS5Um3',
     category: 'Branding',
     tags: ['Motion Design', 'SEO Optimization', 'Interactive Portfolio'],
     role: 'Creative Director & Designer',
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
       { label: 'Lighthouse SEO', value: '100/100' }
     ],
     galleryImages: [
-      '/personal portfolio.png'
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuAATjfco-QabRylfVMQYc-wjC0BuRJT7DE0I3FsL9BQGl0Cihv3rBzx21tSeajGlsOgcwr7mRvCESLa-6cDl5sknsGiK-tXsCinmpowbT3ZulrVuMEKIxmSoc2gFqbTGKOG_CRtcklm4l8ADJUiHbZPub--wVE3Azt0u9zd5AWu5aOXuTXeejsCJDrGYil_tngN_JoX8VgxbrwOOteU8WYoJJ3GM-hGsUpb0JY95OE-MfA-9OOS5Um3'
     ],
     nextProjectId: 'peach-and-paper',
     liveUrl: 'https://zaidsportfolio.in',

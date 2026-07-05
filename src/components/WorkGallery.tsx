@@ -74,7 +74,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.03)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
       <motion.div style={{ scale, y }} className="relative z-10 max-w-7xl mx-auto transform-gpu">
-        
+
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div ref={headingContainerRef}>
@@ -109,7 +109,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
             </h2>
           </div>
           <div className="max-w-md text-sm text-[#4E4842] leading-relaxed font-light italic min-h-[4rem]">
-            <TextType 
+            <TextType
               as="p"
               text="Each folder represents an elite digital case study: physical paper material weights containing highly tactile wireframes and responsive telemetry metrics."
               typingSpeed={40}
@@ -134,11 +134,10 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                 setActiveFilter(filter);
                 setHoveredIndex(null);
               }}
-              className={`text-xs font-mono tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-300 border focus:outline-none cursor-pointer ${
-                activeFilter === filter
+              className={`text-xs font-mono tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-300 border focus:outline-none cursor-pointer ${activeFilter === filter
                   ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#1c1c1b] font-semibold shadow-md'
                   : 'bg-transparent text-[#4E4842]/70 border-[#B8925A]/25 hover:border-[#1c1c1b] hover:text-[#1c1c1b]'
-              }`}
+                }`}
             >
               {filter}
             </button>
@@ -178,7 +177,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   >
                     {/* The physical-like paper folder body */}
                     <div className="folder-body card-swap-card">
-                      
+
                       {/* Folder tab at the top-right corner */}
                       <div
                         className="folder-tab"
@@ -191,18 +190,18 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                       {/* Main inside face plate design */}
                       <div className="folder-mark">
                         <div className="flex flex-col h-full justify-between">
-                          
+
                           {/* Folder Top Plate content */}
                           <div>
                             <div className="flex justify-between items-start font-mono text-[9px] tracking-widest opacity-45 uppercase font-bold mb-3">
                               <span>{meta.plate}</span>
                               <span>{project.timeline}</span>
                             </div>
-                            
-                            <h3 className="font-display text-lg font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3 break-words">
+
+                            <h3 className="font-display text-xl md:text-2xl font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3">
                               {project.title}
                             </h3>
-                            
+
                             <p className="text-[11px] leading-relaxed opacity-75 font-serif italic mb-4 line-clamp-3">
                               {project.description}
                             </p>
@@ -214,7 +213,10 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                               src={project.image}
                               alt={project.title}
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out opacity-100"
+                              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out ${project.id === 'the-adrocket'
+                                  ? 'opacity-90'
+                                  : 'grayscale contrast-[1.05] opacity-75 mix-blend-multiply'
+                                }`}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                           </div>
