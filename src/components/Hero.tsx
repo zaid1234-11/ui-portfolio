@@ -344,7 +344,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         <div className="max-w-xl mx-auto mt-6 text-sm md:text-base text-[#4E4842] leading-relaxed font-light min-h-[4rem]">
           <TextType 
             as="p"
-            text="Sculpting high-contrast layouts, raw sketch architectures, and tactile grid presentations for brands seeking unforgettable digital prestige."
+            text="Designing thoughtful digital experiences through user-centered design, interactive storytelling, modern frontend engineering, and AI-powered product innovation."
             typingSpeed={40}
             loop={false}
             showCursor={true}
