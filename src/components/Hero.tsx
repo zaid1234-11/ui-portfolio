@@ -131,13 +131,14 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       {/* Full-screen Hover Mask Reveal Background */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
-        <HoverMaskReveal 
-          imageBase={{ src: '/front.webp', positionX: '50%', positionY: '50%' }} 
-          imageHover={{ src: '/back.webp', positionX: '50%', positionY: '50%' }} 
+        <HoverMaskReveal
+          imageBase={{ src: '/front.webp', positionX: '50%', positionY: '50%' }}
+          imageHover={{ src: '/back.webp', positionX: '50%', positionY: '50%' }}
           radius={150}
           blur={0.5}
           splatRadius={0.08}
           circleBoost={0.6}
+          parallax={false}
           pressureIterations={5}
         />
       </div>
@@ -291,7 +292,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                   className="font-geraldine text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center font-normal"
                 />
               </h1>
-              
+
               {/* Hand-drawn ink/brush stroke underline matching the reference image */}
               <div className="w-56 sm:w-72 md:w-80 mt-1 opacity-80 text-[#20321e] drop-shadow-[0_0_12px_rgba(250,246,238,0.8)] flex justify-center">
                 <svg viewBox="0 0 400 20" className="w-full h-auto fill-current" preserveAspectRatio="none">
@@ -305,7 +306,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
         {/* Minimal Subtext block */}
         <div className="max-w-xl mx-auto mt-6 text-sm md:text-base text-[#4E4842] leading-relaxed font-light min-h-[4rem]">
-          <TextType 
+          <TextType
             as="p"
             text="Designing thoughtful digital experiences through user-centered design, interactive storytelling, modern frontend engineering, and AI-powered product innovation."
             typingSpeed={40}

@@ -27,79 +27,94 @@ export interface HoverMaskRevealProps {
  * @framerIntrinsicWidth 300
  * @framerIntrinsicHeight 400
  * @framerDisableUnlink
- */export default function HoverMaskReveal(props: HoverMaskRevealProps) {const{imageBase,imageHover,borderRadius=0,radius=100,blur=.5,circleBoost=.6,texture=.7,timeSpeed=5,splatRadius=.08,velocityDissipation=.99,shrinkTimeSeconds=2.4,curl=30,pressureIterations=25,parallax=true,parallaxAmount=100,parallaxSmoothing=0,preview=true}=props;// Check if base image is missing
-const hasBaseImage=imageBase&&imageBase.src;// Show ComponentMessage if no base image is provided
-if(!hasBaseImage){return <div style={{height:"100%",width:"100%",position:"relative",borderRadius:borderRadius}}><div style={{height:"100%",width:"100%",position:"relative",display:"flex",justifyContent:"center",alignItems:"center"}}>Add a base image to create stunning liquid mask effects with gooey animations</div></div>;}const canvasRef=useRef<HTMLCanvasElement>(null);const imgRef=useRef<HTMLImageElement>(null);const containerRef=useRef<HTMLDivElement>(null);const uniformsRef=useRef<any>(null);const zoomProbeRef=useRef<HTMLDivElement>(null);// Track last known size/zoom for Canvas resize detection
-const lastSizeRef=useRef({width:0,height:0,zoom:0});// Hide blob while Canvas resize is in progress; show again after debounced remount
-const hideBlobForResizeRef=useRef(false);// When this changes in Canvas, the WebGL effect fully remounts (clean init at new size = centered blob, correct aspect)
-const[canvasRemountKey,setCanvasRemountKey]=useState(0);// Detect mobile: disable effect and show base image only
-const[isMobile,setIsMobile]=useState(false);useEffect(()=>{const checkMobile=()=>{const coarse=typeof window!=="undefined"&&window.matchMedia?window.matchMedia("(pointer: coarse)").matches:false;const small=typeof window!=="undefined"&&window.matchMedia?window.matchMedia("(max-width: 768px)").matches:false;setIsMobile(coarse||small);};checkMobile();window.addEventListener("resize",checkMobile);return()=>window.removeEventListener("resize",checkMobile);},[]);// Debounced prop values to prevent excessive re-renders
-const[debouncedProps,setDebouncedProps]=useState({radius,blur,circleBoost,texture,timeSpeed,splatRadius,velocityDissipation,shrinkTimeSeconds,curl,pressureIterations,preview,parallax,parallaxAmount,parallaxSmoothing});// Debounce prop changes to improve performance
-useEffect(()=>{const timeoutId=setTimeout(()=>{setDebouncedProps({radius,blur,circleBoost,texture,timeSpeed,splatRadius,velocityDissipation,shrinkTimeSeconds,curl,pressureIterations,preview,parallax,parallaxAmount,parallaxSmoothing});},100)// 100ms debounce
-;return()=>clearTimeout(timeoutId);},[radius,blur,circleBoost,texture,timeSpeed,splatRadius,velocityDissipation,shrinkTimeSeconds,curl,pressureIterations,preview,parallax,parallaxAmount,parallaxSmoothing]);// Value mapping functions to convert normalized property values to internal shader values
-const mapRadius=useCallback(normalizedRadius=>{// Map 10-1000px to 10-200px (current internal range)
-return 10+(normalizedRadius-10)*(190/990);},[]);const mapBlur=useCallback(normalizedBlur=>{// Map 0-1 to 0.2-3.0 (current internal range)
-return .2+normalizedBlur*2.8;},[]);const mapCircleBoost=useCallback(normalizedCircleBoost=>{// Map 0-1 to 0.5-4.0 (current internal range)
-return .5+normalizedCircleBoost*3.5;},[]);const mapTimeSpeed=useCallback(normalizedTimeSpeed=>{// Map 0-10 to 0.0-1.0 for true linear mapping from static to fast
-return normalizedTimeSpeed*.1;},[]);// Single texture mapping that controls the overall graininess/texture of the effect
-const mapTexture=useCallback(normalizedTexture=>{// Map 0-1 texture control to appropriate noise parameters
+ */export default function HoverMaskReveal(props: HoverMaskRevealProps) {
+  const { imageBase, imageHover, borderRadius = 0, radius = 100, blur = .5, circleBoost = .6, texture = .7, timeSpeed = 5, splatRadius = .08, velocityDissipation = .99, shrinkTimeSeconds = 2.4, curl = 30, pressureIterations = 25, parallax = true, parallaxAmount = 100, parallaxSmoothing = 0, preview = true } = props;// Check if base image is missing
+  const hasBaseImage = imageBase && imageBase.src;// Show ComponentMessage if no base image is provided
+  if (!hasBaseImage) { return <div style={{ height: "100%", width: "100%", position: "relative", borderRadius: borderRadius }}><div style={{ height: "100%", width: "100%", position: "relative", display: "flex", justifyContent: "center", alignItems: "center" }}>Add a base image to create stunning liquid mask effects with gooey animations</div></div>; } const canvasRef = useRef<HTMLCanvasElement>(null); const imgRef = useRef<HTMLImageElement>(null); const containerRef = useRef<HTMLDivElement>(null); const uniformsRef = useRef<any>(null); const zoomProbeRef = useRef<HTMLDivElement>(null);// Track last known size/zoom for Canvas resize detection
+  const lastSizeRef = useRef({ width: 0, height: 0, zoom: 0 });// Hide blob while Canvas resize is in progress; show again after debounced remount
+  const hideBlobForResizeRef = useRef(false);// When this changes in Canvas, the WebGL effect fully remounts (clean init at new size = centered blob, correct aspect)
+  const [canvasRemountKey, setCanvasRemountKey] = useState(0);// Detect mobile: disable effect and show base image only
+  const [isMobile, setIsMobile] = useState(false); useEffect(() => { const checkMobile = () => { const coarse = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(pointer: coarse)").matches : false; const small = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(max-width: 768px)").matches : false; setIsMobile(coarse || small); }; checkMobile(); window.addEventListener("resize", checkMobile); return () => window.removeEventListener("resize", checkMobile); }, []);// Debounced prop values to prevent excessive re-renders
+  const [debouncedProps, setDebouncedProps] = useState({ radius, blur, circleBoost, texture, timeSpeed, splatRadius, velocityDissipation, shrinkTimeSeconds, curl, pressureIterations, preview, parallax, parallaxAmount, parallaxSmoothing });// Debounce prop changes to improve performance
+  useEffect(() => {
+    const timeoutId = setTimeout(() => { setDebouncedProps({ radius, blur, circleBoost, texture, timeSpeed, splatRadius, velocityDissipation, shrinkTimeSeconds, curl, pressureIterations, preview, parallax, parallaxAmount, parallaxSmoothing }); }, 100)// 100ms debounce
+    ; return () => clearTimeout(timeoutId);
+  }, [radius, blur, circleBoost, texture, timeSpeed, splatRadius, velocityDissipation, shrinkTimeSeconds, curl, pressureIterations, preview, parallax, parallaxAmount, parallaxSmoothing]);// Value mapping functions to convert normalized property values to internal shader values
+  const mapRadius = useCallback(normalizedRadius => {// Map 10-1000px to 10-200px (current internal range)
+    return 10 + (normalizedRadius - 10) * (190 / 990);
+  }, []); const mapBlur = useCallback(normalizedBlur => {// Map 0-1 to 0.2-3.0 (current internal range)
+    return .2 + normalizedBlur * 2.8;
+  }, []); const mapCircleBoost = useCallback(normalizedCircleBoost => {// Map 0-1 to 0.5-4.0 (current internal range)
+    return .5 + normalizedCircleBoost * 3.5;
+  }, []); const mapTimeSpeed = useCallback(normalizedTimeSpeed => {// Map 0-10 to 0.0-1.0 for true linear mapping from static to fast
+    return normalizedTimeSpeed * .1;
+  }, []);// Single texture mapping that controls the overall graininess/texture of the effect
+  const mapTexture = useCallback(normalizedTexture => {// Map 0-1 texture control to appropriate noise parameters
 
-// 0 = smooth/minimal texture, 1 = very textured/grainy
-const freq=2+normalizedTexture*12// frequency range 2-14 (more dramatic)
-;const strength=normalizedTexture*3// strength range 0-3 (stronger effect)
-;const size=1-normalizedTexture*.7// size range 1.0-0.3 (smaller = finer grain at high texture)
-;return{freq,strength,size};},[]);useEffect(()=>{if(isMobile)return;const canvas=canvasRef.current;const imgEl=imgRef.current;const container=containerRef.current;if(!canvas||!imgEl||!container)return;// Show blob when effect runs (initial mount or after debounced remount)
-if(false){hideBlobForResizeRef.current=false;}// Animation state variable
-let isAnimating=false;// Scene setup
-const scene=new Scene;const perspective=800;const renderer=new WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));// Transparent clear so the back image (DOM) shows through; avoids darkening
-renderer.setClearColor(0,0);// Use clientWidth/clientHeight for more reliable initial sizing
-const initialWidth=Math.max(container.clientWidth,300)// Fallback minimum
-;const initialHeight=Math.max(container.clientHeight,200)// Fallback minimum
-;renderer.setSize(initialWidth,initialHeight);const computeFov=()=>{// Use clientHeight for consistent field of view calculation
-return 180*(2*Math.atan(container.clientHeight/2/perspective))/Math.PI;};const camera=new PerspectiveCamera(computeFov(),initialWidth/initialHeight,1,5e3);camera.position.set(0,0,perspective);// Load front image texture for the canvas (revealed by liquid mask, no parallax)
-const loader=new TextureLoader;const frontSrc=imageHover?.src||imageBase?.src||"/random-assets/blue-profile-image.png";const frontTexture=loader.load(frontSrc,()=>{// Update aspect ratio when texture loads
-if(frontTexture.image){const imageAspect=frontTexture.image.width/frontTexture.image.height;uniforms.u_frontImageAspect.value=imageAspect;// Force a re-render to update the effect with new aspect ratio
-if(isAnimating){renderer.render(scene,camera);}}});// Don't set colorSpace so we sample the texture as-is (sRGB passthrough)
-// This avoids gamma issues when outputColorSpace is not set on the renderer
-frontTexture.minFilter=LinearFilter;const textureParams=mapTexture(debouncedProps.texture);// --- Fluid simulation at full aspect ratio (not forced square) ---
-// Blob circularity is achieved by using elliptical splats that compensate for aspect ratio
-const simScale=.5;let simWidth=Math.max(1,Math.floor(initialWidth*simScale));let simHeight=Math.max(1,Math.floor(initialHeight*simScale));const fboOptions={type:HalfFloatType,minFilter:LinearFilter,magFilter:LinearFilter,format:RGBAFormat,generateMipmaps:false,depthBuffer:false,stencilBuffer:false};const createFluidFBO=(w,h)=>new WebGLRenderTarget(w,h,fboOptions);let velFBO0=createFluidFBO(simWidth,simHeight);let velFBO1=createFluidFBO(simWidth,simHeight);let divFBO=createFluidFBO(simWidth,simHeight);let pressureFBO0=createFluidFBO(simWidth,simHeight);let pressureFBO1=createFluidFBO(simWidth,simHeight);let densityFBO0=createFluidFBO(simWidth,simHeight);let densityFBO1=createFluidFBO(simWidth,simHeight);const disposeFluidFBOs=()=>{velFBO0.dispose();velFBO1.dispose();divFBO.dispose();pressureFBO0.dispose();pressureFBO1.dispose();densityFBO0.dispose();densityFBO1.dispose();};const resizeFluidFBOs=(w,h)=>{const newSimWidth=Math.max(1,Math.floor(w*simScale));const newSimHeight=Math.max(1,Math.floor(h*simScale));if(newSimWidth===simWidth&&newSimHeight===simHeight)return;simWidth=newSimWidth;simHeight=newSimHeight;disposeFluidFBOs();velFBO0=createFluidFBO(simWidth,simHeight);velFBO1=createFluidFBO(simWidth,simHeight);divFBO=createFluidFBO(simWidth,simHeight);pressureFBO0=createFluidFBO(simWidth,simHeight);pressureFBO1=createFluidFBO(simWidth,simHeight);densityFBO0=createFluidFBO(simWidth,simHeight);densityFBO1=createFluidFBO(simWidth,simHeight);};// Orthographic camera for full-screen quad passes (-1 to 1 NDC)
-const orthoCamera=new OrthographicCamera(-1,1,1,-1,0,1);const quadGeometry=new PlaneGeometry(2,2,1,1);// Mouse velocity for splat (UV per frame)
+    // 0 = smooth/minimal texture, 1 = very textured/grainy
+    const freq = 2 + normalizedTexture * 12// frequency range 2-14 (more dramatic)
+      ; const strength = normalizedTexture * 3// strength range 0-3 (stronger effect)
+      ; const size = 1 - normalizedTexture * .7// size range 1.0-0.3 (smaller = finer grain at high texture)
+      ; return { freq, strength, size };
+  }, []); useEffect(() => {
+    if (isMobile) return; const canvas = canvasRef.current; const imgEl = imgRef.current; const container = containerRef.current; if (!canvas || !imgEl || !container) return;// Show blob when effect runs (initial mount or after debounced remount)
+    if (false) { hideBlobForResizeRef.current = false; }// Animation state variable
+    let isAnimating = false;// Scene setup
+    const scene = new Scene; const perspective = 800; const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));// Transparent clear so the back image (DOM) shows through; avoids darkening
+    renderer.setClearColor(0, 0);// Use clientWidth/clientHeight for more reliable initial sizing
+    const initialWidth = Math.max(container.clientWidth, 300)// Fallback minimum
+      ; const initialHeight = Math.max(container.clientHeight, 200)// Fallback minimum
+      ; renderer.setSize(initialWidth, initialHeight); const computeFov = () => {// Use clientHeight for consistent field of view calculation
+        return 180 * (2 * Math.atan(container.clientHeight / 2 / perspective)) / Math.PI;
+      }; const camera = new PerspectiveCamera(computeFov(), initialWidth / initialHeight, 1, 5e3); camera.position.set(0, 0, perspective);// Load front image texture for the canvas (revealed by liquid mask, no parallax)
+    const loader = new TextureLoader; const frontSrc = imageHover?.src || imageBase?.src || "/random-assets/blue-profile-image.png"; const frontTexture = loader.load(frontSrc, () => {// Update aspect ratio when texture loads
+      if (frontTexture.image) {
+        const imageAspect = frontTexture.image.width / frontTexture.image.height; uniforms.u_frontImageAspect.value = imageAspect;// Force a re-render to update the effect with new aspect ratio
+        if (isAnimating) { renderer.render(scene, camera); }
+      }
+    });// Don't set colorSpace so we sample the texture as-is (sRGB passthrough)
+    // This avoids gamma issues when outputColorSpace is not set on the renderer
+    frontTexture.minFilter = LinearFilter; const textureParams = mapTexture(debouncedProps.texture);// --- Fluid simulation at full aspect ratio (not forced square) ---
+    // Blob circularity is achieved by using elliptical splats that compensate for aspect ratio
+    const simScale = .5; let simWidth = Math.max(1, Math.floor(initialWidth * simScale)); let simHeight = Math.max(1, Math.floor(initialHeight * simScale)); const fboOptions = { type: HalfFloatType, minFilter: LinearFilter, magFilter: LinearFilter, format: RGBAFormat, generateMipmaps: false, depthBuffer: false, stencilBuffer: false }; const createFluidFBO = (w, h) => new WebGLRenderTarget(w, h, fboOptions); let velFBO0 = createFluidFBO(simWidth, simHeight); let velFBO1 = createFluidFBO(simWidth, simHeight); let divFBO = createFluidFBO(simWidth, simHeight); let pressureFBO0 = createFluidFBO(simWidth, simHeight); let pressureFBO1 = createFluidFBO(simWidth, simHeight); let densityFBO0 = createFluidFBO(simWidth, simHeight); let densityFBO1 = createFluidFBO(simWidth, simHeight); const disposeFluidFBOs = () => { velFBO0.dispose(); velFBO1.dispose(); divFBO.dispose(); pressureFBO0.dispose(); pressureFBO1.dispose(); densityFBO0.dispose(); densityFBO1.dispose(); }; const resizeFluidFBOs = (w, h) => { const newSimWidth = Math.max(1, Math.floor(w * simScale)); const newSimHeight = Math.max(1, Math.floor(h * simScale)); if (newSimWidth === simWidth && newSimHeight === simHeight) return; simWidth = newSimWidth; simHeight = newSimHeight; disposeFluidFBOs(); velFBO0 = createFluidFBO(simWidth, simHeight); velFBO1 = createFluidFBO(simWidth, simHeight); divFBO = createFluidFBO(simWidth, simHeight); pressureFBO0 = createFluidFBO(simWidth, simHeight); pressureFBO1 = createFluidFBO(simWidth, simHeight); densityFBO0 = createFluidFBO(simWidth, simHeight); densityFBO1 = createFluidFBO(simWidth, simHeight); };// Orthographic camera for full-screen quad passes (-1 to 1 NDC)
+    const orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1); const quadGeometry = new PlaneGeometry(2, 2, 1, 1);// Mouse velocity for splat (UV per frame)
 
-let lastMouseUV={x:.5,y:.5};const mouseVelocity={x:0,y:0};const uniforms={u_time:{value:0},u_mouse:{value:new Vector2(.5,.5)},u_progress:{value:0},u_planeRes:{value:new Vector2(1,1)},u_radius:{value:mapRadius(debouncedProps.radius)},u_blur:{value:mapBlur(debouncedProps.blur)},u_circleBoost:{value:mapCircleBoost(debouncedProps.circleBoost)},u_noiseFreq:{value:textureParams.freq},u_noiseStrength:{value:textureParams.strength},u_noiseSize:{value:textureParams.size},u_timeSpeed:{value:mapTimeSpeed(debouncedProps.timeSpeed)},u_frontImage:{value:frontTexture},u_frontImageAspect:{value:1},u_containerAspect:{value:1},u_parallaxOffset:{value:new Vector2(0,0)},u_parallaxMax:{value:debouncedProps.parallax?Math.max(0,Math.min(200,debouncedProps.parallaxAmount??0)):0},u_windowSize:{value:new Vector2(window.innerWidth,window.innerHeight)},u_containerOffset:{value:new Vector2(0,0)},u_simResolution:{value:new Vector2(simWidth,simHeight)},u_densityTex:{value:densityFBO0.texture}};uniformsRef.current=uniforms;const vertexShader=`
+    let lastMouseUV = { x: .5, y: .5 }; const targetMouseUV = { x: .5, y: .5 }; const mouseVelocity = { x: 0, y: 0 }; const uniforms = { u_time: { value: 0 }, u_mouse: { value: new Vector2(.5, .5) }, u_progress: { value: 0 }, u_planeRes: { value: new Vector2(1, 1) }, u_radius: { value: mapRadius(debouncedProps.radius) }, u_blur: { value: mapBlur(debouncedProps.blur) }, u_circleBoost: { value: mapCircleBoost(debouncedProps.circleBoost) }, u_noiseFreq: { value: textureParams.freq }, u_noiseStrength: { value: textureParams.strength }, u_noiseSize: { value: textureParams.size }, u_timeSpeed: { value: mapTimeSpeed(debouncedProps.timeSpeed) }, u_frontImage: { value: frontTexture }, u_frontImageAspect: { value: 1 }, u_containerAspect: { value: 1 }, u_parallaxOffset: { value: new Vector2(0, 0) }, u_parallaxMax: { value: debouncedProps.parallax ? Math.max(0, Math.min(200, debouncedProps.parallaxAmount ?? 0)) : 0 }, u_windowSize: { value: new Vector2(window.innerWidth, window.innerHeight) }, u_containerOffset: { value: new Vector2(0, 0) }, u_simResolution: { value: new Vector2(simWidth, simHeight) }, u_densityTex: { value: densityFBO0.texture } }; uniformsRef.current = uniforms; const vertexShader = `
       varying vec2 vUv;
       void main() {
         vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        gl_Position = vec4(position.xy, 0.0, 1.0);
       }
-    `;const vertexShaderQuad=`
+    `; const vertexShaderQuad = `
       varying vec2 vUv;
       void main() {
         vUv = uv;
         gl_Position = vec4(position.xy, 0.0, 1.0);
       }
     `;// --- Fluid pass: Splat (add velocity and density at cursor)
-// Splats are elliptical to compensate for container aspect ratio, making blobs appear circular
-// The FBO has the same aspect ratio as the container. A circular splat in UV space
-// appears as an ellipse in pixel space (stretched along the longer axis).
-// To make a circular blob in PIXEL space, we compress the splat along the longer UV axis.
-const splatFrag=`
+    // Splats are elliptical to compensate for container aspect ratio, making blobs appear circular
+    // The FBO has the same aspect ratio as the container. A circular splat in UV space
+    // appears as an ellipse in pixel space (stretched along the longer axis).
+    // To make a circular blob in PIXEL space, we compress the splat along the longer UV axis.
+    const splatFrag=`
       precision highp float;
       varying vec2 vUv;
       uniform vec2 u_point;
+      uniform vec2 u_prev_point;
       uniform vec2 u_splatColor;
       uniform float u_radius;
       uniform float u_aspectRatio;
       uniform sampler2D u_target;
       void main() {
-        vec2 p = vUv - u_point;
-        // Correct for aspect ratio so blob appears circular in pixel space
-        // aspectRatio = width/height
-        // Wide (aspect > 1): UV-X maps to more pixels, so compress X to compensate
-        // Tall (aspect < 1): UV-Y maps to more pixels, so compress Y to compensate  
-        p.x *= max(u_aspectRatio, 1.0);
-        p.y *= max(1.0 / u_aspectRatio, 1.0);
-        float splat = exp(-dot(p, p) / (u_radius * u_radius));
+        vec2 p = vUv;
+        vec2 scale = vec2(max(u_aspectRatio, 1.0), max(1.0 / u_aspectRatio, 1.0));
+        vec2 pa = (p - u_prev_point) * scale;
+        vec2 ba = (u_point - u_prev_point) * scale;
+        float l2 = dot(ba, ba);
+        float h = l2 == 0.0 ? 0.0 : clamp(dot(pa, ba) / l2, 0.0, 1.0);
+        vec2 d = pa - ba * h;
+        float splat = exp(-dot(d, d) / (u_radius * u_radius));
+        
         vec4 base = texture2D(u_target, vUv);
         base.xy += splat * u_splatColor;
         gl_FragColor = base;
@@ -108,21 +123,26 @@ const splatFrag=`
       precision highp float;
       varying vec2 vUv;
       uniform vec2 u_point;
+      uniform vec2 u_prev_point;
       uniform float u_radius;
       uniform float u_aspectRatio;
       uniform float u_densityAmount;
       uniform sampler2D u_target;
       void main() {
-        vec2 p = vUv - u_point;
-        // Correct for aspect ratio so blob appears circular in pixel space
-        p.x *= max(u_aspectRatio, 1.0);
-        p.y *= max(1.0 / u_aspectRatio, 1.0);
-        float splat = exp(-dot(p, p) / (u_radius * u_radius));
+        vec2 p = vUv;
+        vec2 scale = vec2(max(u_aspectRatio, 1.0), max(1.0 / u_aspectRatio, 1.0));
+        vec2 pa = (p - u_prev_point) * scale;
+        vec2 ba = (u_point - u_prev_point) * scale;
+        float l2 = dot(ba, ba);
+        float h = l2 == 0.0 ? 0.0 : clamp(dot(pa, ba) / l2, 0.0, 1.0);
+        vec2 d = pa - ba * h;
+        float splat = exp(-dot(d, d) / (u_radius * u_radius));
+        
         float base = texture2D(u_target, vUv).r;
         gl_FragColor = vec4(base + splat * u_densityAmount, 0.0, 0.0, 1.0);
       }
     `;// --- Advection (semi-Lagrangian). u_dissipationMultiply fades density each frame (1.0 for velocity).
-const advectFrag=`
+    const advectFrag = `
       precision highp float;
       varying vec2 vUv;
       uniform sampler2D u_velocity;
@@ -136,7 +156,7 @@ const advectFrag=`
         gl_FragColor = texture2D(u_source, pos) * u_dissipationMultiply;
       }
     `;// --- Divergence
-const divergenceFrag=`
+    const divergenceFrag = `
       precision highp float;
       varying vec2 vUv;
       uniform sampler2D u_velocity;
@@ -150,7 +170,7 @@ const divergenceFrag=`
         gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
       }
     `;// --- Pressure (Jacobi)
-const pressureFrag=`
+    const pressureFrag = `
       precision highp float;
       varying vec2 vUv;
 
@@ -167,7 +187,7 @@ uniform sampler2D u_pressure;
         gl_FragColor = vec4(p, 0.0, 0.0, 1.0);
       }
     `;// --- Curl (vorticity confinement) for swirl
-const curlFrag=`
+    const curlFrag = `
       precision highp float;
       varying vec2 vUv;
       uniform sampler2D u_velocity;
@@ -186,7 +206,7 @@ const curlFrag=`
         gl_FragColor = vec4(vel, 0.0, 1.0);
       }
     `;// --- Subtract pressure gradient from velocity
-const gradientFrag=`
+    const gradientFrag = `
       precision highp float;
       varying vec2 vUv;
       uniform sampler2D u_velocity;
@@ -203,7 +223,7 @@ const gradientFrag=`
         gl_FragColor = vec4(vel, 0.0, 1.0);
       }
     `;// Shader that renders the front (revealed) image masked by the fluid density, with parallax on the revealed image
-const fragmentShader=`
+    const fragmentShader = `
       precision highp float;
       varying vec2 vUv;
       uniform float u_time;
@@ -331,9 +351,11 @@ vec4 h = 1.0 - abs(x) - abs(y);
             }
         }
 
-        // Parallax the REVEALED (front) image: move opposite to cursor
+        // Parallax the REVEALED (front) image: move opposite to cursor (add offset so image shifts away from cursor)
+        vec2 inset = u_parallaxMax / u_planeRes;
+        vec2 baseUV = inset + responsiveUV * (1.0 - 2.0 * inset);
         vec2 parallaxUV = u_parallaxOffset / u_planeRes;
-        vec2 sampleUV = responsiveUV + parallaxUV;
+        vec2 sampleUV = baseUV + parallaxUV;
 
         // Sample the front image with parallax and apply the mask
         vec4 frontColor = texture2D(u_frontImage, sampleUV);
@@ -345,71 +367,126 @@ vec4 h = 1.0 - abs(x) - abs(y);
         // produces correct premultiplied result for canvas compositing
         gl_FragColor = vec4(frontColor.rgb, outAlpha);
       }
-    `;const geometry=new PlaneGeometry(1,1,1,1);const material=new ShaderMaterial({uniforms,vertexShader,fragmentShader,transparent:true});const mesh=new Mesh(geometry,material);scene.add(mesh);// --- Fluid simulation scene (full-screen quad, ortho camera) ---
+    `; const geometry = new PlaneGeometry(2, 2, 1, 1); const material = new ShaderMaterial({ uniforms, vertexShader, fragmentShader, transparent: true }); const mesh = new Mesh(geometry, material); scene.add(mesh);// --- Fluid simulation scene (full-screen quad, ortho camera) ---
 
-const fluidScene=new Scene;const texelSize=new Vector2(1/simWidth,1/simHeight);const splatVelMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:splatFrag,uniforms:{u_point:{value:new Vector2(.5,.5)},u_splatColor:{value:new Vector2(0,0)},u_radius:{value:.02},u_aspectRatio:{value:1},u_target:{value:velFBO0.texture}},depthWrite:false});const quadMesh=new Mesh(quadGeometry,splatVelMaterial);fluidScene.add(quadMesh);const splatDensityMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:splatDensityFrag,uniforms:{u_point:{value:new Vector2(.5,.5)},u_radius:{value:.02},u_aspectRatio:{value:1},u_densityAmount:{value:1},u_target:{value:densityFBO0.texture}},depthWrite:false});const advectMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:advectFrag,uniforms:{u_velocity:{value:velFBO0.texture},u_source:{value:velFBO0.texture},u_texelSize:{value:texelSize.clone()},u_dt:{value:1},u_dissipationMultiply:{value:.99}},depthWrite:false});const divergenceMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:divergenceFrag,uniforms:{u_velocity:{value:velFBO0.texture},u_texelSize:{value:texelSize.clone()}},depthWrite:false});const pressureMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:pressureFrag,uniforms:{u_pressure:{value:pressureFBO0.texture},u_divergence:{value:divFBO.texture},u_texelSize:{value:texelSize.clone()}},depthWrite:false});const gradientMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:gradientFrag,uniforms:{u_velocity:{value:velFBO0.texture},u_pressure:{value:pressureFBO0.texture},u_texelSize:{value:texelSize.clone()}},depthWrite:false});const curlMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:curlFrag,uniforms:{u_velocity:{value:velFBO0.texture},u_texelSize:{value:texelSize.clone()},u_curl:{value:30}},depthWrite:false});const advectDensityMaterial=new ShaderMaterial({vertexShader:vertexShaderQuad,fragmentShader:advectFrag,uniforms:{u_velocity:{value:velFBO0.texture},u_source:{value:densityFBO0.texture},u_texelSize:{value:texelSize.clone()},u_dt:{value:1},u_dissipationMultiply:{value:.93}},depthWrite:false});const sizes=new Vector2;const offset=new Vector2;const updateFromDOM=()=>{// Use clientWidth/clientHeight for more reliable sizing
-const actualWidth=Math.max(container.clientWidth,2);const actualHeight=Math.max(container.clientHeight,2);// Make the mesh fill the entire container (not just the image)
-sizes.set(actualWidth,actualHeight);offset.set(0,0)// Center in container
-;mesh.position.set(0,0,0);mesh.scale.set(actualWidth,actualHeight,1);// Update renderer size to match container exactly
-renderer.setSize(actualWidth,actualHeight,false);// Update camera to match new dimensions
-camera.aspect=actualWidth/actualHeight;camera.updateProjectionMatrix();// Ensure camera is positioned correctly for the new dimensions
-camera.position.z=perspective;camera.lookAt(0,0,0);uniforms.u_planeRes.value.set(actualWidth,actualHeight);// Update window size and container offset for consistent noise scaling
-uniforms.u_windowSize.value.set(window.innerWidth,window.innerHeight);// Get container position for offset calculations
-const containerRect=container.getBoundingClientRect();uniforms.u_containerOffset.value.set(containerRect.left,containerRect.top);// Update aspect ratio uniforms for responsive front image
-const containerAspect=actualWidth/actualHeight;uniforms.u_containerAspect.value=containerAspect;// Calculate front image aspect ratio when texture is loaded
-if(frontTexture.image){const imageAspect=frontTexture.image.width/frontTexture.image.height;uniforms.u_frontImageAspect.value=imageAspect;}// Resize fluid simulation buffers when container size changes
-resizeFluidFBOs(actualWidth,actualHeight);texelSize.set(1/simWidth,1/simHeight);uniforms.u_simResolution.value.set(simWidth,simHeight);// Force a re-render to update the effect
-if(isAnimating){renderer.render(scene,camera);}};// Initial setup
-updateFromDOM();let targetProgress=0;let rafId=0;const clock=new Clock;const targetParallaxOffset=new Vector2(0,0);// Function to determine if we should animate
-const shouldAnimate=()=>{const isCanvasMode = false;const isInView=container.getBoundingClientRect().top<window.innerHeight&&container.getBoundingClientRect().bottom>0;// Only animate if:
-// 1. We're in Canvas mode AND preview is enabled, OR
+    const fluidScene = new Scene; const texelSize = new Vector2(1 / simWidth, 1 / simHeight); const splatVelMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: splatFrag, uniforms: { u_point: { value: new Vector2(.5, .5) }, u_prev_point: { value: new Vector2(.5, .5) }, u_splatColor: { value: new Vector2(0, 0) }, u_radius: { value: .02 }, u_aspectRatio: { value: 1 }, u_target: { value: velFBO0.texture } }, depthWrite: false }); const quadMesh = new Mesh(quadGeometry, splatVelMaterial); fluidScene.add(quadMesh); const splatDensityMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: splatDensityFrag, uniforms: { u_point: { value: new Vector2(.5, .5) }, u_prev_point: { value: new Vector2(.5, .5) }, u_radius: { value: .02 }, u_aspectRatio: { value: 1 }, u_densityAmount: { value: 1 }, u_target: { value: densityFBO0.texture } }, depthWrite: false }); const advectMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: advectFrag, uniforms: { u_velocity: { value: velFBO0.texture }, u_source: { value: velFBO0.texture }, u_texelSize: { value: texelSize.clone() }, u_dt: { value: 1 }, u_dissipationMultiply: { value: .99 } }, depthWrite: false }); const divergenceMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: divergenceFrag, uniforms: { u_velocity: { value: velFBO0.texture }, u_texelSize: { value: texelSize.clone() } }, depthWrite: false }); const pressureMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: pressureFrag, uniforms: { u_pressure: { value: pressureFBO0.texture }, u_divergence: { value: divFBO.texture }, u_texelSize: { value: texelSize.clone() } }, depthWrite: false }); const gradientMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: gradientFrag, uniforms: { u_velocity: { value: velFBO0.texture }, u_pressure: { value: pressureFBO0.texture }, u_texelSize: { value: texelSize.clone() } }, depthWrite: false }); const curlMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: curlFrag, uniforms: { u_velocity: { value: velFBO0.texture }, u_texelSize: { value: texelSize.clone() }, u_curl: { value: 30 } }, depthWrite: false }); const advectDensityMaterial = new ShaderMaterial({ vertexShader: vertexShaderQuad, fragmentShader: advectFrag, uniforms: { u_velocity: { value: velFBO0.texture }, u_source: { value: densityFBO0.texture }, u_texelSize: { value: texelSize.clone() }, u_dt: { value: 1 }, u_dissipationMultiply: { value: .93 } }, depthWrite: false }); const sizes = new Vector2; const offset = new Vector2; const updateFromDOM = () => {// Use clientWidth/clientHeight for more reliable sizing
+      const actualWidth = Math.max(container.clientWidth, 2); const actualHeight = Math.max(container.clientHeight, 2);// Make the mesh fill the entire container (not just the image)
+      sizes.set(actualWidth, actualHeight); offset.set(0, 0)// Center in container
+      ; mesh.position.set(0, 0, 0); mesh.scale.set(1, 1, 1);// Update renderer size to match container exactly
+      renderer.setSize(actualWidth, actualHeight, false);
+      uniforms.u_planeRes.value.set(actualWidth, actualHeight);// Update window size and container offset for consistent noise scaling
+      uniforms.u_windowSize.value.set(window.innerWidth, window.innerHeight);// Get container position for offset calculations
+      const containerRect = container.getBoundingClientRect(); uniforms.u_containerOffset.value.set(containerRect.left, containerRect.top);// Update aspect ratio uniforms for responsive front image
+      const containerAspect = actualWidth / actualHeight; uniforms.u_containerAspect.value = containerAspect;// Calculate front image aspect ratio when texture is loaded
+      if (frontTexture.image) { const imageAspect = frontTexture.image.width / frontTexture.image.height; uniforms.u_frontImageAspect.value = imageAspect; }// Resize fluid simulation buffers when container size changes
+      resizeFluidFBOs(actualWidth, actualHeight); texelSize.set(1 / simWidth, 1 / simHeight); uniforms.u_simResolution.value.set(simWidth, simHeight);// Force a re-render to update the effect
+      if (isAnimating) { renderer.render(scene, camera); }
+    };// Initial setup
+    updateFromDOM(); let targetProgress = 0; let rafId = 0; const clock = new Clock; const targetParallaxOffset = new Vector2(0, 0);// Function to determine if we should animate
+    const shouldAnimate = () => {
+      const isCanvasMode = false; const isInView = container.getBoundingClientRect().top < window.innerHeight && container.getBoundingClientRect().bottom > 0;// Only animate if:
+      // 1. We're in Canvas mode AND preview is enabled, OR
 
-// 2. We're not in Canvas mode (live website) AND component is in view
-return isCanvasMode&&debouncedProps.preview||!isCanvasMode&&isInView;};const render=()=>{if(!shouldAnimate()){isAnimating=false;return;}isAnimating=true;rafId=requestAnimationFrame(render);const dt=clock.getDelta();uniforms.u_time.value+=dt;// Parallax: when disabled keep offset at 0; when enabled apply smoothing
-if(!debouncedProps.parallax){uniforms.u_parallaxOffset.value.set(0,0);targetParallaxOffset.set(0,0);}else{const s=Math.max(0,Math.min(1,debouncedProps.parallaxSmoothing??0));if(s===0){uniforms.u_parallaxOffset.value.copy(targetParallaxOffset);}else{const tauMin=.04;const tauMax=.25;const tau=tauMin+(tauMax-tauMin)*s;const alpha=1-Math.exp(-dt/Math.max(1e-6,tau));uniforms.u_parallaxOffset.value.lerp(targetParallaxOffset,alpha);}}const mouseTarget=uniforms.u_mouse.value;mouseVelocity.x=mouseTarget.x-lastMouseUV.x;mouseVelocity.y=mouseTarget.y-lastMouseUV.y;lastMouseUV.x=mouseTarget.x;lastMouseUV.y=mouseTarget.y;const isCanvasMode = false;// Always recompute container aspect to handle live resizing (especially in Canvas mode)
-const actualW=Math.max(container.clientWidth,2);const actualH=Math.max(container.clientHeight,2);const containerAspect=actualW/actualH;uniforms.u_containerAspect.value=containerAspect;uniforms.u_planeRes.value.set(actualW,actualH);// Update renderer/camera if size changed
-if(renderer.getSize(new Vector2).x!==actualW||renderer.getSize(new Vector2).y!==actualH){renderer.setSize(actualW,actualH,false);camera.aspect=containerAspect;camera.updateProjectionMatrix();mesh.scale.set(actualW,actualH,1);}// Also update sim resolution if needed (handles Canvas resizing)
-resizeFluidFBOs(actualW,actualH);// Mouse position for splatting (direct UV, no aspect correction needed)
-// Blob circularity is achieved via elliptical splats in the shader
-let simMouseX,simMouseY;if(isCanvasMode&&debouncedProps.preview){simMouseX=.5;simMouseY=.5;}else{simMouseX=mouseTarget.x;simMouseY=mouseTarget.y;}const splatRad=Math.max(.005,debouncedProps.splatRadius);const velDiss=Math.max(.9,Math.min(1,debouncedProps.velocityDissipation));// Return time in seconds → per-frame dissipation so density ~1% after that time at 60fps
-const T=Math.max(.5,Math.min(10,debouncedProps.shrinkTimeSeconds));const denDiss=Math.pow(.01,1/(60*T));const pressureIters=Math.max(10,Math.min(50,Math.round(debouncedProps.pressureIterations)));texelSize.set(1/simWidth,1/simHeight);advectMaterial.uniforms.u_texelSize.value.copy(texelSize);divergenceMaterial.uniforms.u_texelSize.value.copy(texelSize);pressureMaterial.uniforms.u_texelSize.value.copy(texelSize);gradientMaterial.uniforms.u_texelSize.value.copy(texelSize);advectDensityMaterial.uniforms.u_texelSize.value.copy(texelSize);const gl=renderer.getContext();gl.disable(gl.BLEND);// 1) Splat velocity - use elliptical splats for circular appearance
-splatVelMaterial.uniforms.u_point.value.set(simMouseX,simMouseY);splatVelMaterial.uniforms.u_aspectRatio.value=containerAspect;splatVelMaterial.uniforms.u_splatColor.value.set(mouseVelocity.x*30,mouseVelocity.y*30);splatVelMaterial.uniforms.u_radius.value=splatRad;splatVelMaterial.uniforms.u_target.value=velFBO0.texture;quadMesh.material=splatVelMaterial;renderer.setRenderTarget(velFBO1);renderer.render(fluidScene,orthoCamera);// 2) Splat density - use elliptical splats for circular appearance
-splatDensityMaterial.uniforms.u_point.value.set(simMouseX,simMouseY);splatDensityMaterial.uniforms.u_aspectRatio.value=containerAspect;splatDensityMaterial.uniforms.u_radius.value=splatRad;const densityAmt=isCanvasMode&&debouncedProps.preview?.15:1;splatDensityMaterial.uniforms.u_densityAmount.value=densityAmt;splatDensityMaterial.uniforms.u_target.value=densityFBO0.texture;quadMesh.material=splatDensityMaterial;renderer.setRenderTarget(densityFBO1);renderer.render(fluidScene,orthoCamera);// 3) Advect velocity
-advectMaterial.uniforms.u_velocity.value=velFBO1.texture;advectMaterial.uniforms.u_source.value=velFBO1.texture;advectMaterial.uniforms.u_dt.value=1;advectMaterial.uniforms.u_dissipationMultiply.value=velDiss;quadMesh.material=advectMaterial;renderer.setRenderTarget(velFBO0);renderer.render(fluidScene,orthoCamera);// 3b) Curl (vorticity) for fluid swirl
+      // 2. We're not in Canvas mode (live website) AND component is in view
+      return isCanvasMode && debouncedProps.preview || !isCanvasMode && isInView;
+    }; const render = () => {
+      if (!shouldAnimate()) { isAnimating = false; return; } isAnimating = true; rafId = requestAnimationFrame(render); const dt = clock.getDelta(); uniforms.u_time.value += dt;// Parallax: when disabled keep offset at 0; when enabled apply smoothing
+      if (!debouncedProps.parallax) { uniforms.u_parallaxOffset.value.set(0, 0); targetParallaxOffset.set(0, 0); } else { const s = Math.max(0, Math.min(1, debouncedProps.parallaxSmoothing ?? 0)); if (s === 0) { uniforms.u_parallaxOffset.value.copy(targetParallaxOffset); } else { const tauMin = .04; const tauMax = .25; const tau = tauMin + (tauMax - tauMin) * s; const alpha = 1 - Math.exp(-dt / Math.max(1e-6, tau)); uniforms.u_parallaxOffset.value.lerp(targetParallaxOffset, alpha); } } 
+      
+      const isCanvasMode = false;
+      if (isCanvasMode && debouncedProps.preview) { targetMouseUV.x = .5; targetMouseUV.y = .5; }
+      
+      // Smoothly interpolate mouse position to prevent disjointed splats on fast movement
+      const lerpSpeed = 1.0 - Math.exp(-dt * 15.0);
+      uniforms.u_mouse.value.x += (targetMouseUV.x - uniforms.u_mouse.value.x) * lerpSpeed;
+      uniforms.u_mouse.value.y += (targetMouseUV.y - uniforms.u_mouse.value.y) * lerpSpeed;
 
-if(debouncedProps.curl>0){curlMaterial.uniforms.u_velocity.value=velFBO0.texture;curlMaterial.uniforms.u_curl.value=debouncedProps.curl;quadMesh.material=curlMaterial;renderer.setRenderTarget(velFBO1);renderer.render(fluidScene,orthoCamera);}// 4) Divergence (use velFBO1 if curl ran, else velFBO0)
-const velForDiv=debouncedProps.curl>0?velFBO1.texture:velFBO0.texture;divergenceMaterial.uniforms.u_velocity.value=velForDiv;quadMesh.material=divergenceMaterial;renderer.setRenderTarget(divFBO);renderer.render(fluidScene,orthoCamera);// 5) Pressure (Jacobi)
-pressureMaterial.uniforms.u_divergence.value=divFBO.texture;let pressureRead=pressureFBO0;let pressureWrite=pressureFBO1;for(let i=0;i<pressureIters;i++){pressureMaterial.uniforms.u_pressure.value=pressureRead.texture;quadMesh.material=pressureMaterial;renderer.setRenderTarget(pressureWrite);renderer.render(fluidScene,orthoCamera);const tmp=pressureRead;pressureRead=pressureWrite;pressureWrite=tmp;}// 6) Subtract pressure gradient from velocity
-const velForGradientRead=debouncedProps.curl>0?velFBO1:velFBO0;const velForGradientWrite=debouncedProps.curl>0?velFBO0:velFBO1;gradientMaterial.uniforms.u_velocity.value=velForGradientRead.texture;gradientMaterial.uniforms.u_pressure.value=pressureRead.texture;quadMesh.material=gradientMaterial;renderer.setRenderTarget(velForGradientWrite);renderer.render(fluidScene,orthoCamera);// 7) Advect density (use velocity after gradient)
-advectDensityMaterial.uniforms.u_velocity.value=velForGradientWrite.texture;advectDensityMaterial.uniforms.u_source.value=densityFBO1.texture;advectDensityMaterial.uniforms.u_dt.value=1;advectDensityMaterial.uniforms.u_dissipationMultiply.value=denDiss;quadMesh.material=advectDensityMaterial;renderer.setRenderTarget(densityFBO0);renderer.render(fluidScene,orthoCamera);// Ping-pong swap: gradient output must be in velFBO0 for next frame's splat
-if(debouncedProps.curl<=0){const tmp=velFBO0;velFBO0=velFBO1;velFBO1=tmp;}renderer.setRenderTarget(null);// Explicitly clear to transparent before drawing the main scene
-renderer.clear();gl.enable(gl.BLEND);uniforms.u_densityTex.value=densityFBO0.texture;uniforms.u_parallaxMax.value=debouncedProps.parallax?Math.max(0,Math.min(200,debouncedProps.parallaxAmount??0)):0;uniforms.u_blur.value=mapBlur(debouncedProps.blur);uniforms.u_circleBoost.value=mapCircleBoost(debouncedProps.circleBoost);const currentTextureParams=mapTexture(debouncedProps.texture);uniforms.u_noiseFreq.value=currentTextureParams.freq;uniforms.u_noiseStrength.value=currentTextureParams.strength;uniforms.u_noiseSize.value=currentTextureParams.size;uniforms.u_timeSpeed.value=mapTimeSpeed(debouncedProps.timeSpeed);uniforms.u_radius.value=mapRadius(debouncedProps.radius);if(isCanvasMode&&debouncedProps.preview){targetProgress=1;uniforms.u_mouse.value.set(.5,.5);uniforms.u_noiseFreq.value=currentTextureParams.freq*1.25;}else{uniforms.u_noiseStrength.value=currentTextureParams.strength;}if(hideBlobForResizeRef.current){uniforms.u_progress.value=0;}else{uniforms.u_progress.value+=(targetProgress-uniforms.u_progress.value)*.08;}renderer.render(scene,camera);};// Start animation if needed
-if(shouldAnimate()){render();}// Throttled resize handler
-let resizeTimeout=null;const throttledResize=()=>{if(resizeTimeout)return;resizeTimeout=setTimeout(()=>{// Update DOM and force re-render
-updateFromDOM();// Ensure the effect is properly updated
-if(isAnimating){renderer.render(scene,camera);}resizeTimeout=null;},100)// 100ms throttle
-;};// Use ResizeObserver for container changes
-const resizeObserver=new ResizeObserver(entries=>{// Immediate update for critical dimension changes
-entries.forEach(entry=>{const{width,height}=entry.contentRect;// Update if dimensions have changed
-if(width!==sizes.x||height!==sizes.y){updateFromDOM();}});// Also use throttled resize for performance
-throttledResize();});resizeObserver.observe(container);// Also listen to window resize for global changes
-window.addEventListener("resize",throttledResize);// Canvas mode: use zoom probe polling to detect resize/zoom changes (debounced remount)
+      const mouseTarget = uniforms.u_mouse.value; mouseVelocity.x = mouseTarget.x - lastMouseUV.x; mouseVelocity.y = mouseTarget.y - lastMouseUV.y; lastMouseUV.x = mouseTarget.x; lastMouseUV.y = mouseTarget.y;
+      
+      // Always recompute container aspect to handle live resizing (especially in Canvas mode)
+      const actualW = Math.max(container.clientWidth, 2); const actualH = Math.max(container.clientHeight, 2); const containerAspect = actualW / actualH; uniforms.u_containerAspect.value = containerAspect; uniforms.u_planeRes.value.set(actualW, actualH);// Update renderer/camera if size changed
+      if(renderer.getSize(new Vector2).x !== actualW || renderer.getSize(new Vector2).y !== actualH) { renderer.setSize(actualW, actualH, false); } // Also update sim resolution if needed (handles Canvas resizing)
+      resizeFluidFBOs(actualW, actualH);// Mouse position for splatting (direct UV, no aspect correction needed)
+      // Blob circularity is achieved via elliptical splats in the shader
+      let simMouseX, simMouseY; if (isCanvasMode && debouncedProps.preview) { simMouseX = .5; simMouseY = .5; } else { simMouseX = mouseTarget.x; simMouseY = mouseTarget.y; } const splatRad = Math.max(.005, debouncedProps.splatRadius); const velDiss = Math.max(.9, Math.min(1, debouncedProps.velocityDissipation));// Return time in seconds → per-frame dissipation so density ~1% after that time at 60fps
+      const T = Math.max(.5, Math.min(10, debouncedProps.shrinkTimeSeconds)); const denDiss = Math.pow(.01, 1 / (60 * T)); const pressureIters = Math.max(10, Math.min(50, Math.round(debouncedProps.pressureIterations))); texelSize.set(1 / simWidth, 1 / simHeight); advectMaterial.uniforms.u_texelSize.value.copy(texelSize); divergenceMaterial.uniforms.u_texelSize.value.copy(texelSize); pressureMaterial.uniforms.u_texelSize.value.copy(texelSize); gradientMaterial.uniforms.u_texelSize.value.copy(texelSize); advectDensityMaterial.uniforms.u_texelSize.value.copy(texelSize); const gl = renderer.getContext(); gl.disable(gl.BLEND);
+      const prevSimMouseX = isCanvasMode && debouncedProps.preview ? .5 : lastMouseUV.x;
+      const prevSimMouseY = isCanvasMode && debouncedProps.preview ? .5 : lastMouseUV.y;
 
-let canvasResizeRafId=0;let remountDebounceId=null;const REMOUNT_DEBOUNCE_MS=350;const isCanvasMode = false;if(isCanvasMode){const POLL_INTERVAL_MS=150;let lastPollTime=0;const pollCanvasResize=now=>{canvasResizeRafId=requestAnimationFrame(pollCanvasResize);if(now-lastPollTime<POLL_INTERVAL_MS)return;lastPollTime=now;const probe=zoomProbeRef.current;if(!probe)return;const probeRect=probe.getBoundingClientRect();const currentZoom=probeRect.width;const currentWidth=container.clientWidth;const currentHeight=container.clientHeight;const last=lastSizeRef.current;const zoomChanged=Math.abs(currentZoom-last.zoom)>.5;const sizeChanged=currentWidth!==last.width||currentHeight!==last.height;if(zoomChanged||sizeChanged){last.zoom=currentZoom;last.width=currentWidth;last.height=currentHeight;hideBlobForResizeRef.current=true;if(remountDebounceId)clearTimeout(remountDebounceId);remountDebounceId=setTimeout(()=>{remountDebounceId=null;setCanvasRemountKey(k=>k+1);},REMOUNT_DEBOUNCE_MS);}};canvasResizeRafId=requestAnimationFrame(pollCanvasResize);}// Intersection Observer to pause rendering when out of view
-const intersectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting&&!isAnimating&&shouldAnimate()){// Component came into view and should animate
-render();}});},{root:null,rootMargin:"50px",threshold:.01});intersectionObserver.observe(container);const parallaxPx=debouncedProps.parallax?Math.max(0,Math.min(200,debouncedProps.parallaxAmount??0)):0;const onMove=e=>{const isCanvasMode = false;if(isCanvasMode&&debouncedProps.preview)return;const containerRect=container.getBoundingClientRect();// Calculate position relative to this component
-const x=(e.clientX-containerRect.left)/containerRect.width;const y=1-(e.clientY-containerRect.top)/containerRect.height;// Check if the mouse is currently inside the bounds of this component
-const isInside=x>=0&&x<=1&&y>=0&&y<=1;if(isInside){// This acts as your "onEnter"
-targetProgress=1;if(!isAnimating&&shouldAnimate())render();const nx=Math.max(0,Math.min(1,x));const ny=Math.max(0,Math.min(1,y));uniforms.u_mouse.value.set(nx,ny);if(debouncedProps.parallax&&parallaxPx>0){targetParallaxOffset.set((nx-.5)*2*parallaxPx,(ny-.5)*2*parallaxPx);}}else{// This acts as your "onLeave"
+      // 1) Splat velocity - use elliptical splats for circular appearance
+      splatVelMaterial.uniforms.u_point.value.set(simMouseX, simMouseY);
+      splatVelMaterial.uniforms.u_prev_point.value.set(prevSimMouseX, prevSimMouseY);
+      splatVelMaterial.uniforms.u_aspectRatio.value = containerAspect;
+      splatVelMaterial.uniforms.u_splatColor.value.set(mouseVelocity.x * 30, mouseVelocity.y * 30);
+      splatVelMaterial.uniforms.u_radius.value = splatRad;
+      splatVelMaterial.uniforms.u_target.value = velFBO0.texture;
+      quadMesh.material = splatVelMaterial;
+      renderer.setRenderTarget(velFBO1);
+      renderer.render(fluidScene, orthoCamera);// 2) Splat density - use elliptical splats for circular appearance
+      splatDensityMaterial.uniforms.u_point.value.set(simMouseX, simMouseY);
+      splatDensityMaterial.uniforms.u_prev_point.value.set(prevSimMouseX, prevSimMouseY);
+      splatDensityMaterial.uniforms.u_aspectRatio.value = containerAspect; 
+      splatDensityMaterial.uniforms.u_radius.value = splatRad; 
+      const densityAmt = isCanvasMode && debouncedProps.preview ? .15 : 1; 
+      splatDensityMaterial.uniforms.u_densityAmount.value = densityAmt; 
+      splatDensityMaterial.uniforms.u_target.value = densityFBO0.texture; 
+      quadMesh.material = splatDensityMaterial; 
+      renderer.setRenderTarget(densityFBO1); 
+      renderer.render(fluidScene, orthoCamera);// 3) Advect velocity
+      advectMaterial.uniforms.u_velocity.value = velFBO1.texture; advectMaterial.uniforms.u_source.value = velFBO1.texture; advectMaterial.uniforms.u_dt.value = 1; advectMaterial.uniforms.u_dissipationMultiply.value = velDiss; quadMesh.material = advectMaterial; renderer.setRenderTarget(velFBO0); renderer.render(fluidScene, orthoCamera);// 3b) Curl (vorticity) for fluid swirl
 
-targetProgress=0;targetParallaxOffset.set(0,0);}};window.addEventListener("mousemove",onMove);return()=>{if(rafId){cancelAnimationFrame(rafId);}if(canvasResizeRafId){cancelAnimationFrame(canvasResizeRafId);}if(remountDebounceId){clearTimeout(remountDebounceId);}resizeObserver.disconnect();intersectionObserver.disconnect();window.removeEventListener("resize",throttledResize);if(resizeTimeout){clearTimeout(resizeTimeout);}window.removeEventListener("mousemove",onMove);disposeFluidFBOs();quadGeometry.dispose();splatVelMaterial.dispose();splatDensityMaterial.dispose();advectMaterial.dispose();divergenceMaterial.dispose();pressureMaterial.dispose();gradientMaterial.dispose();curlMaterial.dispose();advectDensityMaterial.dispose();geometry.dispose();material.dispose();renderer.dispose();};},[canvasRemountKey,debouncedProps.radius,debouncedProps.blur,debouncedProps.circleBoost,debouncedProps.texture,debouncedProps.timeSpeed,debouncedProps.splatRadius,debouncedProps.velocityDissipation,debouncedProps.shrinkTimeSeconds,debouncedProps.curl,debouncedProps.pressureIterations,debouncedProps.preview,imageBase?.positionX,imageBase?.positionY,imageHover?.positionX,imageHover?.positionY,imageHover?.src,debouncedProps.parallax,debouncedProps.parallaxAmount,debouncedProps.parallaxSmoothing,mapRadius,mapBlur,mapCircleBoost,mapTexture,mapTimeSpeed,isMobile]);
+      if (debouncedProps.curl > 0) { curlMaterial.uniforms.u_velocity.value = velFBO0.texture; curlMaterial.uniforms.u_curl.value = debouncedProps.curl; quadMesh.material = curlMaterial; renderer.setRenderTarget(velFBO1); renderer.render(fluidScene, orthoCamera); }// 4) Divergence (use velFBO1 if curl ran, else velFBO0)
+      const velForDiv = debouncedProps.curl > 0 ? velFBO1.texture : velFBO0.texture; divergenceMaterial.uniforms.u_velocity.value = velForDiv; quadMesh.material = divergenceMaterial; renderer.setRenderTarget(divFBO); renderer.render(fluidScene, orthoCamera);// 5) Pressure (Jacobi)
+      pressureMaterial.uniforms.u_divergence.value = divFBO.texture; let pressureRead = pressureFBO0; let pressureWrite = pressureFBO1; for (let i = 0; i < pressureIters; i++) { pressureMaterial.uniforms.u_pressure.value = pressureRead.texture; quadMesh.material = pressureMaterial; renderer.setRenderTarget(pressureWrite); renderer.render(fluidScene, orthoCamera); const tmp = pressureRead; pressureRead = pressureWrite; pressureWrite = tmp; }// 6) Subtract pressure gradient from velocity
+      const velForGradientRead = debouncedProps.curl > 0 ? velFBO1 : velFBO0; const velForGradientWrite = debouncedProps.curl > 0 ? velFBO0 : velFBO1; gradientMaterial.uniforms.u_velocity.value = velForGradientRead.texture; gradientMaterial.uniforms.u_pressure.value = pressureRead.texture; quadMesh.material = gradientMaterial; renderer.setRenderTarget(velForGradientWrite); renderer.render(fluidScene, orthoCamera);// 7) Advect density (use velocity after gradient)
+      advectDensityMaterial.uniforms.u_velocity.value = velForGradientWrite.texture; advectDensityMaterial.uniforms.u_source.value = densityFBO1.texture; advectDensityMaterial.uniforms.u_dt.value = 1; advectDensityMaterial.uniforms.u_dissipationMultiply.value = denDiss; quadMesh.material = advectDensityMaterial; renderer.setRenderTarget(densityFBO0); renderer.render(fluidScene, orthoCamera);// Ping-pong swap: gradient output must be in velFBO0 for next frame's splat
+      if (debouncedProps.curl <= 0) { const tmp = velFBO0; velFBO0 = velFBO1; velFBO1 = tmp; } renderer.setRenderTarget(null);// Explicitly clear to transparent before drawing the main scene
+      renderer.clear(); gl.enable(gl.BLEND); uniforms.u_densityTex.value = densityFBO0.texture; uniforms.u_parallaxMax.value = debouncedProps.parallax ? Math.max(0, Math.min(200, debouncedProps.parallaxAmount ?? 0)) : 0; uniforms.u_blur.value = mapBlur(debouncedProps.blur); uniforms.u_circleBoost.value = mapCircleBoost(debouncedProps.circleBoost); const currentTextureParams = mapTexture(debouncedProps.texture); uniforms.u_noiseFreq.value = currentTextureParams.freq; uniforms.u_noiseStrength.value = currentTextureParams.strength; uniforms.u_noiseSize.value = currentTextureParams.size; uniforms.u_timeSpeed.value = mapTimeSpeed(debouncedProps.timeSpeed); uniforms.u_radius.value = mapRadius(debouncedProps.radius); if (isCanvasMode && debouncedProps.preview) { targetProgress = 1; uniforms.u_mouse.value.set(.5, .5); uniforms.u_noiseFreq.value = currentTextureParams.freq * 1.25; } else { uniforms.u_noiseStrength.value = currentTextureParams.strength; } if (hideBlobForResizeRef.current) { uniforms.u_progress.value = 0; } else { uniforms.u_progress.value += (targetProgress - uniforms.u_progress.value) * .08; } renderer.render(scene, camera);
+    };// Start animation if needed
+    if (shouldAnimate()) { render(); }// Throttled resize handler
+    let resizeTimeout = null; const throttledResize = () => {
+      if (resizeTimeout) return; resizeTimeout = setTimeout(() => {// Update DOM and force re-render
+        updateFromDOM();// Ensure the effect is properly updated
+        if (isAnimating) { renderer.render(scene, camera); } resizeTimeout = null;
+      }, 100)// 100ms throttle
+        ;
+    };// Use ResizeObserver for container changes
+    const resizeObserver = new ResizeObserver(entries => {// Immediate update for critical dimension changes
+      entries.forEach(entry => {
+        const { width, height } = entry.contentRect;// Update if dimensions have changed
+        if (width !== sizes.x || height !== sizes.y) { updateFromDOM(); }
+      });// Also use throttled resize for performance
+      throttledResize();
+    }); resizeObserver.observe(container);// Also listen to window resize for global changes
+    window.addEventListener("resize", throttledResize);// Canvas mode: use zoom probe polling to detect resize/zoom changes (debounced remount)
+
+    let canvasResizeRafId = 0; let remountDebounceId = null; const REMOUNT_DEBOUNCE_MS = 350; const isCanvasMode = false; if (isCanvasMode) { const POLL_INTERVAL_MS = 150; let lastPollTime = 0; const pollCanvasResize = now => { canvasResizeRafId = requestAnimationFrame(pollCanvasResize); if (now - lastPollTime < POLL_INTERVAL_MS) return; lastPollTime = now; const probe = zoomProbeRef.current; if (!probe) return; const probeRect = probe.getBoundingClientRect(); const currentZoom = probeRect.width; const currentWidth = container.clientWidth; const currentHeight = container.clientHeight; const last = lastSizeRef.current; const zoomChanged = Math.abs(currentZoom - last.zoom) > .5; const sizeChanged = currentWidth !== last.width || currentHeight !== last.height; if (zoomChanged || sizeChanged) { last.zoom = currentZoom; last.width = currentWidth; last.height = currentHeight; hideBlobForResizeRef.current = true; if (remountDebounceId) clearTimeout(remountDebounceId); remountDebounceId = setTimeout(() => { remountDebounceId = null; setCanvasRemountKey(k => k + 1); }, REMOUNT_DEBOUNCE_MS); } }; canvasResizeRafId = requestAnimationFrame(pollCanvasResize); }// Intersection Observer to pause rendering when out of view
+    const intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isAnimating && shouldAnimate()) {// Component came into view and should animate
+          render();
+        }
+      });
+    }, { root: null, rootMargin: "50px", threshold: .01 }); intersectionObserver.observe(container); const parallaxPx = debouncedProps.parallax ? Math.max(0, Math.min(200, debouncedProps.parallaxAmount ?? 0)) : 0; const onMove = e => {
+      const isCanvasMode = false; if (isCanvasMode && debouncedProps.preview) return; const containerRect = container.getBoundingClientRect();// Calculate position relative to this component
+      const x = (e.clientX - containerRect.left) / containerRect.width; const y = 1 - (e.clientY - containerRect.top) / containerRect.height;// Check if the mouse is currently inside the bounds of this component
+      const isInside = x >= 0 && x <= 1 && y >= 0 && y <= 1; if (isInside) {// This acts as your "onEnter"
+        targetProgress = 1; if (!isAnimating && shouldAnimate()) render(); const nx = Math.max(0, Math.min(1, x)); const ny = Math.max(0, Math.min(1, y)); 
+        targetMouseUV.x = nx; targetMouseUV.y = ny;
+        if (debouncedProps.parallax && parallaxPx > 0) { targetParallaxOffset.set((nx - .5) * 2 * parallaxPx, (ny - .5) * 2 * parallaxPx); }
+      } else {// This acts as your "onLeave"
+
+        targetProgress = 0; targetParallaxOffset.set(0, 0);
+      }
+    }; window.addEventListener("mousemove", onMove); return () => { if (rafId) { cancelAnimationFrame(rafId); } if (canvasResizeRafId) { cancelAnimationFrame(canvasResizeRafId); } if (remountDebounceId) { clearTimeout(remountDebounceId); } resizeObserver.disconnect(); intersectionObserver.disconnect(); window.removeEventListener("resize", throttledResize); if (resizeTimeout) { clearTimeout(resizeTimeout); } window.removeEventListener("mousemove", onMove); disposeFluidFBOs(); quadGeometry.dispose(); splatVelMaterial.dispose(); splatDensityMaterial.dispose(); advectMaterial.dispose(); divergenceMaterial.dispose(); pressureMaterial.dispose(); gradientMaterial.dispose(); curlMaterial.dispose(); advectDensityMaterial.dispose(); geometry.dispose(); material.dispose(); renderer.dispose(); };
+  }, [canvasRemountKey, debouncedProps.radius, debouncedProps.blur, debouncedProps.circleBoost, debouncedProps.texture, debouncedProps.timeSpeed, debouncedProps.splatRadius, debouncedProps.velocityDissipation, debouncedProps.shrinkTimeSeconds, debouncedProps.curl, debouncedProps.pressureIterations, debouncedProps.preview, imageBase?.positionX, imageBase?.positionY, imageHover?.positionX, imageHover?.positionY, imageHover?.src, debouncedProps.parallax, debouncedProps.parallaxAmount, debouncedProps.parallaxSmoothing, mapRadius, mapBlur, mapCircleBoost, mapTexture, mapTimeSpeed, isMobile]);
   return (
-    <div ref={containerRef} style={{width:"100%",height:"100%",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:borderRadius,overflow:"clip",...props.style}}>
-      <figure style={{position:"absolute",inset:0,margin:0,padding:0,zIndex:1}}>
-        <img ref={imgRef} src={imageBase?.src} srcSet={imageBase?.srcSet} alt={imageBase?.alt||"Back image"} draggable={false} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:`${imageBase?.positionX||"50%"} ${imageBase?.positionY||"50%"}`,margin:0,padding:0,userSelect:"none",pointerEvents:"none"}}/>
+    <div ref={containerRef} style={{ width: "100%", height: "100%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: borderRadius, overflow: "clip", ...props.style }}>
+      <figure style={{ position: "absolute", inset: 0, margin: 0, padding: 0, zIndex: 1 }}>
+        <img ref={imgRef} src={imageBase?.src} srcSet={imageBase?.srcSet} alt={imageBase?.alt || "Back image"} draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${imageBase?.positionX || "50%"} ${imageBase?.positionY || "50%"}`, margin: 0, padding: 0, userSelect: "none", pointerEvents: "none" }} />
       </figure>
-      {!isMobile&&<canvas ref={canvasRef} id="stage" style={{position:"absolute",inset:0,width:"100%",height:"100%",zIndex:3,pointerEvents:"none",mixBlendMode:"normal",background:"transparent"}}/>}
-      <div ref={zoomProbeRef} style={{position:"absolute",width:20,height:20,opacity:0,pointerEvents:"none"}}/>
+      {!isMobile && <canvas ref={canvasRef} id="stage" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 3, pointerEvents: "none", mixBlendMode: "normal", background: "transparent" }} />}
+      <div ref={zoomProbeRef} style={{ position: "absolute", width: 20, height: 20, opacity: 0, pointerEvents: "none" }} />
     </div>
   );
 }
