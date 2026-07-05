@@ -252,8 +252,9 @@ export default function About() {
     target: sectionRef,
     offset: ['start end', 'start start'],
   });
-  const sectionScale = useTransform(zoomProgress, [0, 1], [1.15, 1]);
-  const sectionY = useTransform(zoomProgress, [0, 1], [60, 0]);
+  const smoothZoom = useSpring(zoomProgress, { stiffness: 80, damping: 20, mass: 0.5 });
+  const sectionScale = useTransform(smoothZoom, [0, 1], [1.15, 1]);
+  const sectionY = useTransform(smoothZoom, [0, 1], [60, 0]);
 
   // Polaroid frame-level transitions: smooth scaling up as it enters viewport, and rolling tilt!
   const polaroidY = useTransform(scrollYProgress, [0, 1], [60, -60]);

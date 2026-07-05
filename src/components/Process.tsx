@@ -66,8 +66,9 @@ export default function Process() {
     target: sectionRef,
     offset: ["start end", "start start"]
   });
-  const scale = useTransform(zoomProgress, [0, 1], [1.15, 1]);
-  const y = useTransform(zoomProgress, [0, 1], [60, 0]);
+  const smoothZoom = useSpring(zoomProgress, { stiffness: 80, damping: 20, mass: 0.5 });
+  const scale = useTransform(smoothZoom, [0, 1], [1.15, 1]);
+  const y = useTransform(smoothZoom, [0, 1], [60, 0]);
 
   // Zoom-in & out parallax for decorative background items
   const bgSphereY = useTransform(scrollYProgress, [0, 1], [-100, 100]);

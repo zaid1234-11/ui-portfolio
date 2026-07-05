@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Instagram, Sparkles, X } from 'lucide-react';
 import VariableProximity from './VariableProximity';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 
 export default function ConnectForm() {
   const [formData, setFormData] = useState({
@@ -20,8 +20,9 @@ export default function ConnectForm() {
     target: sectionRef,
     offset: ['start end', 'start start']
   });
-  const scale = useTransform(zoomProgress, [0, 1], [1.15, 1]);
-  const y = useTransform(zoomProgress, [0, 1], [60, 0]);
+  const smoothZoom = useSpring(zoomProgress, { stiffness: 80, damping: 20, mass: 0.5 });
+  const scale = useTransform(smoothZoom, [0, 1], [1.15, 1]);
+  const y = useTransform(smoothZoom, [0, 1], [60, 0]);
 
   // Canvas Reference for Particle Confetti Explosion
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
