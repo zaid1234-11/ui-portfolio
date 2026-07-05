@@ -319,7 +319,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
             >
               <h1 className="font-symphonie text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#1c1c1b] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-light cursor-pointer">
                 <VariableProximity
-                  label="Portfolio"
+                  label="Zaid Saifi"
                   fromFontVariationSettings="'wght' 300"
                   toFontVariationSettings="'wght' 800"
                   containerRef={containerRef}
