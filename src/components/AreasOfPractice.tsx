@@ -33,7 +33,7 @@ const PRACTICE_AREAS = [
   }
 ];
 
-function AreaRow({ area }: { area: typeof PRACTICE_AREAS[0] }) {
+const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
   const itemRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeInnerRef = useRef<HTMLDivElement>(null);

@@ -56,7 +56,7 @@ interface MenuItemProps extends FlowingMenuItem {
   isFirst: boolean;
 }
 
-function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor, isFirst }: MenuItemProps) {
+const MenuItem: React.FC<MenuItemProps> = ({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor, isFirst }) => {
   const itemRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeInnerRef = useRef<HTMLDivElement>(null);

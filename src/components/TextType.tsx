@@ -1,9 +1,31 @@
 'use client';
 
-import { useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
 import { gsap } from 'gsap';
 
-const TextType = ({
+interface TextTypeProps {
+  text: string | string[];
+  as?: React.ElementType | string;
+  typingSpeed?: number;
+  initialDelay?: number;
+  pauseDuration?: number;
+  deletingSpeed?: number;
+  loop?: boolean;
+  className?: string;
+  showCursor?: boolean;
+  hideCursorWhileTyping?: boolean;
+  cursorCharacter?: string;
+  cursorClassName?: string;
+  cursorBlinkDuration?: number;
+  textColors?: string[];
+  variableSpeed?: { min: number; max: number };
+  onSentenceComplete?: () => void;
+  startOnVisible?: boolean;
+  reverseMode?: boolean;
+  [key: string]: any;
+}
+
+const TextType: React.FC<TextTypeProps> = ({
   text,
   as: Component = 'div',
   typingSpeed = 50,
