@@ -331,11 +331,9 @@ vec4 h = 1.0 - abs(x) - abs(y);
             }
         }
 
-        // Parallax the REVEALED (front) image: move opposite to cursor (add offset so image shifts away from cursor)
-        vec2 inset = u_parallaxMax / u_planeRes;
-        vec2 baseUV = inset + responsiveUV * (1.0 - 2.0 * inset);
+        // Parallax the REVEALED (front) image: move opposite to cursor
         vec2 parallaxUV = u_parallaxOffset / u_planeRes;
-        vec2 sampleUV = baseUV + parallaxUV;
+        vec2 sampleUV = responsiveUV + parallaxUV;
 
         // Sample the front image with parallax and apply the mask
         vec4 frontColor = texture2D(u_frontImage, sampleUV);

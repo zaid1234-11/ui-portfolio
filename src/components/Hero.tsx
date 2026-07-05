@@ -138,8 +138,6 @@ export default function Hero({ onExploreClick }: HeroProps) {
           blur={0.5}
           splatRadius={0.08}
           circleBoost={0.6}
-          parallax={true}
-          parallaxAmount={10}
           pressureIterations={5}
         />
       </div>
