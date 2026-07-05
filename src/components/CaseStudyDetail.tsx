@@ -150,7 +150,7 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
               src={project.image}
               alt={project.title}
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover grayscale contrast-[1.02] sepia-[0.15] hover:grayscale-0 hover:sepia-0 transition-all duration-700 hover:scale-[1.02]"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.02]"
             />
           </div>
           {/* Scotch tape on top corner */}

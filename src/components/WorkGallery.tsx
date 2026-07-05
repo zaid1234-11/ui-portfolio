@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ArrowUpRight, Grid, Layout, Tag } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { Project } from '../types';
 import { PROJECTS } from '../data';
 import VariableProximity from './VariableProximity';
@@ -30,8 +30,9 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
     offset: ["start end", "start start"]
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
+  const scale = useTransform(smoothProgress, [0, 1], [1.15, 1]);
+  const y = useTransform(smoothProgress, [0, 1], [60, 0]);
 
   const filters = ['All', 'UI/UX', 'Web App', 'Branding', 'E-Commerce', 'Data Vis'];
 
@@ -164,7 +165,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   onBlur={() => setHoveredIndex(null)}
                   className="folder-btn focus:outline-none group"
                   style={{
-                    zIndex: filteredProjects.length - visibleIdx,
+                    zIndex: hoveredIndex === visibleIdx ? 100 : (filteredProjects.length - visibleIdx),
                     marginLeft: isFirst ? '0px' : undefined,
                   }}
                   data-paper={meta.paper}
@@ -198,7 +199,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                               <span>{project.timeline}</span>
                             </div>
                             
-                            <h3 className="font-display text-xl md:text-2xl font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3">
+                            <h3 className="font-display text-lg font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3 break-words">
                               {project.title}
                             </h3>
                             
@@ -213,7 +214,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                               src={project.image}
                               alt={project.title}
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover grayscale contrast-[1.05] opacity-75 mix-blend-multiply group-hover:scale-105 transition-transform duration-500 ease-out"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out opacity-100"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                           </div>
