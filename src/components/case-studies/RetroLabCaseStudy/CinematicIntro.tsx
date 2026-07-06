@@ -37,7 +37,7 @@ export default function CinematicIntro() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
-          className="font-display text-2xl md:text-4xl text-[#FAF6EE] max-w-2xl mx-auto leading-relaxed tracking-wide"
+          className="font-display text-2xl md:text-4xl text-[#1c1c1b] max-w-2xl mx-auto leading-relaxed tracking-wide"
         >
           "Modern images were never meant to look this nostalgic."
         </motion.h2>

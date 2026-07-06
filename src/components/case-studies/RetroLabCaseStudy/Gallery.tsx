@@ -21,7 +21,7 @@ export default function Gallery() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group relative aspect-square bg-[#0d1418] border border-white/10 rounded-xl overflow-hidden shadow-lg"
+            className="group relative aspect-square bg-white border border-black/10 rounded-xl overflow-hidden shadow-lg"
           >
             <img src={img.src} alt={img.algo} className="w-full h-full object-cover filter grayscale contrast-125 sepia-[0.3]" />
             <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] pointer-events-none mix-blend-overlay"></div>

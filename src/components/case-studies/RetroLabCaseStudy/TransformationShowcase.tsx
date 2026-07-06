@@ -15,8 +15,8 @@ export default function TransformationShowcase() {
               onClick={() => setStep(idx)}
               className={`font-mono text-[10px] uppercase px-4 py-2 rounded-full border transition-all ${
                 step === idx 
-                  ? 'bg-[#E34A53] text-[#FAF6EE] border-[#E34A53]' 
-                  : 'bg-[#0d1418] text-[#FAF6EE]/50 border-white/10 hover:border-white/30'
+                  ? 'bg-[#E34A53] text-[#1c1c1b] border-[#E34A53]' 
+                  : 'bg-white text-[#1c1c1b]/50 border-black/10 hover:border-black/30'
               }`}
             >
               {label}
@@ -25,7 +25,7 @@ export default function TransformationShowcase() {
         </div>
       </div>
 
-      <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] bg-[#0d1418] rounded-xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer" onClick={() => setStep((s) => (s + 1) % 3)}>
+      <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] bg-white rounded-xl overflow-hidden border border-black/10 shadow-2xl cursor-pointer" onClick={() => setStep((s) => (s + 1) % 3)}>
         <AnimatePresence mode="wait">
           {step === 0 && (
             <motion.div 
@@ -34,16 +34,16 @@ export default function TransformationShowcase() {
               className="absolute inset-0"
             >
               <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1000&auto=format&fit=crop" className="w-full h-full object-cover" alt="Original" />
-              <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-white/20">1. Original Image</div>
+              <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-black/20">1. Original Image</div>
             </motion.div>
           )}
           {step === 1 && (
             <motion.div 
               key="processing"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
-              className="absolute inset-0 bg-[#162127] flex flex-col items-center justify-center gap-6"
+              className="absolute inset-0 bg-transparent flex flex-col items-center justify-center gap-6"
             >
-              <div className="w-64 h-3 bg-black rounded-full overflow-hidden border border-white/10">
+              <div className="w-64 h-3 bg-black rounded-full overflow-hidden border border-black/10">
                 <motion.div className="h-full bg-[#E34A53]" initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 2, repeat: Infinity }} />
               </div>
               <div className="font-mono text-xs text-[#E34A53] animate-pulse uppercase tracking-widest">Applying_Filters...</div>
@@ -62,7 +62,7 @@ export default function TransformationShowcase() {
           )}
         </AnimatePresence>
         
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[9px] bg-black/50 px-3 py-1.5 rounded-full border border-white/10 text-white/50 tracking-widest uppercase pointer-events-none">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[9px] bg-black/50 px-3 py-1.5 rounded-full border border-black/10 text-[#1c1c1b]/50 tracking-widest uppercase pointer-events-none">
           Click to advance flow
         </div>
       </div>

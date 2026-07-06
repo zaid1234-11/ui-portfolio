@@ -13,10 +13,10 @@ export default function EngineeringArchitecture() {
           { icon: Cpu, title: 'Pipeline', desc: 'Web Workers for offloading', color: 'border-purple-500' },
           { icon: Database, title: 'Rendering', desc: 'HTML5 Canvas API', color: 'border-orange-500' },
         ].map((item, i) => (
-          <div key={i} className={`bg-[#0d1418] border-t-2 ${item.color} p-6 rounded-b-xl shadow-lg hover:-translate-y-1 transition-transform`}>
-            <item.icon className="w-6 h-6 mb-4 text-[#FAF6EE]/70" />
-            <h4 className="font-mono text-sm uppercase mb-2 text-[#FAF6EE]">{item.title}</h4>
-            <p className="text-xs text-[#FAF6EE]/50">{item.desc}</p>
+          <div key={i} className={`bg-white border-t-2 ${item.color} p-6 rounded-b-xl shadow-lg hover:-translate-y-1 transition-transform`}>
+            <item.icon className="w-6 h-6 mb-4 text-[#1c1c1b]/70" />
+            <h4 className="font-mono text-sm uppercase mb-2 text-[#1c1c1b]">{item.title}</h4>
+            <p className="text-xs text-[#1c1c1b]/50">{item.desc}</p>
           </div>
         ))}
       </div>

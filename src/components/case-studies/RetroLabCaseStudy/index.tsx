@@ -23,15 +23,15 @@ import FinalCTA from './FinalCTA';
 
 export default function RetroLabCaseStudy() {
   return (
-    <div className="bg-[#162127] text-[#FAF6EE] min-h-screen font-sans selection:bg-[#E34A53]/30 overflow-hidden relative">
+    <div className="bg-transparent text-[#1c1c1b] min-h-screen font-sans selection:bg-[#E34A53]/30 overflow-hidden relative">
       {/* Global Aesthetics */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Pixel grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:1rem_1rem]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:1rem_1rem]"></div>
         {/* CRT Scanlines */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[size:100%_4px] opacity-30"></div>
         {/* CRT Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.05)_100%)]"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 space-y-32 pb-32">

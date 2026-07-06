@@ -10,17 +10,17 @@ export default function Problem() {
 
       <div className="flex items-center gap-3 mb-6">
         <AlertCircle className="w-5 h-5 text-[#E34A53]" />
-        <h3 className="font-mono text-sm tracking-widest uppercase text-[#FAF6EE]">The Problem</h3>
+        <h3 className="font-mono text-sm tracking-widest uppercase text-[#1c1c1b]">The Problem</h3>
       </div>
       
-      <div className="space-y-6 text-[#FAF6EE]/70 font-light leading-relaxed text-lg">
+      <div className="space-y-6 text-[#1c1c1b]/70 font-light leading-relaxed text-lg">
         <p>
           Achieving authentic retro aesthetics—like dithering, CRT scanlines, and pixel sorting—typically requires either heavy desktop software like Photoshop or slow server-side processing pipelines.
         </p>
         <p>
           For digital artists and creative developers, this creates friction. The iteration cycle is slow, experimentation is tedious, and privacy is often compromised by having to upload personal images to a remote server just to apply a filter.
         </p>
-        <p className="text-[#FAF6EE] font-medium border-l border-white/20 pl-4 py-1 italic">
+        <p className="text-[#1c1c1b] font-medium border-l border-black/20 pl-4 py-1 italic">
           There was a clear need for a tool that brings powerful, high-performance image processing directly into the browser, running entirely client-side.
         </p>
       </div>
