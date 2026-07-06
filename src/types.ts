@@ -3,7 +3,7 @@ export interface Project {
   title: string;
   description: string;
   image: string;
-  category: 'UI/UX' | 'Web App' | 'Branding' | 'E-Commerce' | 'Data Vis';
+  category: 'UI/UX' | 'Web App' | 'Branding' | 'E-Commerce' | 'Data Vis' | 'Frontend Engineering';
   tags: string[];
   role: string;
   timeline: string;

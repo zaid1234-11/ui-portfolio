@@ -2,6 +2,32 @@ import { Project, TimelineItem, SkillGroup } from './types';
 
 export const PROJECTS: Project[] = [
   {
+    id: 'retrolab',
+    title: 'RetroLab',
+    description: 'A real-time browser-based retro image processing lab for pixel art, dithering, glitch effects, and CRT aesthetics.',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop',
+    category: 'Frontend Engineering',
+    tags: ['Creative Coding', 'Canvas API', 'Graphics Programming'],
+    role: 'Product Designer & Frontend Developer',
+    timeline: 'Personal Project',
+    techStack: ['React 19', 'TypeScript', 'Tailwind v4', 'Framer Motion', 'Canvas API', 'Uint8ClampedArray'],
+    problem: 'Modern pixel-art tools rely on desktop software or server processing, making experimentation slow.',
+    approach: 'RetroLab performs all processing locally using HTML5 Canvas for instant feedback.',
+    quote: "Modern images were never meant to look this nostalgic.",
+    solution: 'Real-time rendering, zero uploads, crisp exports, and authentic retro aesthetics.',
+    outcomes: [
+      { label: 'Canvas FPS', value: '60' },
+      { label: 'Preview Update', value: '<16ms' },
+      { label: 'Server Compute', value: '0%' }
+    ],
+    galleryImages: [
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop'
+    ],
+    nextProjectId: 'fintrac-ai',
+    liveUrl: '#',
+    repoUrl: 'https://github.com/zaid1234-11/retro-lab-pixel-art'
+  },
+  {
     id: 'fintrac-ai',
     title: 'FinTrac AI',
     description: 'AI-Powered Financial Behavioral Coaching Platform addressing the high churn of rigid budgeting systems.',
@@ -127,7 +153,7 @@ export const PROJECTS: Project[] = [
     galleryImages: [
       '/adrocket.png'
     ],
-    nextProjectId: 'fintrac-ai',
+    nextProjectId: 'retrolab',
     liveUrl: 'https://github.com/zaid1234-11/The-adrocket',
     repoUrl: 'https://github.com/zaid1234-11/The-adrocket'
   }

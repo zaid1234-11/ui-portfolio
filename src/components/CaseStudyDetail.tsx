@@ -4,6 +4,7 @@ import { Project } from '../types';
 import { PROJECTS } from '../data';
 import TornPaperEdge from './TornPaperEdge';
 import SalesSphereCaseStudy from './case-studies/SalesSphereCaseStudy';
+import RetroLabCaseStudy from './case-studies/RetroLabCaseStudy';
 
 interface CaseStudyDetailProps {
   project: Project;
@@ -27,6 +28,7 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
   };
 
   const isSalesSphere = project.id === 'salessphere';
+  const isRetroLab = project.id === 'retrolab';
 
   return (
     <div
@@ -59,7 +61,11 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
         </div>
 
         {/* Conditionally Render Custom Product Story or Default Layout */}
-        {isSalesSphere ? (
+        {isRetroLab ? (
+          <div className="-mx-6 md:-mx-12 lg:-mx-20">
+             <RetroLabCaseStudy />
+          </div>
+        ) : isSalesSphere ? (
           <div className="-mx-6 md:-mx-12 lg:-mx-20">
              <SalesSphereCaseStudy />
           </div>

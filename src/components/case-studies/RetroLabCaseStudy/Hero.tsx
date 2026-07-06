@@ -1,0 +1,100 @@
+import React from 'react';
+import { Play, Code, MousePointerClick } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+export default function Hero() {
+  return (
+    <section className="relative pt-12 pb-24">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-[#E34A53]/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <div className="space-y-4">
+            <span className="font-mono text-xs text-[#E34A53] tracking-[0.2em] uppercase">Creative Toolkit</span>
+            <h1 className="font-display text-5xl md:text-7xl font-bold leading-tight">RetroLab</h1>
+            <p className="text-lg text-[#FAF6EE]/70 font-light leading-relaxed max-w-md">
+              A real-time browser-based retro image processing lab for pixel art, dithering, glitch effects, and CRT aesthetics.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-[#FAF6EE] hover:bg-[#E34A53] text-[#162127] hover:text-[#FAF6EE] px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest font-bold">
+              <Play className="w-4 h-4 fill-current" />
+              Live Demo
+            </a>
+            <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest">
+              <Code className="w-4 h-4 text-[#E34A53]" />
+              Source Code
+            </a>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="lg:col-span-7 relative group perspective-1000"
+        >
+          {/* Animated interactive mockup container */}
+          <div className="relative rounded-xl border border-white/10 bg-[#0d1418] p-2 shadow-2xl overflow-hidden transform transition-transform duration-700 hover:rotate-y-2 hover:rotate-x-2">
+            
+            {/* RGB split effect on hover (simulated via drop shadow) */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[2px_0_0_rgba(255,0,0,0.5),-2px_0_0_rgba(0,255,255,0.5)]"></div>
+
+            <div className="w-full aspect-[16/10] bg-[#1a262c] rounded overflow-hidden relative">
+              {/* Fake UI Header */}
+              <div className="absolute top-0 inset-x-0 h-10 border-b border-white/5 flex items-center px-4 gap-2 bg-[#162127]">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#E34A53]/80"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                <div className="ml-auto font-mono text-[9px] text-white/30">RETROLAB_OS_v1.0</div>
+              </div>
+              
+              {/* Mock Canvas Area */}
+              <div className="absolute top-10 inset-0 flex items-center justify-center overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1614729939124-03290b0409ce?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Retro Processing Example"
+                  className="w-full h-full object-cover filter contrast-125 sepia-[0.3] hue-rotate-15 saturate-150 transition-all duration-[3000ms] group-hover:grayscale group-hover:contrast-200"
+                />
+                {/* Overlay scanlines specifically for this canvas */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[size:100%_4px] pointer-events-none z-10"></div>
+                
+                {/* Mock processing overlay */}
+                <div className="absolute bottom-4 right-4 bg-[#162127]/90 border border-white/10 px-4 py-3 rounded backdrop-blur-md z-20 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-[#E34A53] rounded-full animate-pulse"></div>
+                    <span className="font-mono text-[9px] text-[#FAF6EE] uppercase">Processing...</span>
+                  </div>
+                  <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-[#E34A53]"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Cursor Interaction Hint */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-full animate-bounce">
+                  <MousePointerClick className="w-5 h-5 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
