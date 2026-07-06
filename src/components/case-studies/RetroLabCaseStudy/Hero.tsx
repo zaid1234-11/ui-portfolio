@@ -25,11 +25,11 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-[#1c1c1b] hover:bg-[#E34A53] text-[#FAF6EE] hover:text-[#FAF6EE] px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest font-bold">
+            <a href="https://retro-lab-pixel-art.vercel.app" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-[#1c1c1b] hover:bg-[#E34A53] text-[#FAF6EE] hover:text-[#FAF6EE] px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest font-bold">
               <Play className="w-4 h-4 fill-current" />
               Live Demo
             </a>
-            <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-black/5 hover:bg-black/10 border border-black/10 px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest text-[#1c1c1b]">
+            <a href="https://github.com/zaid1234-11/retro-lab-pixel-art" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-black/5 hover:bg-black/10 border border-black/10 px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest text-[#1c1c1b]">
               <Code className="w-4 h-4 text-[#E34A53]" />
               Source Code
             </a>
@@ -50,39 +50,15 @@ export default function Hero() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[2px_0_0_rgba(255,0,0,0.5),-2px_0_0_rgba(0,255,255,0.5)]"></div>
 
             <div className="w-full aspect-[16/10] bg-[#1a262c] rounded overflow-hidden relative">
-              {/* Fake UI Header */}
-              <div className="absolute top-0 inset-x-0 h-10 border-b border-black/5 flex items-center px-4 gap-2 bg-transparent">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#E34A53]/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-                <div className="ml-auto font-mono text-[9px] text-[#1c1c1b]/30">RETROLAB_OS_v1.0</div>
-              </div>
-              
-              {/* Mock Canvas Area */}
-              <div className="absolute top-10 inset-0 flex items-center justify-center overflow-hidden">
+              {/* Realistic App Screenshot */}
+              <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1614729939124-03290b0409ce?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Retro Processing Example"
-                  className="w-full h-full object-cover filter contrast-125 sepia-[0.3] hue-rotate-15 saturate-150 transition-all duration-[3000ms] group-hover:grayscale group-hover:contrast-200"
+                  src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop" 
+                  alt="RetroLab App Interface"
+                  className="w-full h-full object-cover transition-all duration-[3000ms] group-hover:scale-105"
                 />
-                {/* Overlay scanlines specifically for this canvas */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[size:100%_4px] pointer-events-none z-10"></div>
-                
-                {/* Mock processing overlay */}
-                <div className="absolute bottom-4 right-4 bg-transparent/90 border border-black/10 px-4 py-3 rounded backdrop-blur-md z-20 flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-[#E34A53] rounded-full animate-pulse"></div>
-                    <span className="font-mono text-[9px] text-[#1c1c1b] uppercase">Processing...</span>
-                  </div>
-                  <div className="w-32 h-1 bg-black/10 rounded-full overflow-hidden">
-                    <motion.div 
-                      className="h-full bg-[#E34A53]"
-                      initial={{ width: "0%" }}
-                      animate={{ width: "100%" }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </div>
-                </div>
+                {/* CRT Scanlines Overlay matching the real app */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[size:100%_4px] pointer-events-none z-10"></div>
               </div>
 
               {/* Cursor Interaction Hint */}

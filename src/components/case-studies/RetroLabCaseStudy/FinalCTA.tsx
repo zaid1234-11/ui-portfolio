@@ -19,11 +19,11 @@ export default function FinalCTA() {
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-          <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-[#E34A53] hover:bg-[#1c1c1b] text-[#FAF6EE] hover:text-[#FAF6EE] px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest font-bold w-full sm:w-auto">
+          <a href="https://retro-lab-pixel-art.vercel.app" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-[#E34A53] hover:bg-[#1c1c1b] text-[#FAF6EE] hover:text-[#FAF6EE] px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest font-bold w-full sm:w-auto">
             Explore Live Demo
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
-          <a href="https://github.com/zaid1234-11/retrolab" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-black/5 hover:bg-black/10 border border-black/10 px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest w-full sm:w-auto text-[#1c1c1b]">
+          <a href="https://github.com/zaid1234-11/retro-lab-pixel-art" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 bg-black/5 hover:bg-black/10 border border-black/10 px-8 py-4 rounded-full transition-all duration-300 font-mono text-xs uppercase tracking-widest w-full sm:w-auto text-[#1c1c1b]">
             <Github className="w-4 h-4 text-[#E34A53]" />
             View Source
           </a>

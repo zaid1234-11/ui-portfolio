@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop'
     ],
     nextProjectId: 'fintrac-ai',
-    liveUrl: '#',
+    liveUrl: 'https://retro-lab-pixel-art.vercel.app',
     repoUrl: 'https://github.com/zaid1234-11/retro-lab-pixel-art'
   },
   {
