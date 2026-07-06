@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 
 export default function Gallery() {
   const images = [
-    { src: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop', algo: '1-Bit Macintosh' },
-    { src: 'https://images.unsplash.com/photo-1614729939124-03290b0409ce?q=80&w=600&auto=format&fit=crop', algo: 'GameBoy' },
-    { src: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=600&auto=format&fit=crop', algo: 'Arcade CRT' },
-    { src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop', algo: 'Digital Glitch' },
+    { src: '/projects/pixel lab/dither.webp', algo: 'Floyd-Steinberg Dither' },
+    { src: '/projects/pixel lab/dots.webp', algo: 'Halftone Dots' },
+    { src: '/projects/pixel lab/edge detection.webp', algo: 'Edge Detection' },
+    { src: '/projects/pixel lab/voronoi.webp', algo: 'Voronoi Pattern' },
   ];
 
   return (
@@ -23,8 +23,7 @@ export default function Gallery() {
             transition={{ delay: i * 0.1 }}
             className="group relative aspect-square bg-white border border-black/10 rounded-xl overflow-hidden shadow-lg"
           >
-            <img src={img.src} alt={img.algo} className="w-full h-full object-cover filter grayscale contrast-125 sepia-[0.3]" />
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] pointer-events-none mix-blend-overlay"></div>
+            <img src={img.src} alt={img.algo} className="w-full h-full object-cover" />
             
             {/* Hover overlay */}
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">

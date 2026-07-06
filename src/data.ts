@@ -5,7 +5,7 @@ export const PROJECTS: Project[] = [
     id: 'retrolab',
     title: 'RetroLab',
     description: 'A real-time browser-based retro image processing lab for pixel art, dithering, glitch effects, and CRT aesthetics.',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop',
+    image: '/projects/pixel lab/hero page.png',
     category: 'Frontend Engineering',
     tags: ['Creative Coding', 'Canvas API', 'Graphics Programming'],
     role: 'Product Designer & Frontend Developer',
@@ -21,7 +21,7 @@ export const PROJECTS: Project[] = [
       { label: 'Server Compute', value: '0%' }
     ],
     galleryImages: [
-      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop'
+      '/projects/pixel lab/hero page.png'
     ],
     nextProjectId: 'fintrac-ai',
     liveUrl: 'https://retro-lab-pixel-art.vercel.app',

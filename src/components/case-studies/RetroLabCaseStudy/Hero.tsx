@@ -53,7 +53,7 @@ export default function Hero() {
               {/* Realistic App Screenshot */}
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop" 
+                  src="/projects/pixel lab/hero page.png" 
                   alt="RetroLab App Interface"
                   className="w-full h-full object-cover transition-all duration-[3000ms] group-hover:scale-105"
                 />

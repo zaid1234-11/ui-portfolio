@@ -1,69 +1,66 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
 
 export default function TransformationShowcase() {
-  const [step, setStep] = useState(0); // 0: Upload, 1: Processing, 2: Result
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const { left, width } = containerRef.current.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const x = Math.max(0, Math.min(clientX - left, width));
+    const percent = (x / width) * 100;
+    setSliderPosition(percent);
+  };
 
   return (
     <section className="py-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <h3 className="font-display text-3xl font-bold">Transformation</h3>
-        <div className="flex gap-2">
-          {['Original', 'Process', 'Result'].map((label, idx) => (
-            <button
-              key={idx}
-              onClick={() => setStep(idx)}
-              className={`font-mono text-[10px] uppercase px-4 py-2 rounded-full border transition-all ${
-                step === idx 
-                  ? 'bg-[#E34A53] text-[#1c1c1b] border-[#E34A53]' 
-                  : 'bg-white text-[#1c1c1b]/50 border-black/10 hover:border-black/30'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <p className="font-mono text-[10px] uppercase text-[#1c1c1b]/50 tracking-widest border border-black/10 px-4 py-2 rounded-full">
+          Slide to Compare
+        </p>
       </div>
 
-      <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] bg-white rounded-xl overflow-hidden border border-black/10 shadow-2xl cursor-pointer" onClick={() => setStep((s) => (s + 1) % 3)}>
-        <AnimatePresence mode="wait">
-          {step === 0 && (
-            <motion.div 
-              key="original"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
-              className="absolute inset-0"
-            >
-              <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1000&auto=format&fit=crop" className="w-full h-full object-cover" alt="Original" />
-              <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-black/20">1. Original Image</div>
-            </motion.div>
-          )}
-          {step === 1 && (
-            <motion.div 
-              key="processing"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
-              className="absolute inset-0 bg-transparent flex flex-col items-center justify-center gap-6"
-            >
-              <div className="w-64 h-3 bg-black rounded-full overflow-hidden border border-black/10">
-                <motion.div className="h-full bg-[#E34A53]" initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 2, repeat: Infinity }} />
-              </div>
-              <div className="font-mono text-xs text-[#E34A53] animate-pulse uppercase tracking-widest">Applying_Filters...</div>
-            </motion.div>
-          )}
-          {step === 2 && (
-            <motion.div 
-              key="result"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
-              className="absolute inset-0"
-            >
-              <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1000&auto=format&fit=crop" className="w-full h-full object-cover filter contrast-[1.5] sepia-[0.8] hue-rotate-[180deg] grayscale-[0.8]" alt="Result" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] pointer-events-none"></div>
-              <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-[#E34A53] text-[#E34A53]">2. Retro Output</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div 
+        ref={containerRef}
+        className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] bg-white rounded-xl overflow-hidden border border-black/10 shadow-2xl cursor-col-resize select-none"
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleMouseMove}
+      >
+        {/* Underneath: Result image */}
+        <div className="absolute inset-0">
+          <img src="/projects/pixel lab/result.webp" className="w-full h-full object-cover" alt="Result" draggable="false" />
+        </div>
         
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[9px] bg-black/50 px-3 py-1.5 rounded-full border border-black/10 text-[#1c1c1b]/50 tracking-widest uppercase pointer-events-none">
-          Click to advance flow
+        {/* On top: Original image with clip-path */}
+        <div 
+          className="absolute inset-0"
+          style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
+        >
+          <img src="/projects/pixel lab/original.webp" className="w-full h-full object-cover" alt="Original" draggable="false" />
+        </div>
+
+        {/* Slider line */}
+        <div 
+          className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(0,0,0,0.5)] z-10 pointer-events-none"
+          style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+        >
+          {/* Slider handle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-[0_0_15px_rgba(0,0,0,0.3)] flex items-center justify-center border border-black/10">
+            <div className="flex gap-1">
+              <div className="w-0.5 h-3 bg-black/30 rounded-full"></div>
+              <div className="w-0.5 h-3 bg-black/30 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Labels */}
+        <div className="absolute top-4 left-4 bg-black/70 text-white backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-white/20 z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition > 20 ? 1 : 0 }}>
+          Before
+        </div>
+        <div className="absolute top-4 right-4 bg-black/70 text-[#E34A53] backdrop-blur-md px-4 py-2 rounded font-mono text-xs border border-[#E34A53] z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: sliderPosition < 80 ? 1 : 0 }}>
+          After
         </div>
       </div>
     </section>
