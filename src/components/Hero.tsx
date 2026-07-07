@@ -112,7 +112,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           scale: scaleGhostLeft,
           opacity: opacityGhostLeft,
         }}
-        className="absolute left-[-5%] top-[15%] font-syne text-[26vw] font-black text-mocha/15 select-none pointer-events-none z-0 tracking-tighter leading-none"
+        className="absolute left-[-5%] top-[15%] font-syne text-[26vw] font-black text-mocha/15 select-none pointer-events-none z-0 tracking-tighter leading-none will-change-transform transform-gpu"
       >
         01
       </motion.div>
@@ -124,7 +124,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           scale: scaleGhostRight,
           opacity: opacityGhostRight,
         }}
-        className="absolute right-[-8%] top-[25%] font-fraunces italic font-black text-chai/15 select-none pointer-events-none z-0 tracking-tighter leading-none"
+        className="absolute right-[-8%] top-[25%] font-fraunces italic font-black text-chai/15 select-none pointer-events-none z-0 tracking-tighter leading-none will-change-transform transform-gpu"
       >
         CRAFT
       </motion.div>
@@ -331,7 +331,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       {/* Bottom Architectural Draft Bar (Double bordered footer bar styled like reference) */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="border-t border-b border-ivory/10 py-4 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-display font-bold text-[11px] tracking-widest text-ivory-dim/60">
+        <div className="border-t border-b border-ivory/10 py-4 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-display font-bold text-[11px] tracking-widest text-[#4E4842]">
           <div className="flex items-center gap-2">
             <span className="text-chai font-bold">✉</span>
             <a href="mailto:zaidsaifi150105@gmail.com" className="hover:text-ivory transition-colors">
@@ -348,7 +348,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
           {/* Left: Design philosophy */}
           <div className="flex flex-col justify-between">
-            <span className="font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-2">
+            <span className="font-display font-bold text-[11px] text-[#4E4842]/80 uppercase tracking-widest mb-2">
               <VariableProximity
                 label="Philosophy"
                 fromFontVariationSettings="'wght' 500"
@@ -358,7 +358,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 falloff="gaussian"
               />
             </span>
-            <p className="text-[13px] font-display font-bold text-ivory-dim/80 leading-relaxed italic">
+            <p className="text-[13px] font-display font-bold text-[#1c1c1b] leading-relaxed italic">
               <VariableProximity
                 label="&quot;Eliminate the noise. Magnify the interaction. Treat the layout as an architect's canvas responding to physical space.&quot;"
                 fromFontVariationSettings="'wght' 500"
@@ -372,12 +372,12 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
           {/* Center: Tech stack capsules */}
           <div className="flex flex-col">
-            <span className="font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-3">Core Stack Highlights</span>
+            <span className="font-display font-bold text-[11px] text-[#4E4842]/80 uppercase tracking-widest mb-3">Core Stack Highlights</span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {techStack.map((tech, i) => (
                 <div key={i} className="flex flex-col bg-brew/40 border border-ivory/5 px-3 py-1.5 rounded-xl">
-                  <span className="text-[11px] font-display font-bold text-ivory">{tech.name}</span>
-                  <span className="text-[10px] font-display font-bold text-roast/70">{tech.desc}</span>
+                  <span className="text-[11px] font-display font-bold text-[#1c1c1b]">{tech.name}</span>
+                  <span className="text-[10px] font-display font-bold text-[#4E4842]/80">{tech.desc}</span>
                 </div>
               ))}
             </div>
@@ -387,7 +387,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           <div className="flex justify-between md:justify-around items-end">
             {stats.map((stat, i) => (
               <div key={i} className="text-right md:text-left">
-                <span className="block font-display font-bold text-[11px] text-ivory-dim/40 uppercase tracking-widest mb-1">
+                <span className="block font-display font-bold text-[11px] text-[#4E4842]/80 uppercase tracking-widest mb-1">
                   <VariableProximity
                     label={stat.label}
                     fromFontVariationSettings="'wght' 500"
@@ -397,7 +397,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                     falloff="gaussian"
                   />
                 </span>
-                <span className="font-display text-lg font-bold text-ivory">
+                <span className="font-display text-lg font-bold text-[#1c1c1b]">
                   <VariableProximity
                     label={stat.val}
                     fromFontVariationSettings="'wght' 600"
