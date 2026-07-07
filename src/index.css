@@ -686,20 +686,85 @@
 
 @media (max-width: 820px) {
   :root {
-    --folder-w: 180px;
-    --folder-overlap: 105px;
-    --folder-h: 500px;
+    --folder-w: 280px; /* Wider folders on mobile for clear viewing */
+    --folder-overlap: 30px; /* Very minimal overlap so tabs never collide */
+    --folder-h: 460px;
     --tab-h: 120px;
-    --tab-w: 40px;
-    --tab-inset: 58px;
+    --tab-w: 36px; /* Slightly thinner tabs */
+    --tab-inset: 20px;
   }
 
   .folder-stack {
-    overflow-x: auto;
+    overflow-x: visible;
+    flex-direction: row;
     justify-content: flex-start;
-    padding-left: 12px;
+    align-items: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-bottom: 24px;
-    -webkit-overflow-scrolling: touch;
+    height: var(--folder-h);
+    gap: 0;
+  }
+
+  .folder-btn {
+    margin-left: calc(-1 * var(--folder-overlap)) !important;
+    margin-top: 0 !important;
+    max-width: none;
+    flex-shrink: 0;
+  }
+
+  .folder-btn:first-child {
+    margin-left: 0 !important;
+  }
+
+  .folder-inner {
+    /* Subtle push up on hover/tap instead of side push */
+    --tx: 0px !important;
+  }
+
+  .folder-body, .card-swap-card {
+    top: calc(var(--tab-h) * 0.42) !important;
+    bottom: 0 !important;
+    border-radius: 4px 12px 12px 12px;
+  }
+
+  .folder-mark {
+    top: 30px;
+    bottom: 84px; 
+  }
+
+  .folder-footer {
+    bottom: 22px;
+  }
+
+  .folder-tab {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 14px 0;
+    gap: 0;
+    top: 0 !important;
+    bottom: auto !important;
+    right: 14px;
+    left: auto;
+    width: var(--tab-w);
+    height: var(--tab-h) !important;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .tab-code {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin-bottom: 11px;
+    font-size: 9px; /* Smaller to prevent cutoff */
+    letter-spacing: 0.1em;
+  }
+
+  .tab-title {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 13px; /* Slightly smaller for mobile */
+    letter-spacing: 0.05em;
   }
 }
 
