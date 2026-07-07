@@ -100,18 +100,18 @@ export default function App() {
   };
 
   return (
-    <ReactLenis root options={{ lerp: 0.04, duration: 1.5, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.5, syncTouch: true }}>
+    <ReactLenis root options={{ syncTouch: true, smoothTouch: true, touchMultiplier: 2, lerp: 0.08, smoothWheel: true }}>
       <AnimatePresence mode="wait">
         {isLoading && <Preloader />}
       </AnimatePresence>
 
-      <div className="relative min-h-screen bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased [will-change:transform]">
 
         {/* 1. Global Noise Texture Film overlay */}
         <div className="noise-overlay" aria-hidden="true"></div>
 
         {/* 2. Physical spiral rings binder edge (immersive diary scrapbook notebook) */}
-        <div className="fixed left-0 top-0 bottom-0 w-12 md:w-16 z-50 pointer-events-none flex flex-col justify-between py-6 pl-1.5 md:pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
+        <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
           {Array.from({ length: 24 }).map((_, idx) => (
             <div key={idx} className="relative w-6 h-6 flex items-center justify-start group">
               {/* Dark binder hole in paper */}
