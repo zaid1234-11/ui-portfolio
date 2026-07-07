@@ -240,6 +240,7 @@ const AboutMeScribble = () => {
 
 export default function About() {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [isPhotoColored, setIsPhotoColored] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Initialize scroll tracking inside the biography container
@@ -288,15 +289,17 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative lg:pt-24 lg:pb-32 pt-20 pb-28 px-6 md:px-12 bg-transparent overflow-hidden"
+      className="relative lg:pt-24 lg:pb-32 pt-20 pb-28 bg-transparent overflow-hidden"
     >
       {/* Background Grids */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
-      <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 transform-gpu origin-top">
-        
-        {/* Overhaul Core Grid: Collage and Typo details */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-28">
+      {/* Top Content Wrapper with padding */}
+      <div className="px-6 md:px-12">
+        <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 transform-gpu origin-top">
+          
+          {/* Overhaul Core Grid: Collage and Typo details */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-28">
           
           {/* Left Collage Column (5 cols) */}
           <div className="lg:col-span-5 relative flex items-center justify-center min-h-[440px] pt-12">
@@ -332,7 +335,8 @@ export default function About() {
                   src="/me.jpg"
                   alt="Zaid Saifi Portrait"
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover grayscale contrast-[1.12] brightness-[0.93] transition-all duration-700 ease-out hover:grayscale-0"
+                  onClick={() => setIsPhotoColored(!isPhotoColored)}
+                  className={`w-full h-full object-cover contrast-[1.12] brightness-[0.93] transition-all duration-700 ease-out md:hover:grayscale-0 cursor-pointer ${isPhotoColored ? 'grayscale-0' : 'grayscale'}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1b]/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
               </div>
@@ -462,48 +466,52 @@ export default function About() {
           </div>
 
         </div>
+        </motion.div>
+      </div>
 
-        {/* Editorial Areas of Practice Section */}
-        <AreasOfPractice />
+      {/* Editorial Areas of Practice Section - Moved outside padded container for full width */}
+      <AreasOfPractice />
 
-        {/* Chronology of Growth Timeline */}
-        <div className="border-t border-[#B8925A]/15 pt-20">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-16">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
-              <span className="font-display font-bold text-[11px] text-[#4E4842]/60 uppercase tracking-widest">
-                THE CHRONOLOGY OF GROWTH
-              </span>
+      {/* Chronology of Growth Timeline */}
+      <div className="px-6 md:px-12">
+        <div className="relative z-10 max-w-7xl mx-auto pb-20 md:pb-32">
+          <div className="border-t border-[#B8925A]/15 pt-20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-16">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
+                <span className="font-display font-bold text-[11px] text-[#4E4842]/60 uppercase tracking-widest">
+                  THE CHRONOLOGY OF GROWTH
+                </span>
+              </div>
+
+              {/* Resume CV Download Action */}
+              <button
+                id="download-resume-btn"
+                onClick={handleDownloadCV}
+                className="flex items-center justify-center gap-2 bg-[#1c1c1b] hover:bg-[#FAF6EE] border-2 border-[#1c1c1b] hover:text-[#1c1c1b] text-[#FAF6EE] text-[9.5px] tracking-widest uppercase font-bold px-5 py-2.5 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
+              >
+                {downloadSuccess ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 animate-bounce" />
+                    CV DOWNLOADED
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-3.5 h-3.5 text-[#B8925A]" />
+                    DOWNLOAD RESUME
+                  </>
+                )}
+              </button>
             </div>
 
-            {/* Resume CV Download Action */}
-            <button
-              id="download-resume-btn"
-              onClick={handleDownloadCV}
-              className="flex items-center justify-center gap-2 bg-[#1c1c1b] hover:bg-[#FAF6EE] border-2 border-[#1c1c1b] hover:text-[#1c1c1b] text-[#FAF6EE] text-[9.5px] tracking-widest uppercase font-bold px-5 py-2.5 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
-            >
-              {downloadSuccess ? (
-                <>
-                  <Check className="w-3.5 h-3.5 animate-bounce" />
-                  CV DOWNLOADED
-                </>
-              ) : (
-                <>
-                  <Download className="w-3.5 h-3.5 text-[#B8925A]" />
-                  DOWNLOAD RESUME
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="relative border-l-2 border-dashed border-[#B8925A]/30 ml-4 md:ml-32 pl-8 md:pl-12 space-y-20">
-            {TIMELINE.map((node, index) => (
-              <TimelineNode key={node.id} node={node} index={index} />
-            ))}
+            <div className="relative border-l-2 border-dashed border-[#B8925A]/30 ml-4 md:ml-32 pl-8 md:pl-12 space-y-20">
+              {TIMELINE.map((node, index) => (
+                <TimelineNode key={node.id} node={node} index={index} />
+              ))}
+            </div>
           </div>
         </div>
-
-      </motion.div>
+      </div>
     </section>
   );
 }
