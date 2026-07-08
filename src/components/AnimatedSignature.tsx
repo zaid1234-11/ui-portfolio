@@ -55,7 +55,7 @@ export default function AnimatedSignature() {
         initial={{ clipPath: "inset(0 100% 0 0)" }}
         animate={hasTriggered ? { clipPath: "inset(0 0% 0 0)" } : { clipPath: "inset(0 100% 0 0)" }}
         transition={{
-          duration: 2.2,
+          duration: 6.5,
           ease: [0.25, 1, 0.5, 1], // Same elegant deceleration as before
         }}
         style={{ filter: 'url(#sig-ink-bleed)' }}
