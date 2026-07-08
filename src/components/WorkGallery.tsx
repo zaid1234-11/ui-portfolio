@@ -79,8 +79,8 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   const ySticky = isMobile ? yStickyTransform : 0;
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
-  const scale = useTransform(smoothProgress, [0, 1], [1.15, 1]);
-  const y = useTransform(smoothProgress, [0, 1], [60, 0]);
+  const scale = useTransform(smoothProgress, [0, 1], [1.15, 1], { clamp: true });
+  const y = useTransform(smoothProgress, [0, 1], [60, 0], { clamp: true });
 
 
 
@@ -192,10 +192,10 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
         </div>
 
         {/* Tactile Folder Stack Container */}
-        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[300vh] relative' : ''}`}>
+        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[300vh] relative mt-16 md:mt-24' : ''}`}>
           <motion.div 
             style={isMobile ? { y: ySticky } : {}} 
-            className={`${isMobile ? 'absolute top-0 left-0 w-full h-screen flex items-center overflow-hidden' : 'folder-stack-container py-12 flex justify-center w-full overflow-visible'}`}
+            className={`${isMobile ? 'absolute top-0 left-0 w-full h-screen flex items-center pt-16 md:pt-24 overflow-hidden' : 'folder-stack-container py-12 flex justify-center w-full overflow-visible'}`}
           >
             <motion.div 
               ref={folderStackRef}
