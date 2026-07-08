@@ -47,10 +47,10 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
         </filter>
       </svg>
 
-      <header className="fixed top-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+      <header className="fixed top-3 sm:top-4 md:top-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6 md:px-4">
         <motion.div 
-          className={`pointer-events-auto flex flex-col md:flex-row md:items-center justify-between p-3 md:p-1.5 transition-all duration-500 ease-out border shadow-xl backdrop-blur-md w-full max-w-4xl transform-gpu
-            ${isMobileMenuOpen ? 'rounded-[2rem]' : 'rounded-full'}
+          className={`pointer-events-auto flex flex-col md:flex-row md:items-center justify-between p-2.5 sm:p-3 md:p-1.5 transition-all duration-500 ease-out border shadow-xl backdrop-blur-md w-full max-w-4xl transform-gpu
+            ${isMobileMenuOpen ? 'rounded-[1.5rem] sm:rounded-[2rem]' : 'rounded-full'}
             ${isScrolled 
               ? 'bg-white/85 border-stone-200/50 shadow-black/5' 
               : 'bg-[#1c1c1b]/95 border-[#B8925A]/20 shadow-black/20'}`}
@@ -63,24 +63,24 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
             {/* Logo */}
             <button 
               onClick={() => { handleNavClick('hero'); setIsMobileMenuOpen(false); }}
-              className="flex items-center gap-2 text-left focus:outline-none relative z-20 pl-2 group"
+              className="flex items-center gap-2 text-left focus:outline-none relative z-20 pl-1 sm:pl-2 group"
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#FAF6EE]'}`}>
-                <span className={`font-display italic text-sm font-semibold ${isScrolled ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]'}`}>a.</span>
+              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#FAF6EE]'}`}>
+                <span className={`font-display italic text-xs sm:text-sm font-semibold ${isScrolled ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]'}`}>a.</span>
               </div>
               <div className="flex flex-col justify-start leading-none">
-                <span className={`font-display font-bold tracking-widest text-xs uppercase transition-colors duration-300 ${isScrolled ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
-                <span className="font-mono text-[8px] tracking-widest text-[#B8925A] italic">the journal</span>
+                <span className={`font-display font-bold tracking-widest text-[10px] sm:text-xs uppercase transition-colors duration-300 ${isScrolled ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
+                <span className="font-mono text-[7px] sm:text-[8px] tracking-widest text-[#B8925A] italic">the journal</span>
               </div>
             </button>
 
             {/* Mobile Nav Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-[#B8925A] focus:outline-none flex items-center justify-center cursor-pointer"
+              className="md:hidden p-1.5 sm:p-2 text-[#B8925A] focus:outline-none flex items-center justify-center cursor-pointer"
               aria-label="Toggle Navigation Menu"
             >
-              <svg className="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-5 sm:h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
                 {isMobileMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -173,10 +173,10 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="md:hidden w-full overflow-hidden flex flex-col items-center gap-6 mt-4 pb-4 border-t border-[#B8925A]/15 pt-4"
+                className="md:hidden w-full overflow-hidden flex flex-col items-center gap-5 sm:gap-6 mt-3 sm:mt-4 pb-3 sm:pb-4 border-t border-[#B8925A]/15 pt-3 sm:pt-4"
               >
                 {/* Vertical menu links */}
-                <nav className="flex flex-col items-center gap-4 w-full">
+                <nav className="flex flex-col items-center gap-3 sm:gap-4 w-full">
                   {navItems.map((item) => {
                     const isActive = activeSection === item.id;
                     const textColor = isScrolled
@@ -189,7 +189,7 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
                           handleNavClick(item.id);
                           setIsMobileMenuOpen(false);
                         }}
-                        className={`font-mono text-xs uppercase tracking-[0.25em] py-2 w-full text-center transition-colors focus:outline-none ${textColor}`}
+                        className={`font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] py-2 w-full text-center transition-colors focus:outline-none ${textColor}`}
                       >
                         {item.name}
                       </button>
@@ -203,7 +203,7 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
                     onNavigateToConnect();
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`w-full max-w-[200px] py-3 rounded-full font-mono text-[10px] uppercase tracking-widest text-center transition-all duration-300 focus:outline-none
+                  className={`w-full max-w-[180px] sm:max-w-[200px] py-2.5 sm:py-3 rounded-full font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-center transition-all duration-300 focus:outline-none
                     ${isScrolled 
                       ? 'bg-[#1c1c1b] text-[#FAF6EE] hover:bg-[#B8925A]' 
                       : 'bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE]'}`}
