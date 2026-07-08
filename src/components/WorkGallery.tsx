@@ -31,6 +31,14 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   });
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 820);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const { scrollYProgress: mobileScrollProgress } = useScroll({
     target: scrollRef,
@@ -48,11 +56,11 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
-    if (folderStackRef.current) {
+    if (isMobile && folderStackRef.current) {
       setStackWidth(folderStackRef.current.scrollWidth);
       setWindowWidth(window.innerWidth);
     }
-  }, [filteredProjects]);
+  }, [filteredProjects, isMobile]);
   // Calculate how far we need to translate horizontally
   // Total scrollable width minus viewport width plus padding
   const maxTranslate = Math.max(0, stackWidth - windowWidth + 40);
@@ -60,13 +68,15 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   // Framer Motion works best with explicit numeric values for x and y transforms.
   const rawXTransform = useTransform(mobileScrollProgress, [0, 1], [0, -maxTranslate]);
   
-  // Apply a buttery smooth kinetic spring to the horizontal sliding for the WHOLE SITE!
-  const x = useSpring(rawXTransform, { stiffness: 150, damping: 25, mass: 0.5 });
+  // Apply a buttery smooth kinetic spring to the horizontal sliding!
+  const smoothXTransform = useSpring(rawXTransform, { stiffness: 150, damping: 25, mass: 0.5 });
+  const x = isMobile ? smoothXTransform : 0;
 
   // Calculate vertical translation to simulate position: sticky
   // Since the wrapper is 300vh, the scroll distance is 200vh.
   // Translating down by 200vh as scrollProgress goes from 0 to 1 perfectly cancels out the scroll!
-  const ySticky = useTransform(mobileScrollProgress, [0, 1], ["0vh", "200vh"]);
+  const yStickyTransform = useTransform(mobileScrollProgress, [0, 1], ["0vh", "200vh"]);
+  const ySticky = isMobile ? yStickyTransform : 0;
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
   const scale = useTransform(smoothProgress, [0, 1], [1.15, 1]);
@@ -182,15 +192,15 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
         </div>
 
         {/* Tactile Folder Stack Container */}
-        <div ref={scrollRef} className={`w-full h-[300vh] relative`}>
+        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[300vh] relative' : ''}`}>
           <motion.div 
-            style={{ y: ySticky }} 
-            className={`absolute top-0 left-0 w-full h-screen flex items-center overflow-hidden`}
+            style={isMobile ? { y: ySticky } : {}} 
+            className={`${isMobile ? 'absolute top-0 left-0 w-full h-screen flex items-center overflow-hidden' : 'folder-stack-container py-12 flex justify-center w-full overflow-visible'}`}
           >
             <motion.div 
               ref={folderStackRef}
-              className={`folder-stack w-max will-change-transform transform-gpu`} 
-              style={{ x }}
+              className={`folder-stack ${isMobile ? 'w-max will-change-transform transform-gpu' : ''}`} 
+              style={isMobile ? { x } : {}}
               role="list" 
               aria-label="Project portfolio folders"
             >

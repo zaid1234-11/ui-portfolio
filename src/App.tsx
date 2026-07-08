@@ -111,7 +111,7 @@ export default function App() {
         <div className="noise-overlay" aria-hidden="true"></div>
 
         {/* 2. Physical spiral rings binder edge (immersive diary scrapbook notebook) */}
-        <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
+        <div className="fixed left-0 top-0 bottom-0 w-12 md:w-16 z-50 pointer-events-none flex flex-col justify-between py-6 pl-1.5 md:pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
           {Array.from({ length: 24 }).map((_, idx) => (
             <div key={idx} className="relative w-6 h-6 flex items-center justify-start group">
               {/* Dark binder hole in paper */}
