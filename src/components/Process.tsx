@@ -116,7 +116,7 @@ export default function Process() {
       id="process"
       className="relative lg:h-[380vh] h-auto bg-transparent lg:mb-0 mb-0"
     >
-      <motion.div style={{ scale, y }} className="relative w-full h-full transform-gpu origin-top">
+      <motion.div style={{ scale, y }} className="relative w-full transform-gpu origin-top">
       {/* Heading (normal scroll) */}
       <div className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 px-6 md:px-12 pt-24 lg:translate-x-10 md:translate-x-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between lg:mb-10 mb-16 gap-6">
@@ -153,6 +153,7 @@ export default function Process() {
           </div>
         </div>
       </div>
+      </motion.div>
 
       {/* Spacer (20–40vh) */}
       <div className="hidden lg:block lg:h-[10vh]"></div>
@@ -280,7 +281,6 @@ export default function Process() {
 
         </div>
       </div>
-      </motion.div>
     </section>
   );
 }
