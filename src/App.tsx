@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import WorkGallery from './components/WorkGallery';
-import Process from './components/Process';
-import About from './components/About';
-import ConnectForm from './components/ConnectForm';
 
+const WorkGallery = lazy(() => import('./components/WorkGallery'));
+const Process = lazy(() => import('./components/Process'));
+const About = lazy(() => import('./components/About'));
+const ConnectForm = lazy(() => import('./components/ConnectForm'));
 const CaseStudyDetail = lazy(() => import('./components/CaseStudyDetail'));
 import { Project } from './types';
 import { PROJECTS } from './data';
@@ -28,6 +28,13 @@ export default function App() {
       // Keep a small minimum delay (800ms) to prevent aggressive flashing on fast connections/caches
       setTimeout(() => {
         setIsLoading(false);
+        // Preload heavy components in the background after initial paint
+        setTimeout(() => {
+          import('./components/WorkGallery');
+          import('./components/Process');
+          import('./components/About');
+          import('./components/ConnectForm');
+        }, 500);
       }, 800);
     };
 
@@ -112,7 +119,7 @@ export default function App() {
         <div className="noise-overlay" aria-hidden="true"></div>
 
         {/* 2. Physical spiral rings binder edge (immersive diary scrapbook notebook) */}
-        <div className="fixed left-0 top-0 bottom-0 w-12 md:w-16 z-50 pointer-events-none flex flex-col justify-between py-6 pl-1.5 md:pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
+        <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
           {Array.from({ length: 24 }).map((_, idx) => (
             <div key={idx} className="relative w-6 h-6 flex items-center justify-start group">
               {/* Dark binder hole in paper */}
@@ -193,17 +200,25 @@ export default function App() {
                   {/* Hero Segment */}
                   <Hero onExploreClick={scrollToWork} />
 
-                  {/* Project Gallery Bento Segment */}
-                  <WorkGallery onSelectProject={(project) => setSelectedProject(project)} />
+                  {/* Visual spacer to separate Hero from Work Gallery */}
+                  <div className="h-16 md:h-28" />
 
-                  {/* Process Methodology Segment */}
-                  <Process />
+                  {/* Below-The-Fold Lazy Loaded Segments (each independent so they don't block each other) */}
+                  <Suspense fallback={<div className="min-h-screen" />}>
+                    <WorkGallery onSelectProject={(project) => setSelectedProject(project)} />
+                  </Suspense>
 
-                  {/* About Biography Timeline Segment */}
-                  <About />
+                  <Suspense fallback={<div className="min-h-screen" />}>
+                    <Process />
+                  </Suspense>
 
-                  {/* Liquid Glass Contact Segment */}
-                  <ConnectForm />
+                  <Suspense fallback={<div className="min-h-[80vh]" />}>
+                    <About />
+                  </Suspense>
+
+                  <Suspense fallback={<div className="min-h-screen" />}>
+                    <ConnectForm />
+                  </Suspense>
                 </main>
               </motion.div>
             )}
