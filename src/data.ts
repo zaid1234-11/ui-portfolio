@@ -179,14 +179,14 @@ export const TIMELINE: TimelineItem[] = [
     offerLetter: '/thiranex intern web_page-0001.jpg'
   },
   {
-    id: 'codealpha',
-    year: '2026 – Present',
-    role: 'Full Stack Development Intern',
-    company: 'CodeAlpha',
-    description: 'Selected for a one-month Full Stack Development Internship focused on building practical web applications and strengthening end-to-end development skills. Working with modern frontend technologies while gaining hands-on experience in real-world software development workflows.',
-    focus: ['Full Stack Development', 'React Ecosystem', 'Modern JavaScript', 'API Integration', 'Project-Based Learning'],
-    offerLetter: '/codealpha intern web_page-0001.jpg'
+    id: '4',
+    year: 'Feb 2026 – Jun 2026',
+    role: 'Data Analyst',
+    company: 'Internship Studio',
+    description: 'Developed a comprehensive Retail Sales Data Analysis project using Python, SQL, and Excel. Performed data cleaning, preprocessing, and exploratory data analysis on customer transaction and response datasets. Built a SQL database with analytical queries to evaluate revenue trends, customer spending behavior, and campaign effectiveness.',
+    focus: ['Python', 'SQL', 'Excel', 'Data Visualization', 'Exploratory Data Analysis (EDA)', 'Customer Segmentation']
   },
+
   {
     id: '3',
     year: '2024 – Present',
