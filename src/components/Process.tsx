@@ -118,7 +118,7 @@ export default function Process() {
     >
       <motion.div style={{ scale, y }} className="relative w-full transform-gpu origin-top">
       {/* Heading (normal scroll) */}
-      <div className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 px-6 md:px-12 pt-24 lg:translate-x-10 md:translate-x-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 md:pl-22 pt-24 lg:translate-x-10 md:translate-x-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between lg:mb-10 mb-16 gap-6">
           <div ref={headingContainerRef}>
             <div className="flex items-center gap-2 mb-3">
@@ -160,7 +160,7 @@ export default function Process() {
 
       {/* Sticky viewport frame */}
       <div className="lg:sticky lg:top-[12vh] lg:h-[88vh] lg:flex lg:flex-col lg:justify-center lg:py-6 py-24 px-6 md:px-12 bg-transparent">
-        <div className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 w-full">
           
           {/* Process Visual Split Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 relative z-10">
@@ -168,40 +168,82 @@ export default function Process() {
             {/* Left Block: Steps Selection list */}
             <div className="lg:col-span-5 space-y-4">
               {steps.map((step, index) => (
-                <button
-                  key={index}
-                  id={`process-step-btn-${index}`}
-                  onClick={() => handleStepClick(index)}
-                  className={`w-full text-left p-6 rounded-xl border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
-                    activeStep === index
-                      ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#B8925A]/40 shadow-lg'
-                      : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] hover:bg-[#ECE3D2]/30'
-                  }`}
-                >
-                  <span className={`font-mono text-sm font-bold transition-colors duration-300 ${
-                    activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/40'
-                  }`}>
-                    {step.num}
-                  </span>
+                <div key={index} className="flex flex-col">
+                  <button
+                    id={`process-step-btn-${index}`}
+                    onClick={() => handleStepClick(index)}
+                    className={`w-full text-left p-6 border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
+                      activeStep === index
+                        ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#B8925A]/40 shadow-lg rounded-t-xl lg:rounded-b-xl'
+                        : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] hover:bg-[#ECE3D2]/30 rounded-xl'
+                    }`}
+                  >
+                    <span className={`font-mono text-sm font-bold transition-colors duration-300 ${
+                      activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/40'
+                    }`}>
+                      {step.num}
+                    </span>
 
-                  <div className="space-y-1">
-                    <h3 className={`font-display text-base font-bold tracking-tight transition-colors duration-300 ${
-                      activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80'
-                    }`}>
-                      {step.title}
-                    </h3>
-                    <p className={`text-xs font-light ${
-                      activeStep === index ? 'text-[#ECE3D2]/60' : 'text-[#4E4842]/50'
-                    }`}>
-                      {step.tags.join(' · ')}
-                    </p>
-                  </div>
-                </button>
+                    <div className="space-y-1">
+                      <h3 className={`font-display text-base font-bold tracking-tight transition-colors duration-300 ${
+                        activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80'
+                      }`}>
+                        {step.title}
+                      </h3>
+                      <p className={`text-xs font-light ${
+                        activeStep === index ? 'text-[#ECE3D2]/60' : 'text-[#4E4842]/50'
+                      }`}>
+                        {step.tags.join(' · ')}
+                      </p>
+                    </div>
+                  </button>
+                  
+                  {/* Mobile Detail Panel (Accordion) */}
+                  <AnimatePresence>
+                    {activeStep === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="lg:hidden overflow-hidden bg-[#FAF6EE] border-x border-b border-[#B8925A]/20 rounded-b-xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.02)]"
+                      >
+                        <div className="p-5 flex flex-col gap-4">
+                          <p className="text-sm text-[#4E4842] leading-relaxed font-light">
+                            <DecryptedText
+                              text={steps[activeStep].description}
+                              animateOn="view"
+                              speed={15}
+                              maxIterations={5}
+                              revealDirection="start"
+                              sequential={false}
+                            />
+                          </p>
+
+                          {/* Step Metric Highlight */}
+                          <div className="bg-[#ECE3D2]/40 border border-[#B8925A]/20 p-3 rounded-xl flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#B8925A]/15 border border-[#B8925A]/25 flex items-center justify-center text-[#B8925A] shrink-0">
+                              <CheckCircle2 className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest mb-0.5">
+                                {steps[activeStep].metric}
+                              </span>
+                              <span className="text-xs font-semibold text-[#B8925A]">
+                                {steps[activeStep].metricVal}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ))}
             </div>
 
             {/* Right Block: Active Step Detail Panel with interactive scale Zoom in/out entrance */}
-            <div className="lg:col-span-7">
+            <div className="hidden lg:block lg:col-span-7">
               <div
                 className="relative w-full min-h-[480px] sm:aspect-[1.45] sm:min-h-0 max-w-[660px] mx-auto translate-y-6 lg:translate-y-4"
               >
@@ -248,10 +290,10 @@ export default function Process() {
                           <DecryptedText
                             text={steps[activeStep].description}
                             animateOn="view"
-                            speed={10}
-                            maxIterations={12}
+                            speed={15}
+                            maxIterations={5}
                             revealDirection="start"
-                            sequential={true}
+                            sequential={false}
                           />
                         </p>
                       </div>
