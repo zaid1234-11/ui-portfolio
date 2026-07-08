@@ -48,7 +48,7 @@ const TimelineNode: React.FC<{ node: typeof TIMELINE[0]; index: number }> = ({ n
       </div>
 
       {/* Date Left Margin Label */}
-      <div className="md:absolute md:-left-[180px] md:top-1 font-display text-sm text-[#B8925A] font-bold tracking-wider mb-2 md:mb-0">
+      <div className="md:absolute md:-left-[180px] md:w-[110px] md:text-right md:top-1 font-display text-sm text-[#B8925A] font-bold tracking-wider mb-2 md:mb-0">
         {node.year}
       </div>
 
@@ -296,7 +296,7 @@ export default function About() {
 
       {/* Top Content Wrapper with padding */}
       <div className="px-6 md:px-12">
-        <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-6 md:pl-10 transform-gpu origin-top">
+        <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 transform-gpu origin-top">
           
           {/* Overhaul Core Grid: Collage and Typo details */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-28">
