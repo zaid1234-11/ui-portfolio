@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import WorkGallery from './components/WorkGallery';
+import Process from './components/Process';
+import About from './components/About';
+import ConnectForm from './components/ConnectForm';
 
-const WorkGallery = lazy(() => import('./components/WorkGallery'));
 const CaseStudyDetail = lazy(() => import('./components/CaseStudyDetail'));
-const Process = lazy(() => import('./components/Process'));
-const About = lazy(() => import('./components/About'));
-const ConnectForm = lazy(() => import('./components/ConnectForm'));
 import { Project } from './types';
 import { PROJECTS } from './data';
 import { ArrowUp, Sparkles, Code, Globe } from 'lucide-react';
@@ -193,20 +193,17 @@ export default function App() {
                   {/* Hero Segment */}
                   <Hero onExploreClick={scrollToWork} />
 
-                  {/* Below-The-Fold Lazy Loaded Segments */}
-                  <Suspense fallback={<div className="h-[50vh] flex items-center justify-center text-ivory-dim/50 font-mono text-xs tracking-widest uppercase">Loading Interface Modules...</div>}>
-                    {/* Project Gallery Bento Segment */}
-                    <WorkGallery onSelectProject={(project) => setSelectedProject(project)} />
+                  {/* Project Gallery Bento Segment */}
+                  <WorkGallery onSelectProject={(project) => setSelectedProject(project)} />
 
-                    {/* Process Methodology Segment */}
-                    <Process />
+                  {/* Process Methodology Segment */}
+                  <Process />
 
-                    {/* About Biography Timeline Segment */}
-                    <About />
+                  {/* About Biography Timeline Segment */}
+                  <About />
 
-                    {/* Liquid Glass Contact Segment */}
-                    <ConnectForm />
-                  </Suspense>
+                  {/* Liquid Glass Contact Segment */}
+                  <ConnectForm />
                 </main>
               </motion.div>
             )}
