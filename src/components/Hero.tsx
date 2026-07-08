@@ -103,7 +103,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         setIsHovered(false);
         setMousePos({ x: 0, y: 0 });
       }}
-      className="relative min-h-screen flex flex-col justify-between pt-32 pb-12 px-6 md:px-12 bg-obsidian overflow-hidden"
+      className="relative h-auto md:min-h-screen flex flex-col justify-between pt-24 md:pt-32 pb-16 md:pb-12 px-6 md:px-12 bg-obsidian overflow-hidden"
     >
       {/* 1. Heavy Parallax Background Element Left: Zooming IN */}
       <motion.div
@@ -253,7 +253,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
           scale: scaleHeader,
           opacity: opacityHeader,
         }}
-        className="relative z-10 max-w-7xl mx-auto w-full my-auto flex flex-col items-center text-center py-12"
+        className="relative z-10 max-w-7xl mx-auto w-full my-12 md:my-auto flex flex-col items-center text-center py-12"
       >
         {/* Subtle Decorative Capsule */}
         <div className="mb-6 flex items-center gap-2 text-[#1c1c1b] [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
