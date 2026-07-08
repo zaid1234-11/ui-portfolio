@@ -105,7 +105,7 @@ export default function App() {
         {isLoading && <Preloader />}
       </AnimatePresence>
 
-      <div className="relative min-h-screen w-full overflow-x-hidden bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased [will-change:transform]">
+      <div className="relative min-h-screen w-full bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
 
         {/* 1. Global Noise Texture Film overlay */}
         <div className="noise-overlay" aria-hidden="true"></div>
