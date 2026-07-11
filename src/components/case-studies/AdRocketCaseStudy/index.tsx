@@ -36,6 +36,38 @@ export default function AdRocketCaseStudy() {
               </a>
             </div>
           </div>
+          <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight tracking-tight cursor-default">
+            <VariableProximity
+              label="Designing and engineering a premium marketing experience that looks as good as it performs"
+              fromFontVariationSettings="'wght' 400, 'opsz' 9"
+              toFontVariationSettings="'wght' 900, 'opsz' 144"
+              containerRef={containerRef}
+              radius={150}
+              falloff="gaussian"
+              fromColor="#FAF6EE"
+              toColor="#B8925A"
+            />
+          </h1>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-white/10 mt-12">
+            <div>
+              <span className="block font-sans text-[10px] text-white/60 uppercase tracking-widest mb-2 font-bold">Role</span>
+              <span className="text-sm font-semibold text-white/90">UI/UX · Frontend · Perf Engineer</span>
+            </div>
+            <div>
+              <span className="block font-sans text-[10px] text-white/60 uppercase tracking-widest mb-2 font-bold">Duration</span>
+              <span className="text-sm font-semibold text-white/90">July 2026</span>
+            </div>
+            <div className="col-span-2">
+              <span className="block font-sans text-[10px] text-white/60 uppercase tracking-widest mb-3 font-bold">Core Stack</span>
+              <div className="flex flex-wrap gap-2">
+                {['React', 'TypeScript', 'Vite', 'Tailwind', 'Framer Motion', 'GSAP'].map((tech) => (
+                  <span key={tech} className="font-sans text-[11px] font-bold tracking-wider bg-white/10 text-white/90 border border-white/20 px-3 py-1.5 rounded-full shadow-sm uppercase hover:bg-white/15 transition-colors">{tech}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </header>
       </div>
     </div>
   );
