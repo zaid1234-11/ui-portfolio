@@ -100,6 +100,46 @@ export default function AdRocketCaseStudy() {
           </ul>
         </section>
 
+        {/* The Challenge */}
+        <section className="grid md:grid-cols-12 gap-12 items-start">
+          <div className="md:col-span-7 space-y-6">
+            <h2 className="font-display text-3xl font-bold">The Challenge</h2>
+            <p className="text-white/70 font-light leading-relaxed">
+              AdRocket was designed as a premium, high-end marketing site: glassmorphism surfaces, cinematic scroll-linked animation, smooth motion transitions, and layered depth via Framer Motion and GSAP. Visually, it delivered exactly the "elite brand presentation" feel it was built for.
+            </p>
+            <p className="text-white/70 font-light leading-relaxed">
+              But a beautiful interface that users have to wait for isn't actually a good user experience. Under the hood, the site was fighting itself — heavy SVG paint operations, an overloaded rendering pipeline, render-blocking fonts, and JavaScript execution costs that made the interface feel sluggish despite its polish.
+            </p>
+            <div className="bg-[#B8925A]/10 border-l-2 border-[#B8925A] p-6 rounded-r-lg mt-8">
+              <p className="font-display text-lg italic text-white/90">
+                "The brief wasn't 'make it faster by simplifying it.' It was: keep every visual and interaction decision intact, and make the experience feel as premium as it looks."
+              </p>
+            </div>
+          </div>
+          
+          <div className="md:col-span-5 bg-white/5 rounded-2xl p-8 border border-white/10">
+            <h3 className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-6">Starting Point Metrics</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="flex items-center gap-2 text-white/80"><Activity className="w-4 h-4 text-red-400" /> Performance</span>
+                <span className="font-mono text-xl font-bold text-red-400">34</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="flex items-center gap-2 text-white/80"><Layout className="w-4 h-4 text-yellow-400" /> Accessibility</span>
+                <span className="font-mono text-xl font-bold text-yellow-400">69</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="flex items-center gap-2 text-white/80"><CheckCircle className="w-4 h-4 text-green-400" /> Best Practices</span>
+                <span className="font-mono text-xl font-bold text-green-400">96</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="flex items-center gap-2 text-white/80"><Search className="w-4 h-4 text-green-400" /> SEO</span>
+                <span className="font-mono text-xl font-bold text-green-400">83</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   );
