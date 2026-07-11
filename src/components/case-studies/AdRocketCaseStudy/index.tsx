@@ -16,6 +16,26 @@ export default function AdRocketCaseStudy() {
 
       <div className="relative z-10 max-w-5xl mx-auto space-y-24">
         
+        {/* Header Section */}
+        <header className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 sm:gap-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#B8925A]/30 bg-[#B8925A]/10 text-[#B8925A] font-mono text-xs uppercase tracking-widest self-start">
+              <span>Case Study</span>
+              <span className="w-1 h-1 rounded-full bg-[#B8925A]"></span>
+              <span>Performance Engineering</span>
+            </div>
+            
+            <div className="flex flex-wrap gap-3">
+              <a href="https://github.com/zaid1234-11/The-adrocket" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest transition-colors cursor-pointer">
+                <Github className="w-4 h-4" />
+                <span>GitHub</span>
+              </a>
+              <a href="https://the-adrocket-7u3vri1jq-zaidsaifi150105-8124s-projects.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#B8925A]/50 bg-[#B8925A]/10 hover:bg-[#B8925A]/20 text-[#B8925A] font-mono text-xs uppercase tracking-widest transition-colors cursor-pointer">
+                <ExternalLink className="w-4 h-4" />
+                <span>Live Site</span>
+              </a>
+            </div>
+          </div>
       </div>
     </div>
   );
