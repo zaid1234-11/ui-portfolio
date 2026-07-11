@@ -140,6 +140,70 @@ export default function AdRocketCaseStudy() {
           </div>
         </section>
 
+        {/* Approach Section */}
+        <section className="space-y-16">
+          <div className="space-y-4">
+            <h2 className="font-display text-3xl font-bold">Design & UX Approach</h2>
+            <p className="text-white/60 font-mono text-sm tracking-wide">Performance work only matters if it's invisible to the end user.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:border-[#B8925A]/50 transition-colors">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#B8925A]"></div>Motion hierarchy</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed">Rather than stripping animation for speed, the hero's motion layers were re-prioritized. Scroll-linked parallax and SVG distortion effects were reserved for the elements users actually focus on, while secondary effects were rebuilt with lighter-weight CSS backdrop blur.</p>
+            </div>
+            
+            <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:border-[#B8925A]/50 transition-colors">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#B8925A]"></div>Accessibility</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed">Accessibility was treated as core UX, not an audit item: corrected heading hierarchy, improved color contrast ratios across glassmorphic surfaces, full keyboard navigation support, and reduced-motion support for sensitive users.</p>
+            </div>
+
+            <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:border-[#B8925A]/50 transition-colors">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#B8925A]"></div>Layout stability</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed">Nothing breaks perceived quality faster than content jumping around while it loads. Hydration mismatches were eliminated by matching prerendered HTML, reserving image space, and stabilizing hero dimensions — bringing CLS down to 0.028.</p>
+            </div>
+
+            <div className="bg-white/5 p-8 rounded-2xl border border-white/10 hover:border-[#B8925A]/50 transition-colors">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#B8925A]"></div>Asset delivery</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed">Fonts were self-hosted with preloading and <code>font-display: swap</code>. Marketing imagery was migrated to locally hosted, compressed WebP — removing DNS lookups and layout instability.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Engineering Approach */}
+        <section className="space-y-12 border-t border-white/10 pt-16">
+          <div className="flex items-center gap-3 mb-8">
+            <Cpu className="w-6 h-6 text-[#B8925A]" />
+            <h2 className="font-display text-3xl font-bold">Frontend Engineering Approach</h2>
+          </div>
+          
+          <div className="space-y-10 border-l border-white/10 pl-6 md:pl-10 ml-3">
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 rounded-full bg-[#1c1c1b] border-2 border-[#B8925A]"></div>
+              <h3 className="text-lg font-bold text-white mb-2">Component architecture</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed max-w-3xl">Static sections were isolated and memoized with <code>React.memo</code>. The Framer Motion component hierarchy was flattened to reduce reconciliation overhead — resulting in faster rendering with zero visual change.</p>
+            </div>
+            
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 rounded-full bg-[#1c1c1b] border-2 border-[#B8925A]"></div>
+              <h3 className="text-lg font-bold text-white mb-2">Animation system integration</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed max-w-3xl">Redundant parallax transforms were removed, and unnecessary Framer Motion startup delay on the hero was eliminated to speed up the Largest Contentful Paint.</p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 rounded-full bg-[#1c1c1b] border-2 border-[#B8925A]"></div>
+              <h3 className="text-lg font-bold text-white mb-2">Bundle strategy</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed max-w-3xl">Rollup chunking was reorganized to separate vendor code, isolate GSAP, and split the motion bundle — improving tree-shaking and cutting JS parse/evaluation cost at boot.</p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 rounded-full bg-[#1c1c1b] border-2 border-[#B8925A]"></div>
+              <h3 className="text-lg font-bold text-white mb-2">Profiling-driven decisions</h3>
+              <p className="text-white/70 font-light text-sm leading-relaxed max-w-3xl">An experiment applying <code>will-change</code> and <code>translateZ(0)</code> for GPU layer promotion was tested and measured — and it <em>increased</em> layout recalculation time. It was reverted. Every change was validated with Chrome DevTools, not assumed.</p>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   );
