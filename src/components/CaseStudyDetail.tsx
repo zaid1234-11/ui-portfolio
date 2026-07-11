@@ -5,6 +5,7 @@ import { PROJECTS } from '../data';
 import TornPaperEdge from './TornPaperEdge';
 import SalesSphereCaseStudy from './case-studies/SalesSphereCaseStudy';
 import RetroLabCaseStudy from './case-studies/RetroLabCaseStudy';
+import AdRocketCaseStudy from './case-studies/AdRocketCaseStudy';
 
 interface CaseStudyDetailProps {
   project: Project;
@@ -29,6 +30,7 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
 
   const isSalesSphere = project.id === 'salessphere';
   const isRetroLab = project.id === 'retrolab';
+  const isAdRocket = project.id === 'the-adrocket';
 
   return (
     <div
@@ -68,6 +70,10 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
         ) : isSalesSphere ? (
           <div className="-mx-6 md:-mx-12 lg:-mx-20">
              <SalesSphereCaseStudy />
+          </div>
+        ) : isAdRocket ? (
+          <div className="-mx-6 md:-mx-12 lg:-mx-20">
+             <AdRocketCaseStudy />
           </div>
         ) : (
           <>
