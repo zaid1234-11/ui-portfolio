@@ -135,7 +135,7 @@ export const PROJECTS: Project[] = [
     id: 'the-adrocket',
     title: 'The Adrocket',
     description: 'AI Application Launcher and creative playground dashboard integrated with Google Gemini API.',
-    image: '/adrocket.png',
+    image: '/projects/adrocket/hero.webp',
     category: 'E-Commerce',
     tags: ['AI Integration', 'Model Playground', 'Rapid Prototyping'],
     role: 'Creative Developer',
@@ -151,10 +151,10 @@ export const PROJECTS: Project[] = [
       { label: 'Lighthouse Access', value: '95/100' }
     ],
     galleryImages: [
-      '/adrocket.png'
+      '/projects/adrocket/hero.webp'
     ],
     nextProjectId: 'retrolab',
-    liveUrl: 'https://github.com/zaid1234-11/The-adrocket',
+    liveUrl: 'https://the-adrocket-7u3vri1jq-zaidsaifi150105-8124s-projects.vercel.app/',
     repoUrl: 'https://github.com/zaid1234-11/The-adrocket'
   }
 ];
