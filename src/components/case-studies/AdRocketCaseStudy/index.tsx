@@ -68,6 +68,38 @@ export default function AdRocketCaseStudy() {
             </div>
           </div>
         </header>
+
+        {/* Hero Image */}
+        <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+          <img 
+            src="/projects/adrocket/hero.webp" 
+            alt="AdRocket Premium Marketing Experience" 
+            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-700 ease-out"
+          />
+        </div>
+
+        {/* TL;DR Section */}
+        <section className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-2 h-full bg-[#B8925A]"></div>
+          <h2 className="font-mono text-xs text-[#B8925A] tracking-widest uppercase mb-6 flex items-center gap-2">
+            <Zap className="w-4 h-4" />
+            TL;DR
+          </h2>
+          <ul className="space-y-4">
+            {[
+              "Took a visually rich, animation-heavy marketing site from a 34 → 94 Lighthouse Performance score without cutting a single animation, blur effect, or interaction.",
+              "Hit a perfect 100/100/100 on Accessibility, Best Practices, and SEO.",
+              "Cut Total Blocking Time by 99.7% (3520ms → 10ms) and nearly eliminated layout shift (CLS 0.028).",
+              "Proved that premium motion design and elite performance aren't a trade-off — they're a design and engineering discipline."
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-4 text-white/80 leading-relaxed font-light">
+                <CheckCircle className="w-5 h-5 text-[#B8925A] shrink-0 mt-0.5 opacity-80" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
       </div>
     </div>
   );
