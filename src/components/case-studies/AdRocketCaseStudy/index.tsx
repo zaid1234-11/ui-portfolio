@@ -204,6 +204,78 @@ export default function AdRocketCaseStudy() {
           </div>
         </section>
 
+        {/* Results */}
+        <section className="space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="font-display text-4xl md:text-5xl font-bold">The Results</h2>
+            <p className="text-white/50 font-mono text-sm tracking-widest uppercase">Lighthouse & Core Web Vitals</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { label: "Performance", before: 34, after: 94 },
+              { label: "Accessibility", before: 69, after: 100 },
+              { label: "Best Practices", before: 96, after: 100 },
+              { label: "SEO", before: 83, after: 100 },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-gradient-to-b from-white/10 to-white/5 border border-white/10 p-6 md:p-8 rounded-2xl flex flex-col items-center text-center hover:border-[#B8925A]/50 transition-colors shadow-lg">
+                <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest mb-4">{stat.label}</span>
+                <div className="flex flex-col items-center gap-1">
+                  <span className="font-display text-5xl md:text-6xl font-bold text-[#B8925A] leading-none drop-shadow-md">{stat.after}</span>
+                  <div className="flex items-center gap-2 mt-2 opacity-50">
+                    <span className="text-[10px] font-mono uppercase">Was</span>
+                    <span className="font-mono line-through text-sm">{stat.before}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 pt-6">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden group hover:border-[#B8925A]/30 transition-colors">
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Activity className="w-32 h-32" />
+              </div>
+              <h3 className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-8">Performance Wins</h3>
+              <div className="space-y-6 relative z-10">
+                {[
+                  { label: "First Contentful Paint", before: "3.5s", after: "2.4s" },
+                  { label: "Largest Contentful Paint", before: "3.9s", after: "2.6s" }
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <span className="block text-sm font-semibold text-white/90 mb-1">{stat.label}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-2xl text-[#B8925A] font-bold">{stat.after}</span>
+                      <span className="font-mono text-white/30 line-through text-sm">{stat.before}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden group hover:border-[#B8925A]/30 transition-colors">
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Cpu className="w-32 h-32" />
+              </div>
+              <h3 className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-8">Rendering Stability</h3>
+              <div className="space-y-6 relative z-10">
+                {[
+                  { label: "Total Blocking Time", before: "3520ms", after: "10ms" },
+                  { label: "Cumulative Layout Shift", before: "0.113", after: "0.028" }
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <span className="block text-sm font-semibold text-white/90 mb-1">{stat.label}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-2xl text-[#B8925A] font-bold">{stat.after}</span>
+                      <span className="font-mono text-white/30 line-through text-sm">{stat.before}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   );
