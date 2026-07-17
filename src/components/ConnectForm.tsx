@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Instagram, Sparkles, X } from 'lucide-react';
+import { Button } from './ui/Button';
 import VariableProximity from './VariableProximity';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 
@@ -390,24 +391,15 @@ export default function ConnectForm() {
                   )}
 
                   {/* Submit Button */}
-                  <button
+                  <Button
                     id="submit-form-btn"
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 bg-[#FAF6EE] hover:bg-[#B8925A] disabled:bg-white/10 text-[#1c1c1b] hover:text-[#FAF6EE] font-display text-sm tracking-widest uppercase font-black py-4 rounded-full transition-all duration-300 active:scale-95 cursor-pointer shadow-lg"
+                    isLoading={isSubmitting}
+                    variant="primary"
+                    icon={Send}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <RefreshCw className="w-4 h-4 animate-spin text-[#1c1c1b]" />
-                        SYNTHESIZING...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        TRANSMIT INQUIRY
-                      </>
-                    )}
-                  </button>
+                    {isSubmitting ? 'SYNTHESIZING...' : 'TRANSMIT INQUIRY'}
+                  </Button>
 
                 </form>
               ) : (
@@ -436,13 +428,13 @@ export default function ConnectForm() {
                     </p>
                   </div>
 
-                  <button
+                  <Button
                     id="reset-form-btn"
                     onClick={resetForm}
-                    className="relative z-10 font-mono text-[9px] tracking-widest text-[#ECE3D2]/60 hover:text-[#FAF6EE] border border-white/5 hover:border-white/15 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer"
+                    variant="secondary"
                   >
                     TRANSMIT ANOTHER MESSAGE
-                  </button>
+                  </Button>
                 </div>
               )}
 
