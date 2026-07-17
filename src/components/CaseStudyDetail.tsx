@@ -6,6 +6,8 @@ import TornPaperEdge from './TornPaperEdge';
 import SalesSphereCaseStudy from './case-studies/SalesSphereCaseStudy';
 import RetroLabCaseStudy from './case-studies/RetroLabCaseStudy';
 import AdRocketCaseStudy from './case-studies/AdRocketCaseStudy';
+import FinTracCaseStudy from './case-studies/FinTracCaseStudy';
+import PersonalPortfolioCaseStudy from './case-studies/PersonalPortfolioCaseStudy';
 
 interface CaseStudyDetailProps {
   project: Project;
@@ -31,6 +33,8 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
   const isSalesSphere = project.id === 'salessphere';
   const isRetroLab = project.id === 'retrolab';
   const isAdRocket = project.id === 'the-adrocket';
+  const isFinTrac = project.id === 'fintrac-ai';
+  const isPersonalPortfolio = project.id === 'personal-portfolio';
 
   return (
     <div
@@ -74,6 +78,14 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
         ) : isAdRocket ? (
           <div className="-mx-6 md:-mx-12 lg:-mx-20">
              <AdRocketCaseStudy />
+          </div>
+        ) : isFinTrac ? (
+          <div className="-mx-6 md:-mx-12 lg:-mx-20">
+             <FinTracCaseStudy />
+          </div>
+        ) : isPersonalPortfolio ? (
+          <div className="-mx-6 md:-mx-12 lg:-mx-20">
+             <PersonalPortfolioCaseStudy />
           </div>
         ) : (
           <>
