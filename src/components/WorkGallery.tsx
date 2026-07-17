@@ -5,6 +5,7 @@ import { Project } from '../types';
 import { PROJECTS } from '../data';
 import VariableProximity from './VariableProximity';
 import TextType from './TextType';
+import { ProjectCard } from './ui/ProjectCard';
 
 interface WorkGalleryProps {
   onSelectProject: (project: Project) => void;
@@ -211,96 +212,20 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
               const isFirst = visibleIdx === 0;
 
               return (
-                <button
+                <ProjectCard
                   key={project.id}
-                  id={`folder-${project.id}`}
-                  onClick={() => onSelectProject(project)}
-                  onMouseEnter={() => setHoveredIndex(visibleIdx)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onFocus={() => setHoveredIndex(visibleIdx)}
-                  onBlur={() => setHoveredIndex(null)}
-                  className="folder-btn focus:outline-none group"
-                  style={{
-                    zIndex: hoveredIndex === visibleIdx ? 100 : (filteredProjects.length - visibleIdx),
-                    marginLeft: isFirst ? '0px' : undefined,
-                  }}
-                  data-paper={meta.paper}
-                  role="listitem"
-                  aria-label={`${project.title} folder - press Enter to view case study`}
-                >
-                  <div
-                    className="folder-inner"
-                    style={getFolderTransform(visibleIdx)}
-                  >
-                    {/* The physical-like paper folder body */}
-                    <div className="folder-body card-swap-card">
-
-                      {/* Folder tab at the top-right corner */}
-                      <div
-                        className="folder-tab"
-                        style={{ top: visibleIdx % 2 === 1 ? '34px' : '0px' }}
-                      >
-                        <span className="tab-code">{meta.code} //</span>
-                        <span className="tab-title">{project.title.split(' ')[0]}</span>
-                      </div>
-
-                      {/* Main inside face plate design */}
-                      <div className="folder-mark">
-                        <div className="flex flex-col h-full justify-between">
-
-                          {/* Folder Top Plate content */}
-                          <div>
-                            <div className="flex justify-between items-start font-mono text-[9px] tracking-widest opacity-45 uppercase font-bold mb-3">
-                              <span>{meta.plate}</span>
-                              <span>{project.timeline}</span>
-                            </div>
-
-                            <h3 className="font-display text-xl md:text-2xl font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3">
-                              {project.title}
-                            </h3>
-
-                            <p className="text-[11px] leading-relaxed opacity-75 font-serif italic mb-4 line-clamp-3">
-                              {project.description}
-                            </p>
-                          </div>
-
-                          {/* Monochrome Preview Image insert with custom sepia vintage wash */}
-                          <div className="relative aspect-[16/10] w-full rounded border border-black/10 overflow-hidden bg-black/5 shadow-[inset_0_2px_6px_rgba(0,0,0,0.08)]">
-                            <img
-                              src={project.image}
-                              alt={project.title}
-                              referrerPolicy="no-referrer"
-                              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out ${project.id === 'the-adrocket'
-                                  ? 'opacity-90'
-                                  : 'grayscale contrast-[1.05] opacity-75 mix-blend-multiply'
-                                }`}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-                          </div>
-
-                          {/* Tech stack mini tags */}
-                          <div className="flex flex-wrap gap-1 mt-3">
-                            {project.techStack.slice(0, 2).map((tech, tIdx) => (
-                              <span key={tIdx} className="font-mono text-[8px] bg-black/5 border border-black/10 px-2 py-0.5 rounded-full opacity-60">
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-
-                        </div>
-                      </div>
-
-                      {/* Archive physical credentials footer */}
-                      <div className="folder-footer">
-                        {renderBarcode()}
-                        <span className="folder-id font-mono text-[10px] tracking-wider opacity-60">
-                          N° 0{styleIdx + 1}
-                        </span>
-                      </div>
-
-                    </div>
-                  </div>
-                </button>
+                  project={project}
+                  visibleIdx={visibleIdx}
+                  hoveredIndex={hoveredIndex}
+                  onHover={setHoveredIndex}
+                  onClick={onSelectProject}
+                  totalVisible={filteredProjects.length}
+                  isFirst={isFirst}
+                  meta={meta}
+                  getTransform={getFolderTransform}
+                  styleIdx={styleIdx}
+                  renderBarcode={renderBarcode}
+                />
               );
             })}
             </motion.div>
