@@ -103,7 +103,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         setIsHovered(false);
         setMousePos({ x: 0, y: 0 });
       }}
-      className="relative h-auto md:min-h-screen flex flex-col justify-between pt-24 md:pt-32 pb-16 md:pb-12 px-6 md:px-12 bg-obsidian overflow-hidden"
+      className="relative h-auto md:min-h-screen flex flex-col justify-between pt-20 md:pt-32 pb-12 md:pb-12 px-4 md:px-12 bg-obsidian overflow-hidden"
     >
       {/* 1. Heavy Parallax Background Element Left: Zooming IN */}
       <motion.div
@@ -149,10 +149,10 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
 
 
-      {/* Parallax Floating Sketched pencil coordinates and crosshairs */}
+      {/* Parallax Floating Sketched pencil coordinates and crosshairs — hidden on mobile */}
       <motion.div
         style={{ y: yFloatCross1 }}
-        className="absolute left-[8%] top-[40%] text-sand/35 font-mono text-[9px] tracking-widest pointer-events-none select-none z-0 flex flex-col items-start gap-1"
+        className="hidden md:flex absolute left-[8%] top-[40%] text-sand/35 font-mono text-[9px] tracking-widest pointer-events-none select-none z-0 flex-col items-start gap-1"
       >
         <span>+ LAT: 37.7749° N</span>
         <span>+ LNG: 122.4194° W</span>
@@ -161,7 +161,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       <motion.div
         style={{ y: yFloatCross2 }}
-        className="absolute right-[12%] top-[35%] text-sage/40 font-mono text-[10px] tracking-widest pointer-events-none select-none z-0 flex items-center gap-2"
+        className="hidden md:flex absolute right-[12%] top-[35%] text-sage/40 font-mono text-[10px] tracking-widest pointer-events-none select-none z-0 items-center gap-2"
       >
         <span className="text-sm font-light">⌖</span>
         <span>[DRAFT-GRID-ANCHOR]</span>
@@ -169,7 +169,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       <motion.div
         style={{ y: yFloatCross3 }}
-        className="absolute left-[15%] top-[72%] text-ivory/25 font-display italic text-xs tracking-widest pointer-events-none select-none z-0 flex flex-col items-start"
+        className="hidden md:flex absolute left-[15%] top-[72%] text-ivory/25 font-display italic text-xs tracking-widest pointer-events-none select-none z-0 flex-col items-start"
       >
         <span>Sloop Script Accent</span>
         <span className="font-marker text-lg text-sand/40 transform -rotate-12 mt-1">"Creative Draft"</span>
@@ -177,7 +177,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       <motion.div
         style={{ y: yFloatCross4 }}
-        className="absolute right-[6%] top-[68%] text-sand/35 font-mono text-[9px] tracking-widest pointer-events-none select-none z-0 flex flex-col items-end gap-1"
+        className="hidden md:flex absolute right-[6%] top-[68%] text-sand/35 font-mono text-[9px] tracking-widest pointer-events-none select-none z-0 flex-col items-end gap-1"
       >
         <span>SCALE: 1 : 0.78</span>
         <span className="w-12 h-[1px] bg-sand/15"></span>
@@ -185,8 +185,8 @@ export default function Hero({ onExploreClick }: HeroProps) {
       </motion.div>
 
       {/* Top Architectural Draft Header Bar with Variable Proximity and Thick Font */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full pt-6 md:pt-10">
-        <div className="border-t border-b border-[#B8925A]/15 py-3.5 flex items-center justify-between font-display font-black text-[11px] md:text-[13px] tracking-widest text-[#1c1c1b] uppercase [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
+        <div className="relative z-10 max-w-7xl mx-auto w-full pt-4 md:pt-10">
+        <div className="border-t border-b border-[#B8925A]/15 py-2.5 md:py-3.5 flex items-center justify-between font-display font-black text-[9px] md:text-[13px] tracking-widest text-[#1c1c1b] uppercase [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A]"></span>
             <VariableProximity
@@ -331,21 +331,21 @@ export default function Hero({ onExploreClick }: HeroProps) {
 
       {/* Bottom Architectural Draft Bar (Double bordered footer bar styled like reference) */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="border-t border-b border-ivory/10 py-4 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-display font-bold text-[11px] tracking-widest text-[#4E4842]">
+        <div className="border-t border-b border-ivory/10 py-3 md:py-4 mb-6 md:mb-8 flex flex-col sm:flex-row justify-between items-center gap-3 md:gap-4 font-display font-bold text-[10px] md:text-[11px] tracking-widest text-[#4E4842]">
           <div className="flex items-center gap-2">
             <span className="text-chai font-bold">✉</span>
-            <a href="mailto:zaidsaifi150105@gmail.com" className="hover:text-ivory transition-colors">
+            <a href="mailto:zaidsaifi150105@gmail.com" className="hover:text-ivory transition-colors truncate">
               ZAIDSAIFI150105@GMAIL.COM
             </a>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-chai font-bold">☎</span>
-            <span className="select-all font-display font-bold text-[12px]">9899582823</span>
+            <span className="select-all font-display font-bold text-[11px] md:text-[12px]">9899582823</span>
           </div>
         </div>
 
         {/* Bottom Tech-Stack Strip & Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 pt-2">
           {/* Left: Design philosophy */}
           <div className="flex flex-col justify-between">
             <span className="font-display font-bold text-[11px] text-[#4E4842]/80 uppercase tracking-widest mb-2">
