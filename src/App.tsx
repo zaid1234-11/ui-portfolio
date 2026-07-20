@@ -108,7 +108,7 @@ export default function App() {
   };
 
   return (
-    <ReactLenis root options={{ syncTouch: true, smoothTouch: true, touchMultiplier: 2, lerp: 0.08, smoothWheel: true }}>
+    <ReactLenis root options={{ syncTouch: true, smoothTouch: false, touchMultiplier: 1, lerp: 0.1, smoothWheel: true }}>
       <AnimatePresence mode="wait">
         {isLoading && <Preloader />}
       </AnimatePresence>
@@ -132,8 +132,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* Flowing Silk Ribbon Overlay drifting behind content */}
-        <div className="absolute inset-y-0 right-[8%] md:right-[15%] w-32 md:w-48 pointer-events-none opacity-45 z-0 overflow-hidden">
+        {/* Flowing Silk Ribbon Overlay drifting behind content — hidden on small screens */}
+        <div className="hidden md:block absolute inset-y-0 right-[15%] w-48 pointer-events-none opacity-45 z-0 overflow-hidden">
           <svg className="w-full h-full min-h-[5000px]" viewBox="0 0 120 5000" preserveAspectRatio="none">
             <path
               d="M60,0 Q105,250 45,500 T85,1000 T25,1500 T95,2000 T35,2500 T85,3000 T45,3500 T85,4000 T35,4500 T60,5000"
@@ -226,8 +226,8 @@ export default function App() {
         </div>
 
         {/* 5. High-End Minimalist Footer */}
-        <footer className="bg-obsidian-dark border-t border-white/5 py-16 px-6 md:px-12 relative z-30">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+        <footer className="bg-obsidian-dark border-t border-white/5 py-10 md:py-16 px-4 md:px-12 relative z-30">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12">
 
             {/* Column A: Logo and Motto */}
             <div className="space-y-4 max-w-sm">
@@ -324,7 +324,7 @@ export default function App() {
           <button
             id="scroll-to-top-btn"
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-full bg-[#1c1c1b] text-[#FAF6EE] flex items-center justify-center border border-[#B8925A]/40 hover:border-[#B8925A] hover:bg-[#FAF6EE] hover:text-[#1c1c1b] hover:scale-110 active:scale-95 transition-all duration-300 shadow-xl focus:outline-none cursor-pointer"
+            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#1c1c1b] text-[#FAF6EE] flex items-center justify-center border border-[#B8925A]/40 hover:border-[#B8925A] hover:bg-[#FAF6EE] hover:text-[#1c1c1b] hover:scale-110 active:scale-95 transition-all duration-300 shadow-xl focus:outline-none cursor-pointer"
             title="Return to peak"
           >
             <ArrowUp className="w-4 h-4" />
