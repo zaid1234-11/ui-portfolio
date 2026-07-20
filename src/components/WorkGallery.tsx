@@ -76,7 +76,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   // Calculate vertical translation to simulate position: sticky
   // Since the wrapper is 300vh, the scroll distance is 200vh.
   // Translating down by 200vh as scrollProgress goes from 0 to 1 perfectly cancels out the scroll!
-  const yStickyTransform = useTransform(mobileScrollProgress, [0, 1], ["0vh", "200vh"]);
+  const yStickyTransform = useTransform(mobileScrollProgress, [0, 1], ["0vh", "150vh"]);
   const ySticky = isMobile ? yStickyTransform : 0;
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
@@ -193,7 +193,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
         </div>
 
         {/* Tactile Folder Stack Container */}
-        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[300vh] relative mt-16 md:mt-24' : ''}`}>
+        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[250vh] relative mt-12 md:mt-24' : ''}`}>
           <motion.div 
             style={isMobile ? { y: ySticky } : {}} 
             className={`${isMobile ? 'absolute top-0 left-0 w-full h-screen flex items-center pt-16 md:pt-24 overflow-hidden' : 'folder-stack-container py-12 flex justify-center w-full overflow-visible'}`}
