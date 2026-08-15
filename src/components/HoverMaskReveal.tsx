@@ -395,7 +395,8 @@ vec4 h = 1.0 - abs(x) - abs(y);
     if (visibilityObserver && container) visibilityObserver.observe(container);
 
     const shouldAnimate = () => {
-      return isContainerInView;
+      const isInView = container ? (container.getBoundingClientRect().top < window.innerHeight && container.getBoundingClientRect().bottom > 0) : true;
+      return isContainerInView || isInView;
     }; const render = () => {
       if (!shouldAnimate()) { isAnimating = false; return; } isAnimating = true; rafId = requestAnimationFrame(render); const dt = clock.getDelta(); uniforms.u_time.value += dt;// Parallax: when disabled keep offset at 0; when enabled apply smoothing
       if (!debouncedProps.parallax) { uniforms.u_parallaxOffset.value.set(0, 0); targetParallaxOffset.set(0, 0); } else { const s = Math.max(0, Math.min(1, debouncedProps.parallaxSmoothing ?? 0)); if (s === 0) { uniforms.u_parallaxOffset.value.copy(targetParallaxOffset); } else { const tauMin = .04; const tauMax = .25; const tau = tauMin + (tauMax - tauMin) * s; const alpha = 1 - Math.exp(-dt / Math.max(1e-6, tau)); uniforms.u_parallaxOffset.value.lerp(targetParallaxOffset, alpha); } } 
@@ -488,11 +489,10 @@ vec4 h = 1.0 - abs(x) - abs(y);
         targetProgress = 0; targetParallaxOffset.set(0, 0);
       }
     }; const onTouchEnd = () => { targetProgress = 0; targetParallaxOffset.set(0, 0); };
-    container.addEventListener("mousemove", onMove, { passive: true });
-    container.addEventListener("mouseleave", onTouchEnd, { passive: true });
-    container.addEventListener("touchmove", onMove, { passive: true });
-    container.addEventListener("touchstart", onMove, { passive: true });
-    container.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchstart", onMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       if (rafId) { cancelAnimationFrame(rafId); }
       if (canvasResizeRafId) { cancelAnimationFrame(canvasResizeRafId); }
@@ -501,11 +501,10 @@ vec4 h = 1.0 - abs(x) - abs(y);
       intersectionObserver.disconnect();
       window.removeEventListener("resize", throttledResize);
       if (resizeTimeout) { clearTimeout(resizeTimeout); }
-      container.removeEventListener("mousemove", onMove);
-      container.removeEventListener("mouseleave", onTouchEnd);
-      container.removeEventListener("touchmove", onMove);
-      container.removeEventListener("touchstart", onMove);
-      container.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchstart", onMove);
+      window.removeEventListener("touchend", onTouchEnd);
       disposeFluidFBOs();
       quadGeometry.dispose();
       splatVelMaterial.dispose();
