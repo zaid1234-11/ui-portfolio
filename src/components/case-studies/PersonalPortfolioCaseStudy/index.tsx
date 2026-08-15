@@ -49,14 +49,13 @@ export default function PersonalPortfolioCaseStudy() {
             </p>
           </div>
 
-          <div className="w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl mt-12 bg-[#1a1c17]">
+          <div className="w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl mt-12 bg-[#1a1c17] group">
             <img 
-              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop" 
+              src="/projects/video editor portfolio/personal portfolio.png" 
               alt="Cinematic Portfolio Hero" 
-              className="w-full h-full object-cover opacity-80 mix-blend-luminosity"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A1118] via-transparent to-transparent opacity-80" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.05)_1px,transparent_1px)] bg-[size:2rem_2rem] mix-blend-overlay" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A1118]/80 via-transparent to-transparent pointer-events-none" />
           </div>
         </motion.div>
       </section>
