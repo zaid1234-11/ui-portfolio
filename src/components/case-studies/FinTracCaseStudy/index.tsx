@@ -77,12 +77,13 @@ export default function FinTracCaseStudy() {
             />
           </h1>
           
-          <div className="relative w-full aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 shadow-2xl mt-12 bg-[#0A1118] flex items-center justify-center">
-             {/* Placeholder for Hero Image */}
-             <div className="text-white/30 font-mono text-sm uppercase tracking-widest flex flex-col items-center gap-4">
-               <LayoutDashboard className="w-12 h-12 opacity-50" />
-               <span>FinTrac Hero Image (21:9)</span>
-             </div>
+          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 shadow-2xl mt-12 bg-[#0A1118] group">
+            <img 
+              src="/projects/fintrac/fintrac project front.png" 
+              alt="FinTrac AI Dashboard Showcase" 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A1118]/80 via-transparent to-transparent pointer-events-none" />
           </div>
         </header>
 
