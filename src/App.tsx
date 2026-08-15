@@ -19,6 +19,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
   useEffect(() => {
     const handleLoad = async () => {
@@ -108,7 +109,18 @@ export default function App() {
   };
 
   return (
-    <ReactLenis root options={{ syncTouch: true, smoothTouch: false, touchMultiplier: 1, lerp: 0.1, smoothWheel: true }}>
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.1,
+        duration: 1.1,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.0,
+        syncTouch: false,
+        smoothTouch: false,
+        autoRaf: true,
+      }}
+    >
       <AnimatePresence mode="wait">
         {isLoading && <Preloader />}
       </AnimatePresence>
@@ -162,7 +174,7 @@ export default function App() {
 
         {/* 4. Immersive View Routing with Physical Page Turn */}
         <div
-          style={{ perspective: '2000px', transformStyle: 'preserve-3d' }}
+          style={isPageTransitioning ? { perspective: '2000px', transformStyle: 'preserve-3d' } : {}}
           className="relative z-20 min-h-screen"
         >
           <AnimatePresence mode="wait">
@@ -174,7 +186,9 @@ export default function App() {
                 animate={{ rotateY: 0, opacity: 1, scale: 1 }}
                 exit={{ rotateY: 90, opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1] }}
-                style={{ transformOrigin: 'left center', backfaceVisibility: 'hidden' }}
+                onAnimationStart={() => setIsPageTransitioning(true)}
+                onAnimationComplete={() => setIsPageTransitioning(false)}
+                style={isPageTransitioning ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
                 className="w-full origin-left"
               >
                 <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-ivory-dim/50 font-mono text-xs tracking-widest uppercase">Loading Case Study...</div>}>
@@ -193,7 +207,9 @@ export default function App() {
                 animate={{ rotateY: 0, opacity: 1, scale: 1 }}
                 exit={{ rotateY: -90, opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1] }}
-                style={{ transformOrigin: 'left center', backfaceVisibility: 'hidden' }}
+                onAnimationStart={() => setIsPageTransitioning(true)}
+                onAnimationComplete={() => setIsPageTransitioning(false)}
+                style={isPageTransitioning ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
                 className="w-full origin-left relative"
               >
                 <main className="relative">
