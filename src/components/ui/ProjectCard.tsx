@@ -71,7 +71,7 @@ export function ProjectCard({
                   src={project.image}
                   alt={project.title}
                   referrerPolicy="no-referrer"
-                  className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out ${project.id === 'the-adrocket' ? 'opacity-90' : 'grayscale contrast-[1.05] opacity-75 mix-blend-multiply'}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out opacity-95 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
               </div>
