@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -24,6 +24,8 @@ export default function ScrollVelocity({
   className = "",
   movableClassName = ""
 }: ScrollVelocityProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
@@ -37,7 +39,27 @@ export default function ScrollVelocity({
 
   const directionFactor = useRef<number>(1);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '100px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useAnimationFrame((t, delta) => {
+    if (!isVisible) return;
+
     let moveBy = directionFactor.current * velocity * (delta / 1000);
 
     if (velocityFactor.get() < 0) {
@@ -54,8 +76,8 @@ export default function ScrollVelocity({
   const x = useTransform(baseX, (v) => `${wrap(0, -25, v)}%`);
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`}>
-      <motion.div style={{ x }} className="flex whitespace-nowrap flex-nowrap min-w-max">
+    <div ref={containerRef} className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`}>
+      <motion.div style={{ x }} className="flex whitespace-nowrap flex-nowrap min-w-max transform-gpu will-change-transform">
         {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className={`flex items-center gap-8 px-4 ${movableClassName}`}>
             {texts.map((text, index) => (
