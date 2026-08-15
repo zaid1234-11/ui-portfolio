@@ -351,18 +351,8 @@ export default function DecryptedText({
       {...animateProps}
       {...props}
     >
-      <span className="sr-only">{displayText}</span>
-
-      <span aria-hidden="true">
-        {displayText.split('').map((char, index) => {
-          const isRevealedOrDone = revealedIndices.has(index) || (!isAnimating && isDecrypted);
-
-          return (
-            <span key={index} className={isRevealedOrDone ? className : encryptedClassName}>
-              {char}
-            </span>
-          );
-        })}
+      <span className={!isAnimating && isDecrypted ? className : (isAnimating ? encryptedClassName : className)}>
+        {displayText}
       </span>
     </motion.span>
   );
