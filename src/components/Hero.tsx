@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowDown, Sparkles, Globe } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'motion/react';
 import InkRevealText from './InkRevealText';
 import VariableProximity from './VariableProximity';
 import TextType from './TextType';
@@ -12,8 +12,15 @@ interface HeroProps {
 
 export default function Hero({ onExploreClick }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.2 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.2 });
+
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [-12, 12]);
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [12, -12]);
+  const bgTranslateX = useTransform(smoothMouseX, [-1, 1], [25, -25]);
+  const bgTranslateY = useTransform(smoothMouseY, [-1, 1], [25, -25]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -21,12 +28,13 @@ export default function Hero({ onExploreClick }: HeroProps) {
       const rect = containerRef.current.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-      setMousePos({ x, y });
+      mouseX.set(x);
+      mouseY.set(y);
     };
 
     const container = containerRef.current;
     if (container) {
-      container.addEventListener('mousemove', handleMouseMove);
+      container.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
     return () => {
@@ -34,7 +42,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         container.removeEventListener('mousemove', handleMouseMove);
       }
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
   // Framer Motion scroll scrollYProgress target setup
   const { scrollYProgress } = useScroll({
@@ -70,17 +78,6 @@ export default function Hero({ onExploreClick }: HeroProps) {
   const yFloatCross3 = useTransform(scrollYProgress, [0, 1], [0, -180]);
   const yFloatCross4 = useTransform(scrollYProgress, [0, 1], [0, -620]);
 
-  // Interactive mouse-follow rotation style
-  const text3DStyle = {
-    transform: `perspective(1000px) rotateY(${mousePos.x * 12}deg) rotateX(${mousePos.y * -12}deg) translateZ(30px)`,
-    transition: isHovered ? 'none' : 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
-  };
-
-  const backdropGradientStyle = {
-    transform: `translate3d(${mousePos.x * -25}px, ${mousePos.y * -25}px, 0px)`,
-    transition: 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)',
-  };
-
   const stats = [
     { label: 'Specialty', val: 'Digital Craft' },
     { label: 'Est.', val: 'July 2026' },
@@ -98,10 +95,9 @@ export default function Hero({ onExploreClick }: HeroProps) {
     <section
       id="hero"
       ref={containerRef}
-      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
+        mouseX.set(0);
+        mouseY.set(0);
       }}
       className="relative h-auto md:min-h-screen flex flex-col justify-between pt-20 md:pt-32 pb-12 md:pb-12 px-4 md:px-12 bg-obsidian overflow-hidden"
     >
@@ -264,9 +260,13 @@ export default function Hero({ onExploreClick }: HeroProps) {
         </div>
 
         {/* 3D Extruded Parallax Header responding to mouse interaction */}
-        <div
-          style={text3DStyle}
-          className="select-none cursor-default transition-transform duration-300 transform-gpu relative w-full max-w-4xl"
+        <motion.div
+          style={{
+            rotateY,
+            rotateX,
+            transformPerspective: 1000,
+          }}
+          className="select-none cursor-default transform-gpu relative w-full max-w-4xl"
         >
 
 
@@ -302,7 +302,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Minimal Subtext block */}
         <div className="max-w-xl mx-auto mt-6 text-sm md:text-base text-[#4E4842] leading-relaxed font-light min-h-[4rem]">
