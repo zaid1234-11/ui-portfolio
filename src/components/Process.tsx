@@ -1,19 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { CheckCircle2, Grid } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
-import FuzzyText from './FuzzyText';
+import { CheckCircle2 } from 'lucide-react';
+import { motion, useScroll, AnimatePresence } from 'motion/react';
 import VariableProximity from './VariableProximity';
-import DecryptedText from './DecryptedText';
 
 export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingContainerRef = useRef<HTMLDivElement>(null);
 
-  // Setup scroll tracking for process background depth effects and pinning
+  // Setup scroll tracking for sticky pinning and step transitions
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 35%', 'end end'],
+    offset: ['start start', 'end end'],
   });
 
   // Track and update active step based on scroll position on large screens
@@ -22,11 +20,11 @@ export default function Process() {
       // Only update state based on scroll if screen size is lg (1024px or above)
       if (window.innerWidth >= 1024) {
         let nextStep = 0;
-        if (latest < 0.32) {
+        if (latest < 0.25) {
           nextStep = 0;
-        } else if (latest < 0.55) {
+        } else if (latest < 0.50) {
           nextStep = 1;
-        } else if (latest < 0.77) {
+        } else if (latest < 0.75) {
           nextStep = 2;
         } else {
           nextStep = 3;
@@ -38,42 +36,22 @@ export default function Process() {
   }, [scrollYProgress]);
 
   const handleStepClick = (index: number) => {
+    setActiveStep(index);
     if (window.innerWidth >= 1024 && sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const sectionStart = rect.top + scrollTop;
-      const scrollRange = rect.height - window.innerHeight;
+      const scrollRange = sectionRef.current.offsetHeight - window.innerHeight;
       
-      const stepRanges = [
-        { min: 0.09, max: 0.32 },
-        { min: 0.32, max: 0.55 },
-        { min: 0.55, max: 0.77 },
-        { min: 0.77, max: 1.0 }
-      ];
-      const targetProgress = (stepRanges[index].min + stepRanges[index].max) / 2;
+      const targetProgress = (index + 0.5) / 4;
       const targetScrollY = sectionStart + scrollRange * targetProgress;
       
       window.scrollTo({
         top: targetScrollY,
         behavior: 'smooth'
       });
-    } else {
-      setActiveStep(index);
     }
   };
-
-  const { scrollYProgress: zoomProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "start start"]
-  });
-  const smoothZoom = useSpring(zoomProgress, { stiffness: 80, damping: 20, mass: 0.5 });
-  const scale = useTransform(smoothZoom, [0, 1], [1.15, 1]);
-  const y = useTransform(smoothZoom, [0, 1], [60, 0]);
-
-  // Zoom-in & out parallax for decorative background items
-  const bgSphereY = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const bgSphereScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1.4, 0.8]);
-  const bgSphereOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.35, 0.1]);
 
   const steps = [
     {
@@ -114,67 +92,79 @@ export default function Process() {
     <section
       ref={sectionRef}
       id="process"
-      className="relative lg:h-[380vh] h-auto bg-transparent lg:mb-0 mb-0"
+      className="relative lg:h-[400vh] h-auto bg-transparent"
     >
-      <motion.div style={{ scale, y }} className="relative w-full transform-gpu origin-top">
-      {/* Heading (normal scroll) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 md:pl-22 pt-24 lg:translate-x-10 md:translate-x-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between lg:mb-10 mb-16 gap-6">
-          <div ref={headingContainerRef}>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
-                03 - WORK METHODOLOGY
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1b] tracking-tight leading-none">
-              <span className="font-display block uppercase tracking-tighter text-3d-ivory">
-                <VariableProximity
-                  label="Meticulous"
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 900"
-                  containerRef={headingContainerRef}
-                  radius={120}
-                  falloff="gaussian"
-                  className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer"
-                />
-              </span>
-              <span className="font-marker font-light italic text-[#B8925A] mt-1 block">
-                <VariableProximity
-                  label="journey log"
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 700"
-                  containerRef={headingContainerRef}
-                  radius={140}
-                  falloff="gaussian"
-                  className="font-marker font-light italic text-[#B8925A] cursor-pointer"
-                />
-              </span>
-            </h2>
-          </div>
-        </div>
-      </div>
-      </motion.div>
-
-      {/* Spacer (20–40vh) */}
-      <div className="hidden lg:block lg:h-[10vh]"></div>
-
-      {/* Sticky viewport frame */}
-      <div className="lg:sticky lg:top-[12vh] lg:h-[88vh] lg:flex lg:flex-col lg:justify-center lg:py-6 py-24 px-6 md:px-12 bg-transparent">
-        <div className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 w-full">
+      {/* Sticky viewport frame - stays pinned while user scrolls through all 4 steps */}
+      <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center py-16 lg:py-0 px-6 md:px-12 bg-transparent z-10 will-change-transform">
+        <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col justify-center h-full max-h-[850px] pl-0 md:pl-10">
           
+          {/* Section Heading */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 lg:mb-8 gap-4">
+            <div ref={headingContainerRef}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
+                  03 - WORK METHODOLOGY
+                </span>
+                <span className="font-mono text-[9px] text-[#1c1c1b]/60 tracking-[0.2em] uppercase bg-[#ECE3D2]/50 border border-[#B8925A]/15 px-2.5 py-0.5 rounded-full">
+                  CHANNEL 0{activeStep + 1} / 04
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1b] tracking-tight leading-none">
+                <span className="font-display block uppercase tracking-tighter text-3d-ivory">
+                  <VariableProximity
+                    label="Meticulous"
+                    fromFontVariationSettings="'wght' 400"
+                    toFontVariationSettings="'wght' 900"
+                    containerRef={headingContainerRef}
+                    radius={120}
+                    falloff="gaussian"
+                    className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer"
+                  />
+                </span>
+                <span className="font-marker font-light italic text-[#B8925A] mt-1 block">
+                  <VariableProximity
+                    label="journey log"
+                    fromFontVariationSettings="'wght' 300"
+                    toFontVariationSettings="'wght' 700"
+                    containerRef={headingContainerRef}
+                    radius={140}
+                    falloff="gaussian"
+                    className="font-marker font-light italic text-[#B8925A] cursor-pointer"
+                  />
+                </span>
+              </h2>
+            </div>
+
+            {/* Step Indicators (Desktop) */}
+            <div className="hidden lg:flex items-center gap-2 pb-2">
+              {steps.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleStepClick(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeStep === idx
+                      ? 'w-8 bg-[#1c1c1b]'
+                      : 'w-2 bg-[#B8925A]/30 hover:bg-[#B8925A]/60'
+                  }`}
+                  aria-label={`Go to step ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
           {/* Process Visual Split Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 relative z-10 items-center">
             
             {/* Left Block: Steps Selection list */}
-            <div className="lg:col-span-5 space-y-4">
+            <div className="lg:col-span-5 space-y-3.5">
               {steps.map((step, index) => (
                 <div key={index} className="flex flex-col">
                   <button
                     id={`process-step-btn-${index}`}
                     onClick={() => handleStepClick(index)}
-                    className={`w-full text-left p-6 border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
+                    className={`w-full text-left p-5 md:p-6 border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
                       activeStep === index
-                        ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#B8925A]/40 shadow-lg rounded-t-xl lg:rounded-b-xl'
+                        ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#B8925A]/50 shadow-xl rounded-xl lg:scale-[1.02]'
                         : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] hover:bg-[#ECE3D2]/30 rounded-xl'
                     }`}
                   >
@@ -205,19 +195,12 @@ export default function Process() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.25 }}
                         className="lg:hidden overflow-hidden bg-[#FAF6EE] border-x border-b border-[#B8925A]/20 rounded-b-xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.02)]"
                       >
                         <div className="p-5 flex flex-col gap-4">
                           <p className="text-sm text-[#4E4842] leading-relaxed font-light">
-                            <DecryptedText
-                              text={steps[activeStep].description}
-                              animateOn="view"
-                              speed={15}
-                              maxIterations={5}
-                              revealDirection="start"
-                              sequential={false}
-                            />
+                            {steps[activeStep].description}
                           </p>
 
                           {/* Step Metric Highlight */}
@@ -242,17 +225,17 @@ export default function Process() {
               ))}
             </div>
 
-            {/* Right Block: Active Step Detail Panel with interactive scale Zoom in/out entrance */}
+            {/* Right Block: Active Step Detail Panel inside Vintage TV Frame */}
             <div className="hidden lg:block lg:col-span-7">
               <div
-                className="relative w-full min-h-[480px] sm:aspect-[1.45] sm:min-h-0 max-w-[660px] mx-auto translate-y-6 lg:translate-y-4"
+                className="relative w-full min-h-[460px] sm:aspect-[1.45] sm:min-h-0 max-w-[640px] mx-auto"
               >
                 {/* Vintage TV Frame Image (overlay) */}
                 <img
                   src="/tv1.webp"
                   alt="Vintage Television"
                   referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-fill pointer-events-none z-20 filter drop-shadow-md"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none z-20 filter drop-shadow-lg"
                 />
 
                 {/* TV Screen Container */}
@@ -262,39 +245,25 @@ export default function Process() {
                     backgroundImage: 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
                   }}
                 >
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence>
                     <motion.div
                       key={activeStep}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
                       className="h-full flex flex-col justify-between"
                     >
                       <div>
                         {/* Title and Description */}
-                        <FuzzyText
-                          baseIntensity={0.03}
-                          hoverIntensity={0.22}
-                          fuzzRange={12}
-                          enableHover={true}
-                          fontSize="clamp(1.15rem, 3.8vw, 1.55rem)"
-                          fontWeight="bold"
-                          fontFamily="'Cormorant Garamond', serif"
-                          color="#1c1c1b"
-                          className="mb-3 block cursor-pointer"
+                        <h4
+                          className="mb-3 block font-display text-xl sm:text-2xl font-bold text-[#1c1c1b] tracking-tight leading-snug"
+                          style={{ fontFamily: "'Cormorant Garamond', serif" }}
                         >
                           {steps[activeStep].title}
-                        </FuzzyText>
+                        </h4>
                         <p className="text-xs sm:text-sm text-[#4E4842] leading-relaxed font-light mb-4">
-                          <DecryptedText
-                            text={steps[activeStep].description}
-                            animateOn="view"
-                            speed={15}
-                            maxIterations={5}
-                            revealDirection="start"
-                            sequential={false}
-                          />
+                          {steps[activeStep].description}
                         </p>
                       </div>
 
