@@ -1,44 +1,28 @@
-import React, { forwardRef, useMemo, useRef, useEffect } from 'react';
+import React, { forwardRef, useMemo, useRef, useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { gsap } from 'gsap';
 
-function useAnimationFrame(callback: () => void) {
-  useEffect(() => {
-    let frameId: number;
-    const loop = () => {
-      callback();
-      frameId = requestAnimationFrame(loop);
-    };
-    frameId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback]);
-}
+// Shared global mouse position tracker to prevent dozens of redundant window listeners
+let globalMouse = { x: -9999, y: -9999 };
+let listenersAttached = false;
 
-function useMousePositionRef() {
-  const positionRef = useRef({ x: 0, y: 0 });
+function initGlobalMouse() {
+  if (listenersAttached || typeof window === 'undefined') return;
+  listenersAttached = true;
 
-  useEffect(() => {
-    const updatePosition = (x: number, y: number) => {
-      positionRef.current = { x, y };
-    };
+  const handleMouseMove = (ev: MouseEvent) => {
+    globalMouse.x = ev.clientX;
+    globalMouse.y = ev.clientY;
+  };
+  const handleTouchMove = (ev: TouchEvent) => {
+    if (ev.touches.length > 0) {
+      globalMouse.x = ev.touches[0].clientX;
+      globalMouse.y = ev.touches[0].clientY;
+    }
+  };
 
-    const handleMouseMove = (ev: MouseEvent) => updatePosition(ev.clientX, ev.clientY);
-    const handleTouchMove = (ev: TouchEvent) => {
-      if (ev.touches.length > 0) {
-        const touch = ev.touches[0];
-        updatePosition(touch.clientX, touch.clientY);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
-
-  return positionRef;
+  window.addEventListener('mousemove', handleMouseMove, { passive: true });
+  window.addEventListener('touchmove', handleTouchMove, { passive: true });
 }
 
 interface VariableProximityProps {
@@ -71,9 +55,33 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     ...restProps
   } = props;
 
+  const spanRef = useRef<HTMLSpanElement | null>(null);
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const interpolatedSettingsRef = useRef<string[]>([]);
-  const mousePositionRef = useMousePositionRef();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    initGlobalMouse();
+  }, []);
+
+  // Use IntersectionObserver to completely halt RAF when off-screen
+  useEffect(() => {
+    const el = spanRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '100px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const parsedSettings = useMemo(() => {
     const parseSettings = (settingsStr: string) =>
@@ -97,10 +105,10 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }));
   }, [fromFontVariationSettings, toFontVariationSettings]);
 
-  // We'll compute the color interpolator dynamically per letter if fromColor is omitted.
-  const targetColor = toColor || "#dc6305";
+  const targetColor = toColor || "#B8925A";
 
-  const calculateDistance = (x1: number, y1: number, x2: number, y2: number) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  const calculateDistance = (x1: number, y1: number, x2: number, y2: number) =>
+    Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
   const calculateFalloff = (distance: number) => {
     const norm = Math.min(Math.max(1 - distance / radius, 0), 1);
@@ -116,67 +124,104 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
   };
 
   const currentFalloffsRef = useRef<number[]>([]);
+  const isSettledRef = useRef(false);
 
-  useAnimationFrame(() => {
-    const { x, y } = mousePositionRef.current;
+  useEffect(() => {
+    if (!isVisible) return;
 
-    letterRefs.current.forEach((letterRef, index) => {
-      if (!letterRef) return;
+    let frameId: number;
 
-      const rect = letterRef.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2;
-      const letterCenterY = rect.top + rect.height / 2;
+    const loop = () => {
+      const { x, y } = globalMouse;
+      const targetContainer = containerRef.current || spanRef.current;
 
-      const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
+      // Quick bounding check on container before checking every letter
+      if (targetContainer) {
+        const cRect = targetContainer.getBoundingClientRect();
+        const isNear =
+          x >= cRect.left - radius &&
+          x <= cRect.right + radius &&
+          y >= cRect.top - radius &&
+          y <= cRect.bottom + radius;
 
-      let baseColor = letterRef.dataset.baseColor;
-      if (!baseColor) {
-        baseColor = fromColor || getComputedStyle(letterRef).color;
-        letterRef.dataset.baseColor = baseColor;
+        if (!isNear && isSettledRef.current) {
+          frameId = requestAnimationFrame(loop);
+          return;
+        }
       }
 
-      let targetFalloff = 0;
-      if (distance < radius) {
-        targetFalloff = calculateFalloff(distance);
-      }
+      let allSettled = true;
 
-      // Smooth the falloff value (lerp) - tuned higher for snappier response
-      const currentFalloff = currentFalloffsRef.current[index] || 0;
-      const smoothedFalloff = currentFalloff + (targetFalloff - currentFalloff) * 0.45;
-      currentFalloffsRef.current[index] = smoothedFalloff;
+      letterRefs.current.forEach((letterRef, index) => {
+        if (!letterRef) return;
 
-      // Skip DOM updates if completely settled outside radius
-      if (smoothedFalloff < 0.001 && targetFalloff === 0) {
-        letterRef.style.fontVariationSettings = fromFontVariationSettings;
-        letterRef.style.color = baseColor;
-        return;
-      }
+        const rect = letterRef.getBoundingClientRect();
+        const letterCenterX = rect.left + rect.width / 2;
+        const letterCenterY = rect.top + rect.height / 2;
 
-      const falloffValue = smoothedFalloff;
-      let fontWeightValue = "";
-      const newSettings = parsedSettings
-        .map(({ axis, fromValue, toValue }) => {
-          const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue;
-          if (axis === 'wght') fontWeightValue = Math.round(interpolatedValue).toString();
-          return `'${axis}' ${interpolatedValue}`;
-        })
-        .join(', ');
+        const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
 
-      interpolatedSettingsRef.current[index] = newSettings;
-      letterRef.style.fontVariationSettings = newSettings;
-      if (fontWeightValue) letterRef.style.fontWeight = fontWeightValue;
-      
-      const colorInterpolator = gsap.utils.interpolate(baseColor, targetColor);
-      letterRef.style.color = colorInterpolator(falloffValue);
-    });
-  });
+        let baseColor = letterRef.dataset.baseColor;
+        if (!baseColor) {
+          baseColor = fromColor || getComputedStyle(letterRef).color;
+          letterRef.dataset.baseColor = baseColor;
+        }
+
+        let targetFalloff = 0;
+        if (distance < radius) {
+          targetFalloff = calculateFalloff(distance);
+        }
+
+        const currentFalloff = currentFalloffsRef.current[index] || 0;
+        const smoothedFalloff = currentFalloff + (targetFalloff - currentFalloff) * 0.45;
+        currentFalloffsRef.current[index] = smoothedFalloff;
+
+        if (smoothedFalloff < 0.001 && targetFalloff === 0) {
+          if (letterRef.style.fontVariationSettings !== fromFontVariationSettings) {
+            letterRef.style.fontVariationSettings = fromFontVariationSettings;
+            letterRef.style.color = baseColor;
+          }
+          return;
+        }
+
+        allSettled = false;
+
+        const falloffValue = smoothedFalloff;
+        let fontWeightValue = "";
+        const newSettings = parsedSettings
+          .map(({ axis, fromValue, toValue }) => {
+            const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue;
+            if (axis === 'wght') fontWeightValue = Math.round(interpolatedValue).toString();
+            return `'${axis}' ${interpolatedValue}`;
+          })
+          .join(', ');
+
+        interpolatedSettingsRef.current[index] = newSettings;
+        letterRef.style.fontVariationSettings = newSettings;
+        if (fontWeightValue) letterRef.style.fontWeight = fontWeightValue;
+
+        const colorInterpolator = gsap.utils.interpolate(baseColor, targetColor);
+        letterRef.style.color = colorInterpolator(falloffValue);
+      });
+
+      isSettledRef.current = allSettled;
+      frameId = requestAnimationFrame(loop);
+    };
+
+    frameId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(frameId);
+  }, [isVisible, fromFontVariationSettings, parsedSettings, radius, falloff, fromColor, targetColor, containerRef]);
 
   const words = label.split(' ');
   let letterIndex = 0;
 
   return (
     <span
-      ref={ref}
+      ref={(el) => {
+        spanRef.current = el;
+        if (typeof ref === 'function') ref(el);
+        else if (ref) (ref as React.MutableRefObject<HTMLSpanElement | null>).current = el;
+      }}
       onClick={onClick}
       style={{
         display: 'inline',
