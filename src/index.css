@@ -75,13 +75,17 @@
     background-color: var(--color-obsidian);
     color: var(--color-ivory-dim);
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 }
 
 @layer base {
+  html {
+    scroll-behavior: auto;
+  }
+
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: none;
   }
@@ -141,6 +145,8 @@
   opacity: 0.12;
   pointer-events: none;
   z-index: 999;
+  transform: translateZ(0);
+  will-change: opacity;
   background-image:
     radial-gradient(circle, rgba(140, 120, 100, 0.15) 1px, transparent 1px),
     linear-gradient(rgba(140, 120, 100, 0.05) 1px, transparent 1px);
