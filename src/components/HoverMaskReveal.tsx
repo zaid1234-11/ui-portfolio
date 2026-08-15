@@ -60,7 +60,7 @@ export interface HoverMaskRevealProps {
     if (isMobile) return; const canvas = canvasRef.current; const imgEl = imgRef.current; const container = containerRef.current; if (!canvas || !imgEl || !container) return;// Show blob when effect runs (initial mount or after debounced remount)
     if (false) { hideBlobForResizeRef.current = false; }// Animation state variable
     let isAnimating = false;// Scene setup
-    const scene = new Scene; const perspective = 800; const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));// Transparent clear so the back image (DOM) shows through; avoids darkening
+    const scene = new Scene; const perspective = 800; const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' }); renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));// Transparent clear so the back image (DOM) shows through; avoids darkening
     renderer.setClearColor(0, 0);// Use clientWidth/clientHeight for more reliable initial sizing
     const initialWidth = Math.max(container.clientWidth, 300)// Fallback minimum
       ; const initialHeight = Math.max(container.clientHeight, 200)// Fallback minimum
@@ -385,12 +385,17 @@ vec4 h = 1.0 - abs(x) - abs(y);
       if (isAnimating) { renderer.render(scene, camera); }
     };// Initial setup
     updateFromDOM(); let targetProgress = 0; let rafId = 0; const clock = new Clock; const targetParallaxOffset = new Vector2(0, 0);// Function to determine if we should animate
-    const shouldAnimate = () => {
-      const isCanvasMode = false; const isInView = container.getBoundingClientRect().top < window.innerHeight && container.getBoundingClientRect().bottom > 0;// Only animate if:
-      // 1. We're in Canvas mode AND preview is enabled, OR
+    let isContainerInView = true;
+    const visibilityObserver = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => {
+      isContainerInView = entry.isIntersecting;
+      if (isContainerInView && !isAnimating) {
+        render();
+      }
+    }, { rootMargin: '50px' }) : null;
+    if (visibilityObserver && container) visibilityObserver.observe(container);
 
-      // 2. We're not in Canvas mode (live website) AND component is in view
-      return isCanvasMode && debouncedProps.preview || !isCanvasMode && isInView;
+    const shouldAnimate = () => {
+      return isContainerInView;
     }; const render = () => {
       if (!shouldAnimate()) { isAnimating = false; return; } isAnimating = true; rafId = requestAnimationFrame(render); const dt = clock.getDelta(); uniforms.u_time.value += dt;// Parallax: when disabled keep offset at 0; when enabled apply smoothing
       if (!debouncedProps.parallax) { uniforms.u_parallaxOffset.value.set(0, 0); targetParallaxOffset.set(0, 0); } else { const s = Math.max(0, Math.min(1, debouncedProps.parallaxSmoothing ?? 0)); if (s === 0) { uniforms.u_parallaxOffset.value.copy(targetParallaxOffset); } else { const tauMin = .04; const tauMax = .25; const tau = tauMin + (tauMax - tauMin) * s; const alpha = 1 - Math.exp(-dt / Math.max(1e-6, tau)); uniforms.u_parallaxOffset.value.lerp(targetParallaxOffset, alpha); } } 
@@ -482,7 +487,39 @@ vec4 h = 1.0 - abs(x) - abs(y);
 
         targetProgress = 0; targetParallaxOffset.set(0, 0);
       }
-    }; const onTouchEnd = () => { targetProgress = 0; targetParallaxOffset.set(0, 0); }; window.addEventListener("mousemove", onMove); window.addEventListener("touchmove", onMove, { passive: true }); window.addEventListener("touchstart", onMove, { passive: true }); window.addEventListener("touchend", onTouchEnd); return () => { if (rafId) { cancelAnimationFrame(rafId); } if (canvasResizeRafId) { cancelAnimationFrame(canvasResizeRafId); } if (remountDebounceId) { clearTimeout(remountDebounceId); } resizeObserver.disconnect(); intersectionObserver.disconnect(); window.removeEventListener("resize", throttledResize); if (resizeTimeout) { clearTimeout(resizeTimeout); } window.removeEventListener("mousemove", onMove); window.removeEventListener("touchmove", onMove); window.removeEventListener("touchstart", onMove); window.removeEventListener("touchend", onTouchEnd); disposeFluidFBOs(); quadGeometry.dispose(); splatVelMaterial.dispose(); splatDensityMaterial.dispose(); advectMaterial.dispose(); divergenceMaterial.dispose(); pressureMaterial.dispose(); gradientMaterial.dispose(); curlMaterial.dispose(); advectDensityMaterial.dispose(); geometry.dispose(); material.dispose(); renderer.dispose(); };
+    }; const onTouchEnd = () => { targetProgress = 0; targetParallaxOffset.set(0, 0); };
+    container.addEventListener("mousemove", onMove, { passive: true });
+    container.addEventListener("mouseleave", onTouchEnd, { passive: true });
+    container.addEventListener("touchmove", onMove, { passive: true });
+    container.addEventListener("touchstart", onMove, { passive: true });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      if (rafId) { cancelAnimationFrame(rafId); }
+      if (canvasResizeRafId) { cancelAnimationFrame(canvasResizeRafId); }
+      if (remountDebounceId) { clearTimeout(remountDebounceId); }
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      window.removeEventListener("resize", throttledResize);
+      if (resizeTimeout) { clearTimeout(resizeTimeout); }
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("mouseleave", onTouchEnd);
+      container.removeEventListener("touchmove", onMove);
+      container.removeEventListener("touchstart", onMove);
+      container.removeEventListener("touchend", onTouchEnd);
+      disposeFluidFBOs();
+      quadGeometry.dispose();
+      splatVelMaterial.dispose();
+      splatDensityMaterial.dispose();
+      advectMaterial.dispose();
+      divergenceMaterial.dispose();
+      pressureMaterial.dispose();
+      gradientMaterial.dispose();
+      curlMaterial.dispose();
+      advectDensityMaterial.dispose();
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+    };
   }, [canvasRemountKey, debouncedProps.radius, debouncedProps.blur, debouncedProps.circleBoost, debouncedProps.texture, debouncedProps.timeSpeed, debouncedProps.splatRadius, debouncedProps.velocityDissipation, debouncedProps.shrinkTimeSeconds, debouncedProps.curl, debouncedProps.pressureIterations, debouncedProps.preview, imageBase?.positionX, imageBase?.positionY, imageHover?.positionX, imageHover?.positionY, imageHover?.src, debouncedProps.parallax, debouncedProps.parallaxAmount, debouncedProps.parallaxSmoothing, mapRadius, mapBlur, mapCircleBoost, mapTexture, mapTimeSpeed, isMobile]);
   return (
     <div ref={containerRef} style={{ width: "100%", height: "100%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: borderRadius, overflow: "clip", ...props.style }}>
