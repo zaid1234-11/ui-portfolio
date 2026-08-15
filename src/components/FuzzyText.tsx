@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface FuzzyTextProps {
   children?: React.ReactNode;
@@ -22,7 +22,6 @@ interface FuzzyTextProps {
   className?: string;
 }
 
-// Extend HTMLCanvasElement to store cleanup function temporarily
 interface CustomCanvasElement extends HTMLCanvasElement {
   cleanupFuzzyText?: () => void;
 }
@@ -37,7 +36,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   baseIntensity = 0.18,
   hoverIntensity = 0.5,
   fuzzRange = 30,
-  fps = 60,
+  fps = 40,
   direction = 'horizontal',
   transitionDuration = 0,
   clickEffect = false,
@@ -49,8 +48,30 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   className = ''
 }) => {
   const canvasRef = useRef<CustomCanvasElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Use IntersectionObserver to stop canvas render loop when off-screen
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '100px' }
+    );
+
+    observer.observe(canvas);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
+
     let animationFrameId: number;
     let isCancelled = false;
     let glitchTimeoutId: NodeJS.Timeout;
@@ -60,7 +81,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
     if (!canvas) return;
 
     const init = async () => {
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d', { alpha: true });
       if (!ctx) return;
 
       const computedFontFamily =
@@ -177,6 +198,8 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
 
       if (glitchMode) startGlitchLoop();
 
+      const sliceStep = 2;
+
       const run = (timestamp: number) => {
         if (isCancelled) return;
 
@@ -214,7 +237,8 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
           currentIntensity = targetIntensity;
         }
 
-        for (let j = 0; j < tightHeight; j++) {
+        for (let j = 0; j < tightHeight; j += sliceStep) {
+          const sliceH = Math.min(sliceStep, tightHeight - j);
           let dx = 0,
             dy = 0;
           if (direction === 'horizontal' || direction === 'both') {
@@ -223,7 +247,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
           if (direction === 'vertical' || direction === 'both') {
             dy = Math.floor(currentIntensity * (Math.random() - 0.5) * fuzzRange * 0.5);
           }
-          ctx.drawImage(offscreen, 0, j, offscreenWidth, 1, dx, j + dy, offscreenWidth, 1);
+          ctx.drawImage(offscreen, 0, j, offscreenWidth, sliceH, dx, j + dy, offscreenWidth, sliceH);
         }
         animationFrameId = window.requestAnimationFrame(run);
       };
@@ -257,7 +281,6 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
 
       const handleTouchMove = (e: TouchEvent) => {
         if (!enableHover) return;
-        e.preventDefault();
         const rect = canvas.getBoundingClientRect();
         const touch = e.touches[0];
         const x = touch.clientX - rect.left;
@@ -270,9 +293,9 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
       };
 
       if (enableHover) {
-        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
         canvas.addEventListener('mouseleave', handleMouseLeave);
-        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
         canvas.addEventListener('touchend', handleTouchEnd);
       }
 
@@ -312,6 +335,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
       }
     };
   }, [
+    isVisible,
     children,
     fontSize,
     fontWeight,
@@ -335,4 +359,4 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   return <canvas ref={canvasRef} className={className} />;
 };
 
-export default FuzzyText;
+export default React.memo(FuzzyText);
