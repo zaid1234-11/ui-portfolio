@@ -905,22 +905,22 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* FULL DARK CHARCOAL THEME GLOBAL OVERRIDES                                  */
+/* FULL #323232 DARK MODE THEME GLOBAL OVERRIDES                              */
 /* -------------------------------------------------------------------------- */
 
 html.dark {
   color-scheme: dark;
-  background-color: #121212 !important;
+  background-color: #323232 !important;
 }
 
 html.dark body,
 html.dark #root,
 html.dark .bg-obsidian {
-  background-color: #121212 !important;
+  background-color: #323232 !important;
   color: #FAF6EE !important;
 }
 
-/* All Section & Layout Backgrounds mapped to Dark Charcoal */
+/* All Section & Layout Backgrounds mapped to #323232 */
 html.dark section,
 html.dark footer,
 html.dark main,
@@ -931,24 +931,24 @@ html.dark .bg-\[\#FAF8F5\],
 html.dark .bg-stone-50,
 html.dark .bg-stone-100,
 html.dark .bg-stone-200 {
-  background-color: #121212 !important;
+  background-color: #323232 !important;
   color: #FAF6EE !important;
 }
 
-/* Elevated Charcoal Cards & Panels */
+/* Elevated Cards & Panels in #323232 Dark Mode */
 html.dark .bg-\[\#1c1c1b\],
 html.dark .bg-\[\#141414\],
 html.dark .bg-\[\#1a1c17\],
 html.dark .folder-body {
-  background-color: #1a1a1a !important;
+  background-color: #242424 !important;
   color: #FAF6EE !important;
-  border-color: rgba(184, 146, 90, 0.25) !important;
+  border-color: rgba(184, 146, 90, 0.3) !important;
 }
 
 html.dark .folder-tab {
-  background-color: #242424 !important;
+  background-color: #2a2a2a !important;
   color: #B8925A !important;
-  border-color: rgba(184, 146, 90, 0.25) !important;
+  border-color: rgba(184, 146, 90, 0.3) !important;
 }
 
 /* Typography & Contrast Overrides */
