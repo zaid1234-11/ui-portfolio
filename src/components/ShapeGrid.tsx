@@ -1,25 +1,21 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
-interface ShapeGridProps {
-  direction?: 'diagonal' | 'up' | 'right' | 'down' | 'left';
+const ShapeGrid = ({
+  direction = 'right',
+  speed = 1,
+  borderColor = '#999',
+  squareSize = 40,
+  hoverFillColor = '#222',
+  shape = 'square',
+  hoverTrailAmount = 0
+}: {
+  direction?: string;
   speed?: number;
   borderColor?: string;
   squareSize?: number;
   hoverFillColor?: string;
-  shape?: 'square' | 'hexagon' | 'circle' | 'triangle';
+  shape?: string;
   hoverTrailAmount?: number;
-  className?: string;
-}
-
-const ShapeGrid: React.FC<ShapeGridProps> = ({
-  direction = 'diagonal',
-  speed = 1.0,
-  borderColor = 'rgba(255, 255, 255, 0.12)',
-  squareSize = 40,
-  hoverFillColor = '#FFFFFF',
-  shape = 'square',
-  hoverTrailAmount = 4,
-  className = ''
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestRef = useRef<number | null>(null);
@@ -34,7 +30,6 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
 
     const isHex = shape === 'hexagon';
     const isTri = shape === 'triangle';
@@ -43,10 +38,10 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
     const resizeCanvas = () => {
       if (!canvas) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 2;
-      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 2;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
+      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
     };
 
     window.addEventListener('resize', resizeCanvas);
@@ -88,7 +83,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     };
 
     const drawGrid = () => {
-      if (!ctx || !canvas) return;
+      if (!ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -193,56 +188,35 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
             const cellKey = `${col},${row}`;
             const alpha = cellOpacities.current.get(cellKey);
             if (alpha) {
-              ctx.globalAlpha = Math.min(alpha, 0.95);
+              ctx.globalAlpha = alpha;
               ctx.fillStyle = hoverFillColor;
               ctx.fillRect(sx, sy, squareSize, squareSize);
               ctx.globalAlpha = 1;
             }
 
             ctx.strokeStyle = borderColor;
-            ctx.lineWidth = 1;
             ctx.strokeRect(sx, sy, squareSize, squareSize);
           }
         }
       }
-    };
 
-    const updateCellOpacities = () => {
-      const targets = new Map<string, number>();
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
+      );
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      gradient.addColorStop(1, 'rgba(50, 50, 50, 0.85)');
 
-      if (hoveredSquareRef.current) {
-        targets.set(`${hoveredSquareRef.current.x},${hoveredSquareRef.current.y}`, 1);
-      }
-
-      if (hoverTrailAmount > 0) {
-        for (let i = 0; i < trailCells.current.length; i++) {
-          const t = trailCells.current[i];
-          const key = `${t.x},${t.y}`;
-          if (!targets.has(key)) {
-            targets.set(key, (trailCells.current.length - i) / (trailCells.current.length + 1));
-          }
-        }
-      }
-
-      for (const [key] of targets) {
-        if (!cellOpacities.current.has(key)) {
-          cellOpacities.current.set(key, 0);
-        }
-      }
-
-      for (const [key, opacity] of cellOpacities.current) {
-        const target = targets.get(key) || 0;
-        const next = opacity + (target - opacity) * 0.2;
-        if (next < 0.005) {
-          cellOpacities.current.delete(key);
-        } else {
-          cellOpacities.current.set(key, next);
-        }
-      }
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
     const updateAnimation = () => {
-      const effectiveSpeed = Math.max(speed, 0.2);
+      const effectiveSpeed = Math.max(speed, 0.1);
       const wrapX = isHex ? hexHoriz * 2 : squareSize;
       const wrapY = isHex ? hexVert : isTri ? squareSize * 2 : squareSize;
 
@@ -272,8 +246,41 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       requestRef.current = requestAnimationFrame(updateAnimation);
     };
 
+    const updateCellOpacities = () => {
+      const targets = new Map<string, number>();
+
+      if (hoveredSquareRef.current) {
+        targets.set(`${hoveredSquareRef.current.x},${hoveredSquareRef.current.y}`, 1);
+      }
+
+      if (hoverTrailAmount > 0) {
+        for (let i = 0; i < trailCells.current.length; i++) {
+          const t = trailCells.current[i];
+          const key = `${t.x},${t.y}`;
+          if (!targets.has(key)) {
+            targets.set(key, (trailCells.current.length - i) / (trailCells.current.length + 1));
+          }
+        }
+      }
+
+      for (const [key] of targets) {
+        if (!cellOpacities.current.has(key)) {
+          cellOpacities.current.set(key, 0);
+        }
+      }
+
+      for (const [key, opacity] of cellOpacities.current) {
+        const target = targets.get(key) || 0;
+        const next = opacity + (target - opacity) * 0.15;
+        if (next < 0.005) {
+          cellOpacities.current.delete(key);
+        } else {
+          cellOpacities.current.set(key, next);
+        }
+      }
+    };
+
     const handleMouseMove = (event: MouseEvent) => {
-      if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
@@ -375,22 +382,51 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       hoveredSquareRef.current = null;
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+    let isVisible = false;
+    let isPageVisible = !document.hidden;
 
-    requestRef.current = requestAnimationFrame(updateAnimation);
+    const tryStart = () => {
+      if (isVisible && isPageVisible && !requestRef.current) {
+        requestRef.current = requestAnimationFrame(updateAnimation);
+      }
+    };
+    const tryStop = () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+        requestRef.current = null;
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        isVisible ? tryStart() : tryStop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      isPageVisible ? tryStart() : tryStop();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    tryStart();
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
+      tryStop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [direction, speed, borderColor, hoverFillColor, squareSize, shape, hoverTrailAmount]);
 
-  return <canvas ref={canvasRef} className={`w-full h-full border-none block ${className}`} />;
+  return <canvas ref={canvasRef} className="w-full h-full border-none block"></canvas>;
 };
 
 export default ShapeGrid;

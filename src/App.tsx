@@ -13,7 +13,6 @@ import { ArrowUp, Sparkles, Code, Globe, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import Preloader from './components/Preloader';
-import ShapeGrid from './components/ShapeGrid';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -155,19 +154,9 @@ export default function App() {
 
       <div className="relative min-h-screen w-full bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
 
-        {/* 1. Global Noise & Interactive Shape Grid Overlays */}
+        {/* 1. Global Noise & Dark Grid Texture Film overlays */}
         <div className="noise-overlay" aria-hidden="true"></div>
-        <div className="dark-grid-overlay pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500" aria-hidden="true">
-          <ShapeGrid
-            speed={0.8}
-            squareSize={40}
-            direction="diagonal"
-            borderColor="rgba(255, 255, 255, 0.15)"
-            hoverFillColor="#FAF6EE"
-            shape="square"
-            hoverTrailAmount={4}
-          />
-        </div>
+        <div className="dark-grid-overlay pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500" aria-hidden="true"></div>
 
         {/* 2. Physical spiral rings binder edge (immersive diary scrapbook notebook) */}
         <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">

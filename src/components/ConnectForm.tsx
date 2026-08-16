@@ -3,6 +3,7 @@ import { Send, CheckCircle2, RefreshCw, Mail, Github, Linkedin, Instagram, Spark
 import { Button } from './ui/Button';
 import VariableProximity from './VariableProximity';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import ShapeGrid from './ShapeGrid';
 
 export default function ConnectForm() {
   const [formData, setFormData] = useState({
@@ -183,7 +184,19 @@ export default function ConnectForm() {
   return (
     <section ref={sectionRef} id="connect" className="relative py-24 px-6 md:px-12 bg-transparent">
       {/* Background Notebook Decorative Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0 dark:hidden"></div>
+      {/* ShapeGrid canvas background for dark mode */}
+      <div className="absolute inset-0 z-0 hidden dark:block">
+        <ShapeGrid
+          speed={0.3}
+          squareSize={40}
+          direction="diagonal"
+          borderColor="rgba(255, 255, 255, 0.08)"
+          hoverFillColor="#B8925A"
+          shape="square"
+          hoverTrailAmount={5}
+        />
+      </div>
 
       <motion.div style={{ scale, y }} className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 transform-gpu origin-top">
         
