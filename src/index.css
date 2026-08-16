@@ -904,3 +904,73 @@
   animation: train-bob 3s ease-in-out infinite;
 }
 
+/* -------------------------------------------------------------------------- */
+/* FULL OBSIDIAN DARK MODE GLOBAL OVERRIDES                                   */
+/* -------------------------------------------------------------------------- */
+
+html.dark {
+  color-scheme: dark;
+  background-color: #0a0a0a !important;
+}
+
+html.dark body {
+  background-color: #0a0a0a !important;
+  color: #FAF6EE !important;
+}
+
+/* Background Section & Card Overrides */
+html.dark .bg-\[\#FAF6EE\],
+html.dark .bg-\[\#F5EFE6\],
+html.dark .bg-\[\#FDFBF7\],
+html.dark .bg-\[\#FAF8F5\],
+html.dark .bg-stone-50,
+html.dark .bg-stone-100 {
+  background-color: #0d0d0d !important;
+  color: #FAF6EE !important;
+}
+
+html.dark .bg-\[\#1c1c1b\] {
+  background-color: #141414 !important;
+  border-color: rgba(184, 146, 90, 0.25) !important;
+}
+
+/* Typography & Contrast Overrides */
+html.dark .text-\[\#1c1c1b\] {
+  color: #FAF6EE !important;
+}
+
+html.dark .text-\[\#4E4842\],
+html.dark .text-\[\#6B655B\],
+html.dark .text-stone-600,
+html.dark .text-stone-700 {
+  color: #ECE3D2 !important;
+}
+
+/* Folder cards in Work Gallery */
+html.dark .folder-body {
+  background-color: #141414 !important;
+  color: #FAF6EE !important;
+  border-color: rgba(184, 146, 90, 0.35) !important;
+}
+
+html.dark .folder-tab {
+  background-color: #1c1c1b !important;
+  color: #B8925A !important;
+  border-color: rgba(184, 146, 90, 0.35) !important;
+}
+
+html.dark .border-black\/10,
+html.dark .border-black\/5,
+html.dark .border-stone-200 {
+  border-color: rgba(184, 146, 90, 0.2) !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #121212 !important;
+  color: #FAF6EE !important;
+  border-color: rgba(184, 146, 90, 0.3) !important;
+}
+
+

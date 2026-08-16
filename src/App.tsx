@@ -9,7 +9,7 @@ const ConnectForm = lazy(() => import('./components/ConnectForm'));
 const CaseStudyDetail = lazy(() => import('./components/CaseStudyDetail'));
 import { Project } from './types';
 import { PROJECTS } from './data';
-import { ArrowUp, Sparkles, Code, Globe } from 'lucide-react';
+import { ArrowUp, Sparkles, Code, Globe, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import Preloader from './components/Preloader';
@@ -21,15 +21,35 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('site_theme');
+      if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('site_theme', themeMode);
+  }, [themeMode]);
+
+  const toggleTheme = () => {
+    setThemeMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   useEffect(() => {
     const handleLoad = async () => {
-      // Wait for all custom fonts to be fully parsed and ready
       await document.fonts.ready;
-
-      // Keep a small minimum delay (800ms) to prevent aggressive flashing on fast connections/caches
       setTimeout(() => {
         setIsLoading(false);
-        // Preload heavy components in the background after initial paint
         setTimeout(() => {
           import('./components/WorkGallery');
           import('./components/Process');
@@ -39,11 +59,9 @@ export default function App() {
       }, 800);
     };
 
-    // If the browser already finished loading everything before the effect ran
     if (document.readyState === 'complete') {
       handleLoad();
     } else {
-      // Otherwise, wait for the full page load event (images, CSS, scripts, etc.)
       window.addEventListener('load', handleLoad);
       return () => window.removeEventListener('load', handleLoad);
     }
@@ -179,6 +197,8 @@ export default function App() {
           activeSection={selectedProject ? '' : activeSection}
           setActiveSection={handleSetActiveSection}
           onNavigateToConnect={handleNavigateToConnect}
+          themeMode={themeMode}
+          toggleTheme={toggleTheme}
         />
 
         {/* 4. Immersive View Routing with Physical Page Turn */}
@@ -344,7 +364,26 @@ export default function App() {
           </div>
         </footer>
 
-        {/* 6. Floating Action Button: Back to Top */}
+        {/* 6. Floating Action Buttons: Theme Toggle & Back to Top */}
+        <button
+          id="global-theme-toggle-btn"
+          onClick={toggleTheme}
+          className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-50 px-3.5 py-2.5 rounded-full bg-[#1c1c1b] text-[#B8925A] border border-[#B8925A]/40 shadow-2xl hover:border-[#B8925A] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 group cursor-pointer"
+          title={themeMode === 'dark' ? 'Switch to Light Scrapbook Theme' : 'Switch to Obsidian Dark Theme'}
+        >
+          {themeMode === 'dark' ? (
+            <>
+              <Sun className="w-4 h-4 text-[#B8925A] group-hover:rotate-45 transition-transform duration-300" />
+              <span className="font-mono text-[9px] uppercase tracking-widest text-[#FAF6EE] hidden sm:inline font-bold">Light</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-4 h-4 text-[#B8925A] group-hover:-rotate-12 transition-transform duration-300" />
+              <span className="font-mono text-[9px] uppercase tracking-widest text-[#FAF6EE] hidden sm:inline font-bold">Dark</span>
+            </>
+          )}
+        </button>
+
         {showScrollTop && (
           <button
             id="scroll-to-top-btn"

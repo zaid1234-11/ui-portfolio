@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   activeSection: string;
   setActiveSection: (section: string) => void;
   onNavigateToConnect: () => void;
+  themeMode?: 'dark' | 'light';
+  toggleTheme?: () => void;
 }
 
-export default function Header({ activeSection, setActiveSection, onNavigateToConnect }: HeaderProps) {
+export default function Header({ 
+  activeSection, 
+  setActiveSection, 
+  onNavigateToConnect,
+  themeMode = 'dark',
+  toggleTheme
+}: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
@@ -25,8 +34,6 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
   ];
 
   const handleNavClick = (id: string) => {
-    // setActiveSection here triggers App.tsx's handleSetActiveSection
-    // which handles clearing the case study and scrolling to the right place.
     setActiveSection(id);
   };
 
@@ -74,20 +81,36 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
               </div>
             </button>
 
-            {/* Mobile Nav Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-1.5 sm:p-2 text-[#B8925A] focus:outline-none flex items-center justify-center cursor-pointer"
-              aria-label="Toggle Navigation Menu"
-            >
-              <svg className="w-5 h-5 sm:w-5 sm:h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+            {/* Mobile Actions (Theme Toggle & Mobile Nav Button) */}
+            <div className="flex items-center gap-2 md:hidden">
+              {toggleTheme && (
+                <button
+                  onClick={toggleTheme}
+                  aria-label={themeMode === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                  className={`p-2 rounded-full border transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer ${
+                    isScrolled
+                      ? 'bg-[#1c1c1b] text-[#B8925A] border-stone-700'
+                      : 'bg-[#FAF6EE]/10 text-[#B8925A] border-[#B8925A]/30'
+                  }`}
+                >
+                  {themeMode === 'dark' ? <Sun className="w-4 h-4 text-[#B8925A]" /> : <Moon className="w-4 h-4 text-[#B8925A]" />}
+                </button>
+              )}
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-1.5 sm:p-2 text-[#B8925A] focus:outline-none flex items-center justify-center cursor-pointer"
+                aria-label="Toggle Navigation Menu"
+              >
+                <svg className="w-5 h-5 sm:w-5 sm:h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
           
           {/* Nav Container */}
@@ -133,10 +156,8 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
                 
                 let textColor = '';
                 if (isScrolled) {
-                  // Light theme
                   textColor = isHovered ? 'text-white' : (isActive ? 'text-[#1c1c1b] font-bold' : 'text-stone-500 hover:text-[#1c1c1b]');
                 } else {
-                  // Dark theme
                   textColor = isHovered ? 'text-[#1c1c1b] font-bold' : (isActive ? 'text-[#FAF6EE] font-bold' : 'text-stone-400 hover:text-[#FAF6EE]');
                 }
                 
@@ -154,16 +175,33 @@ export default function Header({ activeSection, setActiveSection, onNavigateToCo
             </nav>
           </div>
 
-          {/* CTA Button */}
-          <button 
-            onClick={onNavigateToConnect}
-            className={`hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300 group focus:outline-none relative z-20
-            ${isScrolled 
-              ? 'bg-[#1c1c1b] text-[#FAF6EE] hover:bg-[#B8925A]' 
-              : 'bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE]'}`}
-          >
-            <span className="font-semibold">Hire Me</span>
-          </button>
+          {/* Right Action Group (Theme Toggle & CTA) */}
+          <div className="hidden md:flex items-center gap-2 relative z-20">
+            {toggleTheme && (
+              <button
+                onClick={toggleTheme}
+                aria-label={themeMode === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                title={themeMode === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                className={`p-2.5 rounded-full border transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 ${
+                  isScrolled
+                    ? 'bg-[#1c1c1b] text-[#B8925A] border-stone-700 hover:bg-[#B8925A] hover:text-[#1c1c1b]'
+                    : 'bg-[#FAF6EE]/10 text-[#B8925A] border-[#B8925A]/30 hover:bg-[#B8925A] hover:text-[#1c1c1b]'
+                }`}
+              >
+                {themeMode === 'dark' ? <Sun className="w-4 h-4 text-[#B8925A]" /> : <Moon className="w-4 h-4 text-[#B8925A]" />}
+              </button>
+            )}
+
+            <button 
+              onClick={onNavigateToConnect}
+              className={`px-6 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300 group focus:outline-none cursor-pointer
+              ${isScrolled 
+                ? 'bg-[#1c1c1b] text-[#FAF6EE] hover:bg-[#B8925A]' 
+                : 'bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE]'}`}
+            >
+              <span className="font-semibold">Hire Me</span>
+            </button>
+          </div>
 
           {/* Mobile Nav Dropdown Content */}
           <AnimatePresence>
