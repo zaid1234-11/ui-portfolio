@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExternalLink, Github } from 'lucide-react';
 import { Project } from '../../types';
 
 export interface ProjectCardProps {
@@ -63,7 +62,7 @@ export function ProjectCard({
                 <h3 className="font-display text-xl md:text-2xl font-bold leading-tight tracking-tight border-b border-black/10 pb-2 mb-3">
                   {project.title}
                 </h3>
-                <p className="text-[11px] leading-relaxed opacity-75 font-serif italic mb-3 line-clamp-2">
+                <p className="text-[11px] leading-relaxed opacity-75 font-serif italic mb-4 line-clamp-3">
                   {project.description}
                 </p>
               </div>
@@ -76,42 +75,12 @@ export function ProjectCard({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
               </div>
-              
-              {/* Quick Action Links & Tech Stack Badges */}
-              <div className="flex items-center justify-between gap-1 mt-2.5">
-                <div className="flex flex-wrap gap-1">
-                  {project.techStack.slice(0, 2).map((tech, tIdx) => (
-                    <span key={tIdx} className="font-mono text-[8px] bg-black/5 border border-black/10 px-1.5 py-0.5 rounded-full opacity-60">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1.5 z-20" onClick={(e) => e.stopPropagation()}>
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="View Live Website"
-                      className="flex items-center gap-1 font-mono text-[8px] font-bold uppercase bg-[#1c1c1b] text-[#FAF6EE] border border-black/20 px-2 py-1 rounded shadow-sm hover:scale-105 transition-transform duration-200"
-                    >
-                      <ExternalLink className="w-2.5 h-2.5 text-[#B8925A]" />
-                      <span>Live</span>
-                    </a>
-                  )}
-                  {project.repoUrl && (
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="View GitHub Code"
-                      className="flex items-center gap-1 font-mono text-[8px] font-bold uppercase bg-black/10 hover:bg-black/20 text-[#1c1c1b] border border-black/15 px-2 py-1 rounded transition-colors duration-200"
-                    >
-                      <Github className="w-2.5 h-2.5" />
-                      <span>Code</span>
-                    </a>
-                  )}
-                </div>
+              <div className="flex flex-wrap gap-1 mt-3">
+                {project.techStack.slice(0, 2).map((tech, tIdx) => (
+                  <span key={tIdx} className="font-mono text-[8px] bg-black/5 border border-black/10 px-2 py-0.5 rounded-full opacity-60">
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

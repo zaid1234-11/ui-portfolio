@@ -268,6 +268,47 @@ export default function CaseStudyDetail({ project, onBack, onNavigateToProject }
           </>
         )}
 
+        {/* High-Impact Project Launch & Repository CTA Panel inside every project folder */}
+        {(project.liveUrl || project.repoUrl) && (
+          <div className="bg-[#1c1c1b] border border-[#B8925A]/25 p-8 md:p-10 rounded-2xl mb-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+            <div className="space-y-2 text-center md:text-left z-10">
+              <span className="inline-flex items-center gap-2 font-mono text-[9px] text-[#B8925A] tracking-[0.25em] uppercase font-bold bg-[#FAF6EE]/5 px-3 py-1 rounded-full border border-[#B8925A]/20">
+                PROJECT LINKS & CODE ACCESS
+              </span>
+              <h3 className="font-display text-2xl md:text-3xl font-bold text-[#FAF6EE]">
+                Explore {project.title} Live Demo & Codebase
+              </h3>
+              <p className="text-xs text-[#ECE3D2]/75 font-light max-w-xl leading-relaxed">
+                Launch the live deployed web application or review the complete production-grade source code repository on GitHub.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 shrink-0 z-10">
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#B8925A] hover:bg-[#FAF6EE] text-[#1c1c1b] px-6 py-3.5 rounded-full font-mono text-xs tracking-wider uppercase font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Launch Live Site ↗</span>
+                </a>
+              )}
+              {project.repoUrl && (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-[#FAF6EE]/20 hover:border-[#FAF6EE]/40 text-[#FAF6EE] px-6 py-3.5 rounded-full font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-300 hover:scale-105"
+                >
+                  <Github className="w-4 h-4 text-[#B8925A]" />
+                  <span>GitHub Repository ↗</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Case Study Footer Navigation */}
         <div className="border-t border-[#B8925A]/15 pt-12 flex flex-col sm:flex-row items-center justify-between gap-6">
           <button
