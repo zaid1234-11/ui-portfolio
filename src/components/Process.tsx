@@ -102,14 +102,14 @@ export default function Process() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 lg:mb-8 gap-4">
             <div ref={headingContainerRef}>
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
+                <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] dark:bg-[#242424] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
                   03 - WORK METHODOLOGY
                 </span>
-                <span className="font-mono text-[9px] text-[#1c1c1b]/60 tracking-[0.2em] uppercase bg-[#ECE3D2]/50 border border-[#B8925A]/15 px-2.5 py-0.5 rounded-full">
+                <span className="font-mono text-[9px] text-[#1c1c1b]/60 dark:text-[#ECE3D2]/70 tracking-[0.2em] uppercase bg-[#ECE3D2]/50 dark:bg-[#242424]/50 border border-[#B8925A]/15 px-2.5 py-0.5 rounded-full">
                   CHANNEL 0{activeStep + 1} / 04
                 </span>
               </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1b] tracking-tight leading-none">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tight leading-none">
                 <span className="font-display block uppercase tracking-tighter text-3d-ivory">
                   <VariableProximity
                     label="Meticulous"
@@ -118,6 +118,8 @@ export default function Process() {
                     containerRef={headingContainerRef}
                     radius={120}
                     falloff="gaussian"
+                    fromColor="currentColor"
+                    toColor="#B8925A"
                     className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer"
                   />
                 </span>
@@ -129,6 +131,8 @@ export default function Process() {
                     containerRef={headingContainerRef}
                     radius={140}
                     falloff="gaussian"
+                    fromColor="#B8925A"
+                    toColor="#FAF6EE"
                     className="font-marker font-light italic text-[#B8925A] cursor-pointer"
                   />
                 </span>
@@ -143,7 +147,7 @@ export default function Process() {
                   onClick={() => handleStepClick(idx)}
                   className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                     activeStep === idx
-                      ? 'w-8 bg-[#1c1c1b]'
+                      ? 'w-8 bg-[#1c1c1b] dark:bg-[#B8925A]'
                       : 'w-2 bg-[#B8925A]/30 hover:bg-[#B8925A]/60'
                   }`}
                   aria-label={`Go to step ${idx + 1}`}
@@ -164,24 +168,24 @@ export default function Process() {
                     onClick={() => handleStepClick(index)}
                     className={`w-full text-left p-5 md:p-6 border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
                       activeStep === index
-                        ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#B8925A]/50 shadow-xl rounded-xl lg:scale-[1.02]'
-                        : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] hover:bg-[#ECE3D2]/30 rounded-xl'
+                        ? 'bg-[#1c1c1b] dark:bg-[#1f1f1f] text-[#FAF6EE] border-[#B8925A]/50 shadow-xl rounded-xl lg:scale-[1.02]'
+                        : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] dark:hover:border-[#B8925A] hover:bg-[#ECE3D2]/30 dark:hover:bg-[#242424]/40 rounded-xl'
                     }`}
                   >
                     <span className={`font-mono text-sm font-bold transition-colors duration-300 ${
-                      activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/40'
+                      activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/60 dark:text-[#B8925A]/60'
                     }`}>
                       {step.num}
                     </span>
 
                     <div className="space-y-1">
                       <h3 className={`font-display text-base font-bold tracking-tight transition-colors duration-300 ${
-                        activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80'
+                        activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80 dark:text-[#FAF6EE]/80'
                       }`}>
                         {step.title}
                       </h3>
                       <p className={`text-xs font-light ${
-                        activeStep === index ? 'text-[#ECE3D2]/60' : 'text-[#4E4842]/50'
+                        activeStep === index ? 'text-[#ECE3D2]/70' : 'text-[#4E4842]/60 dark:text-[#ECE3D2]/60'
                       }`}>
                         {step.tags.join(' · ')}
                       </p>
@@ -196,20 +200,20 @@ export default function Process() {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.25 }}
-                        className="lg:hidden overflow-hidden bg-[#FAF6EE] border-x border-b border-[#B8925A]/20 rounded-b-xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.02)]"
+                        className="lg:hidden overflow-hidden bg-[#FAF6EE] dark:bg-[#1c1c1b] border-x border-b border-[#B8925A]/20 rounded-b-xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.02)]"
                       >
                         <div className="p-5 flex flex-col gap-4">
-                          <p className="text-sm text-[#4E4842] leading-relaxed font-light">
+                          <p className="text-sm text-[#4E4842] dark:text-[#ECE3D2] leading-relaxed font-light">
                             {steps[activeStep].description}
                           </p>
 
                           {/* Step Metric Highlight */}
-                          <div className="bg-[#ECE3D2]/40 border border-[#B8925A]/20 p-3 rounded-xl flex items-center gap-3">
+                          <div className="bg-[#ECE3D2]/40 dark:bg-[#242424] border border-[#B8925A]/20 p-3 rounded-xl flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-[#B8925A]/15 border border-[#B8925A]/25 flex items-center justify-center text-[#B8925A] shrink-0">
                               <CheckCircle2 className="w-4 h-4" />
                             </div>
                             <div>
-                              <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest mb-0.5">
+                              <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 uppercase tracking-widest mb-0.5">
                                 {steps[activeStep].metric}
                               </span>
                               <span className="text-xs font-semibold text-[#B8925A]">
@@ -240,10 +244,7 @@ export default function Process() {
 
                 {/* TV Screen Container */}
                 <div 
-                  className="absolute top-[11%] bottom-[16%] left-[7%] right-[29%] z-10 bg-[#FAF6EE] rounded-[1.5rem] shadow-[inset_0_4px_12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8 flex flex-col justify-between overflow-y-auto overflow-x-hidden"
-                  style={{
-                    backgroundImage: 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
-                  }}
+                  className="absolute top-[11%] bottom-[16%] left-[7%] right-[29%] z-10 bg-[#FAF6EE] dark:bg-[#1a1a1a] rounded-[1.5rem] shadow-[inset_0_4px_12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8 flex flex-col justify-between overflow-y-auto overflow-x-hidden"
                 >
                   <AnimatePresence>
                     <motion.div
@@ -257,23 +258,23 @@ export default function Process() {
                       <div>
                         {/* Title and Description */}
                         <h4
-                          className="mb-3 block font-display text-xl sm:text-2xl font-bold text-[#1c1c1b] tracking-tight leading-snug"
+                          className="mb-3 block font-display text-xl sm:text-2xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tight leading-snug"
                           style={{ fontFamily: "'Cormorant Garamond', serif" }}
                         >
                           {steps[activeStep].title}
                         </h4>
-                        <p className="text-xs sm:text-sm text-[#4E4842] leading-relaxed font-light mb-4">
+                        <p className="text-xs sm:text-sm text-[#4E4842] dark:text-[#ECE3D2]/90 leading-relaxed font-light mb-4">
                           {steps[activeStep].description}
                         </p>
                       </div>
 
                       {/* Step Metric Highlight */}
-                      <div className="bg-[#ECE3D2]/40 border border-[#B8925A]/20 p-3 sm:p-4 rounded-xl flex items-center gap-4 relative z-10">
+                      <div className="bg-[#ECE3D2]/40 dark:bg-[#242424] border border-[#B8925A]/20 p-3 sm:p-4 rounded-xl flex items-center gap-4 relative z-10">
                         <div className="w-10 h-10 rounded-full bg-[#B8925A]/15 border border-[#B8925A]/25 flex items-center justify-center text-[#B8925A] shrink-0">
                           <CheckCircle2 className="w-5 h-5" />
                         </div>
                         <div>
-                          <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest mb-0.5">
+                          <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 uppercase tracking-widest mb-0.5">
                             {steps[activeStep].metric}
                           </span>
                           <span className="text-xs font-semibold text-[#B8925A]">
