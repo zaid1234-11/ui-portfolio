@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, Sparkles, Globe } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'motion/react';
 import InkRevealText from './InkRevealText';
@@ -21,6 +21,26 @@ export default function Hero({ onExploreClick }: HeroProps) {
   const rotateX = useTransform(smoothMouseY, [-1, 1], [12, -12]);
   const bgTranslateX = useTransform(smoothMouseX, [-1, 1], [25, -25]);
   const bgTranslateY = useTransform(smoothMouseY, [-1, 1], [25, -25]);
+
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    const checkDark = () => setIsDark(document.documentElement.classList.contains('dark'));
+    checkDark();
+
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -128,7 +148,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
       {/* Full-screen Hover Mask Reveal Background */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
         <HoverMaskReveal
-          imageBase={{ src: '/front.webp', positionX: '50%', positionY: '50%' }}
+          imageBase={{ src: isDark ? '/front dark.webp' : '/front.webp', positionX: '50%', positionY: '50%' }}
           imageHover={{ src: '/back.webp', positionX: '50%', positionY: '50%' }}
           radius={150}
           blur={0.5}
