@@ -118,8 +118,6 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   containerRef={headingContainerRef}
                   radius={120}
                   falloff="gaussian"
-                  fromColor="currentColor"
-                  toColor="#B8925A"
                   className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer"
                 />
               </span>
@@ -131,8 +129,6 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   containerRef={headingContainerRef}
                   radius={140}
                   falloff="gaussian"
-                  fromColor="#B8925A"
-                  toColor="#FAF6EE"
                   className="font-symphonie font-light text-5xl md:text-6xl text-[#B8925A] cursor-pointer"
                 />
               </span>

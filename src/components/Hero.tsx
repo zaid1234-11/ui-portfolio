@@ -272,7 +272,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
         className="relative z-10 max-w-7xl mx-auto w-full my-12 md:my-auto flex flex-col items-center text-center py-12"
       >
         {/* Subtle Decorative Capsule */}
-        <div className="mb-6 flex items-center gap-2 text-[#1c1c1b] [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]">
+        <div className={`mb-6 flex items-center gap-2 ${isDark ? 'text-[#FAF6EE]' : 'text-[#1c1c1b] [text-shadow:0_1px_4px_rgba(250,246,238,0.5)]'}`}>
           <Sparkles className="w-4 h-4 text-[#B8925A]" />
           <span className="font-mono text-[11px] font-bold tracking-widest uppercase">
             Design Meets Frontend Engineering
@@ -299,13 +299,17 @@ export default function Hero({ onExploreClick }: HeroProps) {
               transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 flex flex-col items-center justify-center select-none"
             >
-              <h1 className="font-geraldine text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] text-[#FAF6EE] [text-shadow:0_2px_0_rgba(184,146,90,0.5),0_4px_20px_rgba(0,0,0,0.8)] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-normal cursor-pointer">
+              <h1 className={`font-geraldine text-[16vw] sm:text-[13vw] md:text-[11vw] lg:text-[135px] leading-none tracking-normal text-center relative transform hover:scale-[1.02] transition-transform duration-300 font-normal cursor-pointer ${
+                isDark 
+                  ? 'text-[#FAF6EE] [text-shadow:0_2px_0_rgba(184,146,90,0.5),0_4px_20px_rgba(0,0,0,0.8)]' 
+                  : 'text-[#20321e] [text-shadow:0_0_24px_rgba(250,246,238,0.8)]'
+              }`}>
                 <VariableProximity
                   label="Zaid Saifi"
                   fromFontVariationSettings="'wght' 400"
                   toFontVariationSettings="'wght' 400"
-                  fromColor="#FAF6EE"
-                  toColor="#FFFFFF"
+                  fromColor={isDark ? "#FAF6EE" : "#20321e"}
+                  toColor={isDark ? "#FFFFFF" : "#20321e"}
                   containerRef={containerRef}
                   radius={180}
                   falloff="gaussian"
@@ -313,8 +317,12 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 />
               </h1>
 
-              {/* Hand-drawn ink/brush stroke underline matching white title */}
-              <div className="w-56 sm:w-72 md:w-80 mt-1 opacity-90 text-[#FAF6EE] drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] flex justify-center">
+              {/* Hand-drawn ink/brush stroke underline matching the reference image */}
+              <div className={`w-56 sm:w-72 md:w-80 mt-1 flex justify-center ${
+                isDark 
+                  ? 'opacity-90 text-[#FAF6EE] drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]' 
+                  : 'opacity-80 text-[#20321e] drop-shadow-[0_0_12px_rgba(250,246,238,0.8)]'
+              }`}>
                 <svg viewBox="0 0 400 20" className="w-full h-auto fill-current" preserveAspectRatio="none">
                   {/* Organic distressed brush stroke underline */}
                   <path d="M10,12 C80,14 160,11 240,9 C300,7.5 360,10 390,11.5 C340,13 280,14 220,13.5 C150,13 80,16 10,12 Z" />

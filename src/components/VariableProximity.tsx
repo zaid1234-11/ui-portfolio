@@ -159,9 +159,10 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         const letterCenterX = rect.left + rect.width / 2;
         const letterCenterY = rect.top + rect.height / 2;
 
-        const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
-
-        const baseColor = fromColor || "#FAF6EE";
+        let baseColor = fromColor;
+        if (!baseColor) {
+          baseColor = getComputedStyle(letterRef).color || '#1c1c1b';
+        }
 
         let targetFalloff = 0;
         if (distance < radius) {
@@ -175,7 +176,11 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         if (smoothedFalloff < 0.001 && targetFalloff === 0) {
           if (letterRef.style.fontVariationSettings !== fromFontVariationSettings) {
             letterRef.style.fontVariationSettings = fromFontVariationSettings;
-            letterRef.style.color = baseColor;
+            if (fromColor) {
+              letterRef.style.color = fromColor;
+            } else {
+              letterRef.style.removeProperty('color');
+            }
           }
           return;
         }
@@ -196,8 +201,10 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         letterRef.style.fontVariationSettings = newSettings;
         if (fontWeightValue) letterRef.style.fontWeight = fontWeightValue;
 
-        const colorInterpolator = gsap.utils.interpolate(baseColor, targetColor);
-        letterRef.style.color = colorInterpolator(falloffValue);
+        if (toColor) {
+          const colorInterpolator = gsap.utils.interpolate(baseColor, targetColor);
+          letterRef.style.color = colorInterpolator(falloffValue);
+        }
       });
 
       isSettledRef.current = allSettled;

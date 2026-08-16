@@ -250,8 +250,6 @@ export default function ConnectForm() {
                   containerRef={sectionRef}
                   radius={120}
                   falloff="gaussian"
-                  fromColor="currentColor"
-                  toColor="#B8925A"
                 />
               </h3>
               <p className="text-sm text-[#4E4842]/85 dark:text-[#ECE3D2]/90 leading-relaxed font-light">

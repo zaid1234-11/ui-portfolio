@@ -368,8 +368,6 @@ export default function About() {
                   containerRef={sectionRef}
                   radius={120}
                   falloff="gaussian"
-                  fromColor="currentColor"
-                  toColor="#B8925A"
                   className="font-display font-bold"
                 />
               </h3>
@@ -385,8 +383,6 @@ export default function About() {
                 containerRef={sectionRef}
                 radius={120}
                 falloff="gaussian"
-                fromColor="currentColor"
-                toColor="#B8925A"
               />
             </p>
 
