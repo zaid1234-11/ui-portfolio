@@ -92,11 +92,11 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div ref={headingContainerRef}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
+              <span className="font-mono text-[9px] text-[#B8925A] tracking-[0.3em] uppercase bg-[#ECE3D2] dark:bg-[#242424] border border-[#B8925A]/20 px-3.5 py-1 rounded-full">
                 01 - SYSTEM ARCHIVE INDEX
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1b] tracking-tight leading-none">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tight leading-none">
               <span className="font-display block uppercase tracking-tighter text-3d-ivory">
                 <VariableProximity
                   label="Project"
@@ -105,6 +105,8 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   containerRef={headingContainerRef}
                   radius={120}
                   falloff="gaussian"
+                  fromColor="currentColor"
+                  toColor="#B8925A"
                   className="font-display block uppercase tracking-tighter text-3d-ivory cursor-pointer"
                 />
               </span>
@@ -116,12 +118,14 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                   containerRef={headingContainerRef}
                   radius={140}
                   falloff="gaussian"
+                  fromColor="#B8925A"
+                  toColor="#FAF6EE"
                   className="font-symphonie font-light text-5xl md:text-6xl text-[#B8925A] cursor-pointer"
                 />
               </span>
             </h2>
           </div>
-          <div className="max-w-md text-sm text-[#4E4842] leading-relaxed font-light italic min-h-[4rem]">
+          <div className="max-w-md text-sm text-[#4E4842] dark:text-[#ECE3D2]/90 leading-relaxed font-light italic min-h-[4rem]">
             <TextType
               as="p"
               text="Each folder represents an elite digital case study: physical paper material weights containing highly tactile wireframes and responsive telemetry metrics."
@@ -136,7 +140,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
 
         {/* Filter Navigation */}
         <div className="flex flex-wrap items-center gap-2 mb-12 md:mb-16 border-b border-[#B8925A]/15 pb-6">
-          <span className="text-xs font-mono text-[#4E4842]/60 mr-4 flex items-center gap-1.5 uppercase tracking-widest">
+          <span className="text-xs font-mono text-[#4E4842]/70 dark:text-[#ECE3D2]/80 mr-4 flex items-center gap-1.5 uppercase tracking-widest font-semibold">
             <Grid className="w-3.5 h-3.5 text-[#B8925A]" /> Cabinet Filter:
           </span>
           {filters.map((filter) => (
@@ -147,10 +151,11 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                 setActiveFilter(filter);
                 setHoveredIndex(null);
               }}
-              className={`text-xs font-mono tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-300 border focus:outline-none cursor-pointer ${activeFilter === filter
-                  ? 'bg-[#1c1c1b] text-[#FAF6EE] border-[#1c1c1b] font-semibold shadow-md'
-                  : 'bg-transparent text-[#4E4842]/70 border-[#B8925A]/25 hover:border-[#1c1c1b] hover:text-[#1c1c1b]'
-                }`}
+              className={`text-xs font-mono tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-300 border focus:outline-none cursor-pointer ${
+                activeFilter === filter
+                  ? 'bg-[#1c1c1b] text-[#FAF6EE] dark:bg-[#B8925A] dark:text-[#1c1c1b] border-[#1c1c1b] dark:border-[#B8925A] font-bold shadow-md'
+                  : 'bg-transparent text-[#4E4842]/70 dark:text-[#FAF6EE]/80 border-[#B8925A]/25 dark:border-[#B8925A]/40 hover:border-[#1c1c1b] dark:hover:border-[#B8925A] hover:text-[#1c1c1b] dark:hover:text-white dark:hover:bg-[#242424]'
+              }`}
             >
               {filter}
             </button>
