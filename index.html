@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     
     <!-- Primary Search Engine SEO Titles & Descriptions -->
     <title>Zaid Saifi (Zaids) | Lead UI/UX Engineer & Product Designer Portfolio | Zaid UI</title>
@@ -12,11 +12,34 @@
     <meta name="copyright" content="Zaid Saifi" />
     <link rel="canonical" href="https://zaidsportfolio.in/" />
     
-    <!-- Robots & Crawler Indexing Controls -->
+    <!-- Cross-Browser Search Crawler Directives (Google Chrome, Microsoft Edge, Apple Safari, Brave) -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="slurp" content="index, follow" />
+    <meta name="duckduckbot" content="index, follow" />
+    
+    <!-- Browser Theme & Web App Colors (Chrome, Edge, Safari, Brave) -->
     <meta name="theme-color" content="#0a0a0a" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Apple Safari & iOS Specific Metadata -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Zaid UI Portfolio" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/me.jpg" />
+    <meta name="format-detection" content="telephone=no, address=no, email=no" />
+
+    <!-- Microsoft Edge & Windows Start Tile Metadata -->
+    <meta name="msapplication-TileColor" content="#0a0a0a" />
+    <meta name="msapplication-TileImage" content="/me.jpg" />
+    <meta name="msapplication-config" content="none" />
+
+    <!-- Google Chrome & Brave Web App Metadata -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Zaid UI Portfolio" />
+    <link rel="icon" type="image/jpeg" href="/me.jpg" />
+    <link rel="shortcut icon" href="/me.jpg" />
 
     <!-- Open Graph / Facebook / LinkedIn Social Cards -->
     <meta property="og:site_name" content="Zaid Saifi - Zaid UI Portfolio" />
@@ -36,7 +59,7 @@
     <meta name="twitter:description" content="Zaid Saifi (Zaids) — Lead UI/UX Engineer & Product Designer Portfolio. Meticulous UI/UX craftsmanship, frontend logic, and interactive digital products." />
     <meta name="twitter:image" content="https://zaidsportfolio.in/me.jpg" />
 
-    <!-- Schema.org JSON-LD Structured Data for Google Knowledge Graph -->
+    <!-- Schema.org JSON-LD Structured Data for Search Engines -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -103,7 +126,7 @@
     <link rel="preload" as="image" href="/back.webp">
   </head>
   <body class="bg-[#0a0a0a]">
-    <!-- Visually hidden semantic text for search engine crawlers -->
+    <!-- Visually hidden semantic text for Chrome, Edge, Safari, Brave search engine crawlers -->
     <h1 class="sr-only">Zaid Saifi (Zaids) - Lead UI/UX Engineer & Product Designer Portfolio (Zaid UI / UIUX / Job Portfolio)</h1>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
