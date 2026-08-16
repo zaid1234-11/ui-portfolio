@@ -154,8 +154,9 @@ export default function App() {
 
       <div className="relative min-h-screen w-full bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
 
-        {/* 1. Global Noise Texture Film overlay */}
+        {/* 1. Global Noise & Dark Grid Texture Film overlays */}
         <div className="noise-overlay" aria-hidden="true"></div>
+        <div className="dark-grid-overlay pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500" aria-hidden="true"></div>
 
         {/* 2. Physical spiral rings binder edge (immersive diary scrapbook notebook) */}
         <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">

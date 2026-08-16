@@ -980,5 +980,31 @@ html.dark select {
   border-color: rgba(184, 146, 90, 0.3) !important;
 }
 
+/* -------------------------------------------------------------------------- */
+/* ARCHITECTURAL CYBERPUNK GRID BACKGROUND OVERLAY FOR DARK MODE              */
+/* -------------------------------------------------------------------------- */
+
+.dark-grid-overlay {
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(184, 146, 90, 0.12) 0%, transparent 70%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  background-position: center center;
+}
+
+html.dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    linear-gradient(to right, rgba(184, 146, 90, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(184, 146, 90, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+
 
 
