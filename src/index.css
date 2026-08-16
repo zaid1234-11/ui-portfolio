@@ -724,31 +724,54 @@
 
 @media (max-width: 820px) {
   :root {
-    --folder-w: 280px; /* Wider folders on mobile for clear viewing */
-    --folder-overlap: 30px; /* Very minimal overlap so tabs never collide */
-    --folder-h: 460px;
-    --tab-h: 120px;
-    --tab-w: 36px; /* Slightly thinner tabs */
+    --folder-w: 285px; /* Optimal folder card width on mobile screens */
+    --folder-overlap: 0px; /* Zero overlap on mobile for distinct horizontal cards */
+    --folder-h: 470px;
+    --tab-h: 110px;
+    --tab-w: 36px;
     --tab-inset: 20px;
   }
 
-  .folder-stack {
-    overflow-x: visible;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 20px;
-    padding-right: 20px;
+  .folder-stack-container {
+    padding-top: 8px;
     padding-bottom: 24px;
-    height: var(--folder-h);
-    gap: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .folder-stack {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    touch-action: pan-x pan-y !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 24px !important;
+    padding-top: 16px !important;
+    height: auto !important;
+    min-height: calc(var(--folder-h) + 40px) !important;
+    gap: 16px !important;
+    width: 100% !important;
+    scrollbar-width: none !important; /* Firefox */
+  }
+
+  .folder-stack::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari, Edge */
   }
 
   .folder-btn {
-    margin-left: calc(-1 * var(--folder-overlap)) !important;
+    margin-left: 0 !important;
     margin-top: 0 !important;
-    max-width: none;
-    flex-shrink: 0;
+    max-width: none !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: center !important;
+    scroll-snap-stop: always !important;
+    transform: translateZ(0) !important;
   }
 
   .folder-btn:first-child {
@@ -756,8 +779,13 @@
   }
 
   .folder-inner {
-    /* Subtle push up on hover/tap instead of side push */
     --tx: 0px !important;
+    transform: translate3d(0, var(--ty, 0px), 0px) scale(var(--sc, 1)) !important;
+  }
+
+  .folder-btn:active .folder-inner {
+    --sc: 0.98 !important;
+    --ty: -4px !important;
   }
 
   .folder-body, .card-swap-card {

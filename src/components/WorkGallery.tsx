@@ -31,7 +31,6 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
     offset: ["start end", "start start"]
   });
 
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -41,49 +40,15 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const { scrollYProgress: mobileScrollProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start start", "end end"]
-  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
+  const scale = useTransform(smoothProgress, [0, 1], [1.15, 1], { clamp: true });
+  const y = useTransform(smoothProgress, [0, 1], [60, 0], { clamp: true });
 
   const filters = ['All', 'UI/UX', 'Web App', 'Branding', 'E-Commerce', 'Data Vis'];
 
   const filteredProjects = activeFilter === 'All'
     ? PROJECTS
     : PROJECTS.filter(p => p.category === activeFilter);
-
-  const folderStackRef = useRef<HTMLDivElement>(null);
-  const [stackWidth, setStackWidth] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    if (isMobile && folderStackRef.current) {
-      setStackWidth(folderStackRef.current.scrollWidth);
-      setWindowWidth(window.innerWidth);
-    }
-  }, [filteredProjects, isMobile]);
-  // Calculate how far we need to translate horizontally
-  // Total scrollable width minus viewport width plus padding
-  const maxTranslate = Math.max(0, stackWidth - windowWidth + 40);
-
-  // Framer Motion works best with explicit numeric values for x and y transforms.
-  const rawXTransform = useTransform(mobileScrollProgress, [0, 1], [0, -maxTranslate]);
-  
-  // Apply a buttery smooth kinetic spring to the horizontal sliding!
-  const smoothXTransform = useSpring(rawXTransform, { stiffness: 150, damping: 25, mass: 0.5 });
-  const x = isMobile ? smoothXTransform : 0;
-
-  // Calculate vertical translation to simulate position: sticky
-  // Since the wrapper is 300vh, the scroll distance is 200vh.
-  // Translating down by 200vh as scrollProgress goes from 0 to 1 perfectly cancels out the scroll!
-  const yStickyTransform = useTransform(mobileScrollProgress, [0, 1], ["0vh", "150vh"]);
-  const ySticky = isMobile ? yStickyTransform : 0;
-
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
-  const scale = useTransform(smoothProgress, [0, 1], [1.15, 1], { clamp: true });
-  const y = useTransform(smoothProgress, [0, 1], [60, 0], { clamp: true });
-
-
 
   // Generate dynamic vector barcode lines for authentic file-archive design
   const renderBarcode = () => {
@@ -170,7 +135,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex flex-wrap items-center gap-2 mb-16 border-b border-[#B8925A]/15 pb-6">
+        <div className="flex flex-wrap items-center gap-2 mb-12 md:mb-16 border-b border-[#B8925A]/15 pb-6">
           <span className="text-xs font-mono text-[#4E4842]/60 mr-4 flex items-center gap-1.5 uppercase tracking-widest">
             <Grid className="w-3.5 h-3.5 text-[#B8925A]" /> Cabinet Filter:
           </span>
@@ -192,16 +157,23 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
           ))}
         </div>
 
+        {/* Mobile Swipe Prompt Indicator */}
+        {isMobile && (
+          <div className="flex items-center justify-between px-2 mb-3 text-[#B8925A] font-mono text-[10px] tracking-widest uppercase">
+            <span className="flex items-center gap-1.5 opacity-80 font-semibold animate-pulse">
+              ← Swipe to explore projects →
+            </span>
+            <span className="opacity-60">
+              {filteredProjects.length} Entries
+            </span>
+          </div>
+        )}
+
         {/* Tactile Folder Stack Container */}
-        <div ref={scrollRef} className={`w-full ${isMobile ? 'h-[250vh] relative mt-12 md:mt-24' : ''}`}>
-          <motion.div 
-            style={isMobile ? { y: ySticky } : {}} 
-            className={`${isMobile ? 'absolute top-0 left-0 w-full h-screen flex items-center pt-16 md:pt-24 overflow-hidden' : 'folder-stack-container py-12 flex justify-center w-full overflow-visible'}`}
-          >
-            <motion.div 
-              ref={folderStackRef}
-              className={`folder-stack ${isMobile ? 'w-max will-change-transform transform-gpu' : ''}`} 
-              style={isMobile ? { x } : {}}
+        <div className="w-full relative">
+          <div className="folder-stack-container py-4 md:py-12 flex justify-center w-full overflow-visible">
+            <div 
+              className="folder-stack role-list" 
               role="list" 
               aria-label="Project portfolio folders"
             >
@@ -228,8 +200,8 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
                 />
               );
             })}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Empty state when filters return nothing */}
