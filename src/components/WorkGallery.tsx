@@ -81,7 +81,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   return (
     <section ref={sectionRef} id="work" className="relative py-28 px-6 md:px-12 bg-transparent">
       {/* Background Notebook Architectural Draft Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.10)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.10)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
       <motion.div 
         style={{ scale, y }} 

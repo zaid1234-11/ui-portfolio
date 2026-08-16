@@ -992,15 +992,47 @@ html.dark select {
 }
 
 /* -------------------------------------------------------------------------- */
-/* DISTINCT WHITE ARCHITECTURAL GRID BACKGROUND FOR DARK MODE                */
+/* TACTILE PIXEL-MATRIX GRID BACKGROUND WITH SCATTERED BRIGHT WHITE PIXELS   */
 /* -------------------------------------------------------------------------- */
 
+@keyframes pixelGlow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
 .dark-grid-overlay {
+  animation: pixelGlow 6s ease-in-out infinite alternate;
   background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(184, 146, 90, 0.15) 0%, transparent 65%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 100% 100%, 40px 40px, 40px 40px;
+    /* Ambient warm gold vignette spotlight */
+    radial-gradient(ellipse at 50% 0%, rgba(184, 146, 90, 0.18) 0%, transparent 60%),
+    
+    /* Scattered glowing bright white pixel nodes on grid intersections */
+    radial-gradient(circle 2px at 40px 40px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 160px 80px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 280px 120px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 80px 200px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 200px 240px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 320px 280px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 120px 360px, #FFFFFF 100%, transparent 100%),
+    radial-gradient(circle 2px at 240px 400px, #FFFFFF 100%, transparent 100%),
+    
+    /* Scattered gold accent pixel nodes */
+    radial-gradient(circle 1.75px at 120px 160px, #B8925A 100%, transparent 100%),
+    radial-gradient(circle 1.75px at 360px 40px, #B8925A 100%, transparent 100%),
+    
+    /* Soft ambient intersection dots */
+    radial-gradient(circle 1px at center, rgba(255, 255, 255, 0.08) 100%, transparent 100%),
+    
+    /* Mostly dark low-opacity grid lines (dark charcoal grid structure) */
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    
+  background-size: 
+    100% 100%,
+    400px 440px, 400px 440px, 400px 440px, 400px 440px, 400px 440px, 400px 440px, 400px 440px, 400px 440px,
+    400px 440px, 400px 440px,
+    40px 40px,
+    40px 40px, 40px 40px;
   background-position: center center;
 }
 
@@ -1011,8 +1043,8 @@ html.dark body::before {
   pointer-events: none;
   z-index: 0;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.10) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.10) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 

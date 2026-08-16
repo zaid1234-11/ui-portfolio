@@ -160,7 +160,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
       </div>
 
       {/* Sketchbook Grid Background Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(126,105,87,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(126,105,87,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_85%,transparent_100%)] pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(126,105,87,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(126,105,87,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_85%,transparent_100%)] pointer-events-none z-0"></div>
 
 
 
