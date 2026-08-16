@@ -83,7 +83,7 @@ export const PROJECTS: Project[] = [
     id: 'peach-and-paper',
     title: 'Peach & Paper',
     description: 'Nostalgic storytelling system transforming emotions into tactile receipts and watercolor graphics.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7Vg3N6myTktAIUS8WAIPD1lGLZdW7OYagWuc_OxIZyjjgdAkpdf8WQNl2z50UyWyK4wFVQB8uwPVSQGOR4APzQ9hr4Ih4KbVF75rrjfIIZP5c7H9Ur5oMOg0ofY9KbFIZWbg00c9bYd1Kj04ho4w4M4J-drYppfgcqglfyX4ifqQlFSYxOd8bmJRBMqhasRA0q-vqnq6BucsKmMWsFLrBY2WI9cFhWOgnOxmiQARLegovD_Dw6-6F',
+    image: '/projects/peach/hero.jpg',
     category: 'Web App',
     tags: ['Nostalgic UI', 'Generative AI', 'Creative Writing'],
     role: 'Full-Stack Designer',
@@ -99,7 +99,7 @@ export const PROJECTS: Project[] = [
       { label: 'Nostalgia Rating', value: 'Excellent' }
     ],
     galleryImages: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuD7Vg3N6myTktAIUS8WAIPD1lGLZdW7OYagWuc_OxIZyjjgdAkpdf8WQNl2z50UyWyK4wFVQB8uwPVSQGOR4APzQ9hr4Ih4KbVF75rrjfIIZP5c7H9Ur5oMOg0ofY9KbFIZWbg00c9bYd1Kj04ho4w4M4J-drYppfgcqglfyX4ifqQlFSYxOd8bmJRBMqhasRA0q-vqnq6BucsKmMWsFLrBY2WI9cFhWOgnOxmiQARLegovD_Dw6-6F'
+      '/projects/peach/hero.jpg'
     ],
     nextProjectId: 'salessphere',
     liveUrl: 'https://peach-and-paper.vercel.app',
@@ -109,7 +109,7 @@ export const PROJECTS: Project[] = [
     id: 'salessphere',
     title: 'SalesSphere',
     description: 'High-performance enterprise analytics dashboard rendering 100,000+ data points with virtual scrolling.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBIZfWC7c3WjWNnpxJoZqDCof491RJ1aH-EAoUdHb6C2r3ajvx9MWiKgDAwXsGIHEEIXZl1ZHFRlAO_iulwpQJMCTi0CRDn5Z8tczmQJDpYqkH5xDJkxlUwFPQyBGBUExhSAZdthYb7Tguztuddd2MmQhouDJysmxG0CUrStzJkTdvu1CwLdfi4B8gqh7eIbrya8QBexIhVZfOyhoKomhRkxlLp4A9vMuJpomBQT_pW2ijRIeWDcLiF',
+    image: '/projects/salessphere/hero.jpg',
     category: 'Data Vis',
     tags: ['Virtualization', 'D3 Charts', 'ETL Pipeline'],
     role: 'Lead UI/UX Designer & Data Engineer',
@@ -125,7 +125,7 @@ export const PROJECTS: Project[] = [
       { label: 'JS Bundle Size', value: '285KB' }
     ],
     galleryImages: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBIZfWC7c3WjWNnpxJoZqDCof491RJ1aH-EAoUdHb6C2r3ajvx9MWiKgDAwXsGIHEEIXZl1ZHFRlAO_iulwpQJMCTi0CRDn5Z8tczmQJDpYqkH5xDJkxlUwFPQyBGBUExhSAZdthYb7Tguztuddd2MmQhouDJysmxG0CUrStzJkTdvu1CwLdfi4B8gqh7eIbrya8QBexIhVZfOyhoKomhRkxlLp4A9vMuJpomBQT_pW2ijRIeWDcLiF'
+      '/projects/salessphere/hero.jpg'
     ],
     nextProjectId: 'the-adrocket',
     liveUrl: 'https://github.com/zaid1234-11/Thiranex-1---salessphere',
