@@ -122,13 +122,13 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
 
   // Reusable Marquee Content Block
   const MarqueeContent = () => (
-    <div className="marquee-part flex items-center flex-shrink-0 text-white">
+    <div className="marquee-part flex items-center flex-shrink-0 text-[#FAF6EE]">
       {area.tools.map((tool, idx) => (
         <React.Fragment key={idx}>
-          <span className="whitespace-nowrap font-display font-black text-5xl md:text-[75px] leading-none px-5 md:px-8 tracking-tighter uppercase text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+          <span className="whitespace-nowrap font-display font-black text-5xl md:text-[75px] leading-none px-5 md:px-8 tracking-tighter uppercase">
             {tool}
           </span>
-          <span className="text-[#B8925A] opacity-90 text-3xl md:text-[45px] leading-none px-3 select-none">
+          <span className="text-[#B8925A] opacity-60 text-3xl md:text-[45px] leading-none px-3 select-none">
             ✦
           </span>
         </React.Fragment>
@@ -152,37 +152,37 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
         {/* Column 1: Archival Label (Rotated on Desktop) */}
         <div className="md:col-span-1 hidden md:flex justify-center items-center h-full">
           <div className="transform -rotate-90 origin-center whitespace-nowrap">
-            <span className="font-mono text-[9px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 group-hover:text-white tracking-[0.2em] uppercase transition-colors duration-500 font-semibold">
+            <span className="font-mono text-[9px] text-[#4E4842]/60 group-hover:text-[#FAF6EE]/50 tracking-[0.2em] uppercase transition-colors duration-500">
               REF: {area.label}
             </span>
           </div>
         </div>
 
         {/* Mobile-only Label */}
-        <div className="md:hidden font-mono text-[9px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 tracking-[0.2em] uppercase group-hover:text-white transition-colors duration-500 border-l border-[#B8925A] pl-2 font-semibold">
+        <div className="md:hidden font-mono text-[9px] text-[#4E4842]/60 tracking-[0.2em] uppercase group-hover:text-[#FAF6EE]/50 transition-colors duration-500 border-l border-[#B8925A] pl-2">
           REF: {area.label}
         </div>
 
         {/* Column 2: Massive Title */}
         <div className="md:col-span-8 flex items-center">
-          <h3 className="font-display font-black text-6xl sm:text-7xl md:text-[85px] lg:text-[110px] text-[#1c1c1b] dark:text-[#FAF6EE] group-hover:text-white leading-none tracking-tighter uppercase transition-colors duration-500">
+          <h3 className="font-display font-black text-6xl sm:text-7xl md:text-[85px] lg:text-[110px] text-[#1c1c1b] dark:text-[#FAF6EE] group-hover:text-[#FAF6EE] leading-none tracking-tighter uppercase transition-colors duration-500">
             {area.title}
           </h3>
         </div>
 
         {/* Column 4: Static Tool Prompt */}
         <div className="md:col-span-3 flex md:justify-end items-center h-full min-h-[130px]">
-          <div className="font-mono text-[9px] text-[#1c1c1b]/40 dark:text-[#ECE3D2]/40 group-hover:text-transparent tracking-[0.15em] uppercase w-full text-left md:text-right transition-colors duration-200">
+          <div className="font-mono text-[9px] text-[#1c1c1b]/30 group-hover:text-transparent tracking-[0.15em] uppercase w-full text-left md:text-right transition-colors duration-200">
             — Hover to View Toolkit —
           </div>
         </div>
       </div>
 
-      {/* GSAP Flowing Marquee Overlay */}
+      {/* Marquee Revealed From Direction of Mouse Entry */}
       <div
         className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%] z-20 flex items-center"
         ref={marqueeRef}
-        style={{ backgroundColor: '#141414' }}
+        style={{ backgroundColor: '#1c1c1b' }}
       >
         <div className="h-fit flex items-center" ref={marqueeInnerRef}>
           {[...Array(repetitions)].map((_, idx) => (
@@ -190,14 +190,13 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
           ))}
         </div>
       </div>
-
     </div>
   );
 }
 
 export default function AreasOfPractice() {
   return (
-    <div className="relative w-full py-20 md:py-32 mb-20 bg-transparent">
+    <section id="practice" className="relative py-28 bg-transparent">
       
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-16 max-w-7xl mx-auto px-6 md:px-12 relative z-10">
@@ -216,6 +215,6 @@ export default function AreasOfPractice() {
         ))}
       </div>
       
-    </div>
+    </section>
   );
 }

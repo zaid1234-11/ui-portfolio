@@ -241,6 +241,9 @@ export default function Process() {
                 {/* TV Screen Container */}
                 <div 
                   className="absolute top-[11%] bottom-[16%] left-[7%] right-[29%] z-10 bg-[#FAF6EE] dark:bg-[#1a1a1a] rounded-[1.5rem] shadow-[inset_0_4px_12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8 flex flex-col justify-between overflow-y-auto overflow-x-hidden"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
+                  }}
                 >
                   <AnimatePresence>
                     <motion.div

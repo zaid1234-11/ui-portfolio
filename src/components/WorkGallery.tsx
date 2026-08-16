@@ -149,7 +149,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
 
         {/* Filter Navigation */}
         <div className="flex flex-wrap items-center gap-2 mb-12 md:mb-16 border-b border-[#B8925A]/15 pb-6">
-          <span className="text-xs font-mono text-[#4E4842]/70 dark:text-[#ECE3D2]/80 mr-4 flex items-center gap-1.5 uppercase tracking-widest font-semibold">
+          <span className="text-xs font-mono text-[#4E4842]/60 dark:text-[#ECE3D2]/80 mr-4 flex items-center gap-1.5 uppercase tracking-widest">
             <Grid className="w-3.5 h-3.5 text-[#B8925A]" /> Cabinet Filter:
           </span>
           {filters.map((filter) => (
@@ -162,7 +162,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
               }}
               className={`text-xs font-mono tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-300 border focus:outline-none cursor-pointer ${
                 activeFilter === filter
-                  ? 'bg-[#1c1c1b] text-[#FAF6EE] dark:bg-[#B8925A] dark:text-[#1c1c1b] border-[#1c1c1b] dark:border-[#B8925A] font-bold shadow-md'
+                  ? 'bg-[#1c1c1b] text-[#FAF6EE] dark:bg-[#B8925A] dark:text-[#1c1c1b] border-[#1c1c1b] dark:border-[#B8925A] font-semibold shadow-md'
                   : 'bg-transparent text-[#4E4842]/70 dark:text-[#FAF6EE]/80 border-[#B8925A]/25 dark:border-[#B8925A]/40 hover:border-[#1c1c1b] dark:hover:border-[#B8925A] hover:text-[#1c1c1b] dark:hover:text-white dark:hover:bg-[#242424]'
               }`}
             >
