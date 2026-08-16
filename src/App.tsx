@@ -272,16 +272,16 @@ export default function App() {
         </div>
 
         {/* 5. High-End Minimalist Footer */}
-        <footer className="bg-obsidian-dark border-t border-white/5 py-10 md:py-16 px-4 md:px-12 relative z-30">
+        <footer className="bg-obsidian-dark dark:bg-[#1a1a1a] border-t border-white/5 dark:border-white/10 py-10 md:py-16 px-4 md:px-12 relative z-30">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12">
 
             {/* Column A: Logo and Motto */}
             <div className="space-y-4 max-w-sm">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-sage" />
-                <span className="font-display text-lg tracking-widest text-ivory font-bold">ARTEFACT</span>
+                <Sparkles className="w-5 h-5 text-[#B8925A]" />
+                <span className="font-display text-lg tracking-widest text-ivory dark:text-[#FAF6EE] font-bold">ARTEFACT</span>
               </div>
-              <p className="text-xs text-ivory-dim/40 leading-relaxed font-light">
+              <p className="text-xs text-ivory-dim/60 dark:text-[#ECE3D2]/70 leading-relaxed font-light">
                 Meticulous craftsmanship in digital interfaces. Merging raw visual weight with reactive frontend logic for elite brand presentation.
               </p>
             </div>
@@ -289,14 +289,14 @@ export default function App() {
             {/* Column B: Links Navigation */}
             <div className="grid grid-cols-2 gap-12">
               <div className="space-y-3">
-                <span className="block font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest">
+                <span className="block font-mono text-[9px] text-ivory-dim/60 dark:text-[#B8925A] uppercase tracking-widest font-bold">
                   ARCHITECT
                 </span>
                 <ul className="space-y-2 text-xs">
                   <li>
                     <button
                       onClick={() => handleSetActiveSection('hero')}
-                      className="text-ivory-dim/55 hover:text-sage transition-colors focus:outline-none"
+                      className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors focus:outline-none cursor-pointer"
                     >
                       Home Index
                     </button>
@@ -304,7 +304,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handleSetActiveSection('work')}
-                      className="text-ivory-dim/55 hover:text-sage transition-colors focus:outline-none"
+                      className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors focus:outline-none cursor-pointer"
                     >
                       Portfolio Work
                     </button>
@@ -312,7 +312,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handleSetActiveSection('process')}
-                      className="text-ivory-dim/55 hover:text-sage transition-colors focus:outline-none"
+                      className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors focus:outline-none cursor-pointer"
                     >
                       Methodology
                     </button>
@@ -321,14 +321,14 @@ export default function App() {
               </div>
 
               <div className="space-y-3">
-                <span className="block font-mono text-[9px] text-ivory-dim/40 uppercase tracking-widest">
+                <span className="block font-mono text-[9px] text-ivory-dim/60 dark:text-[#B8925A] uppercase tracking-widest font-bold">
                   CONTACTS
                 </span>
                 <ul className="space-y-2 text-xs">
                   <li>
                     <button
                       onClick={() => handleSetActiveSection('about')}
-                      className="text-ivory-dim/55 hover:text-sage transition-colors focus:outline-none"
+                      className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors focus:outline-none cursor-pointer"
                     >
                       Biography
                     </button>
@@ -336,13 +336,13 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handleSetActiveSection('connect')}
-                      className="text-ivory-dim/55 hover:text-sage transition-colors focus:outline-none"
+                      className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors focus:outline-none cursor-pointer"
                     >
                       Inquire Project
                     </button>
                   </li>
                   <li>
-                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/55 hover:text-sage transition-colors">
+                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/70 dark:text-[#FAF6EE]/80 hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors">
                       zaidsaifi150105@gmail.com
                     </a>
                   </li>
@@ -352,12 +352,12 @@ export default function App() {
 
             {/* Column C: Technical Credits */}
             <div className="space-y-4 text-right md:text-left self-stretch md:self-auto flex flex-col justify-between items-end md:items-start">
-              <div className="font-mono text-[9px] text-sand/60 bg-white/5 border border-white/5 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                <Globe className="w-3 h-3 text-sage" />
+              <div className="font-mono text-[9px] text-sand/80 dark:text-[#ECE3D2]/80 bg-white/5 dark:bg-[#242424] border border-white/10 dark:border-[#B8925A]/30 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                <Globe className="w-3 h-3 text-[#B8925A]" />
                 SAN FRANCISCO edition · 2026
               </div>
 
-              <p className="text-[10px] font-mono text-ivory-dim/30 leading-normal">
+              <p className="text-[10px] font-mono text-ivory-dim/50 dark:text-[#ECE3D2]/50 leading-normal">
                 © 2026 ARTEFACT. Hand-coded with TSX + Tailwind CSS.
               </p>
             </div>

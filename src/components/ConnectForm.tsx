@@ -218,7 +218,7 @@ export default function ConnectForm() {
               </span>
             </h2>
           </div>
-          <p className="max-w-md text-sm text-[#4E4842]/85 leading-relaxed font-light">
+          <p className="max-w-md text-sm text-[#4E4842]/85 dark:text-[#ECE3D2]/90 leading-relaxed font-light">
             Ready to project digital prestige onto your next venture? Fill in the parameters below to launch our discovery.
           </p>
         </div>
@@ -229,7 +229,7 @@ export default function ConnectForm() {
           {/* Left Block: Contact Details and Metadata */}
           <div className="lg:col-span-5 space-y-10">
             <div className="space-y-4">
-              <h3 className="font-display text-2xl font-bold text-[#1c1c1b]">
+              <h3 className="font-display text-2xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE]">
                 <VariableProximity
                   label="The Discovery Phase starts with a single dialogue."
                   fromFontVariationSettings="'wght' 400"
@@ -237,42 +237,44 @@ export default function ConnectForm() {
                   containerRef={sectionRef}
                   radius={120}
                   falloff="gaussian"
+                  fromColor="currentColor"
+                  toColor="#B8925A"
                 />
               </h3>
-              <p className="text-sm text-[#4E4842]/85 leading-relaxed font-light">
+              <p className="text-sm text-[#4E4842]/85 dark:text-[#ECE3D2]/90 leading-relaxed font-light">
                 Once submitted, I'll review your project goals, analyze market competitors, and propose a specific aesthetic and functional design strategy within 24 hours.
               </p>
             </div>
 
             {/* Direct Connect Grid - Styled like beautiful paper tags taped to the notebook */}
             <div className="space-y-4">
-              <div className="flex items-center gap-3.5 bg-[#ECE3D2]/40 border border-[#B8925A]/20 p-4 rounded-xl relative shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-[#1c1c1b] flex items-center justify-center text-[#FAF6EE] shrink-0">
+              <div className="flex items-center gap-3.5 bg-[#ECE3D2]/40 dark:bg-[#242424] border border-[#B8925A]/20 dark:border-[#B8925A]/30 p-4 rounded-xl relative shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#1c1c1b] dark:bg-[#B8925A]/20 flex items-center justify-center text-[#FAF6EE] dark:text-[#B8925A] shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest font-bold">
+                  <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/70 uppercase tracking-widest font-bold">
                     DIRECT EMAIL
                   </span>
-                  <a href="mailto:zaidsaifi150105@gmail.com" className="text-xs font-semibold text-[#1c1c1b] hover:text-[#B8925A] transition-colors">
+                  <a href="mailto:zaidsaifi150105@gmail.com" className="text-xs font-semibold text-[#1c1c1b] dark:text-[#FAF6EE] hover:text-[#B8925A] dark:hover:text-[#B8925A] transition-colors">
                     zaidsaifi150105@gmail.com
                   </a>
                 </div>
                 {/* Visual tape piece */}
-                <div className="absolute -top-2 left-1/3 masking-tape text-[7px] bg-white/50 text-[#1c1c1b]/60 px-2 py-0.5 scale-75">
+                <div className="absolute -top-2 left-1/3 masking-tape text-[7px] bg-white/50 dark:bg-[#323232] text-[#1c1c1b]/60 dark:text-[#FAF6EE]/80 px-2 py-0.5 scale-75 border dark:border-[#B8925A]/30">
                   ★ SECURE
                 </div>
               </div>
 
-              <div className="flex items-center gap-3.5 bg-[#ECE3D2]/40 border border-[#B8925A]/20 p-4 rounded-xl relative shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-[#1c1c1b] flex items-center justify-center text-[#B8925A] shrink-0">
+              <div className="flex items-center gap-3.5 bg-[#ECE3D2]/40 dark:bg-[#242424] border border-[#B8925A]/20 dark:border-[#B8925A]/30 p-4 rounded-xl relative shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#1c1c1b] dark:bg-[#B8925A]/20 flex items-center justify-center text-[#B8925A] shrink-0">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="block font-mono text-[8px] text-[#4E4842]/60 uppercase tracking-widest font-bold">
+                  <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/70 uppercase tracking-widest font-bold">
                     ESTIMATED RESPONSE TIMELINE
                   </span>
-                  <span className="text-xs font-semibold text-[#1c1c1b]">
+                  <span className="text-xs font-semibold text-[#1c1c1b] dark:text-[#FAF6EE]">
                     Under 24 Hours · Monday - Friday
                   </span>
                 </div>
@@ -281,7 +283,7 @@ export default function ConnectForm() {
 
             {/* Social Channels */}
             <div className="space-y-4">
-              <span className="block font-mono text-[9px] text-[#4E4842]/60 uppercase tracking-widest font-bold">
+              <span className="block font-mono text-[9px] text-[#4E4842]/60 dark:text-[#ECE3D2]/70 uppercase tracking-widest font-bold">
                 DIGITAL CHANNELS
               </span>
               <div className="flex gap-3">
@@ -295,7 +297,7 @@ export default function ConnectForm() {
                     href={social.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-10 h-10 rounded-full bg-[#ECE3D2]/50 border border-[#B8925A]/20 flex items-center justify-center text-[#1c1c1b]/70 hover:text-[#FAF6EE] hover:bg-[#1c1c1b] hover:border-[#1c1c1b] transition-all duration-300 shadow-sm"
+                    className="w-10 h-10 rounded-full bg-[#ECE3D2]/50 dark:bg-[#242424] border border-[#B8925A]/20 dark:border-[#B8925A]/30 flex items-center justify-center text-[#1c1c1b]/70 dark:text-[#FAF6EE] hover:text-[#FAF6EE] hover:bg-[#1c1c1b] dark:hover:bg-[#B8925A] dark:hover:text-[#1c1c1b] transition-all duration-300 shadow-sm"
                   >
                     {social.icon}
                   </a>
@@ -306,7 +308,7 @@ export default function ConnectForm() {
 
           {/* Right Block: Liquid Glass Form Panel - Styled as a Premium Charcoal Slate card */}
           <div className="lg:col-span-7">
-            <div className="bg-[#1c1c1b] border border-[#B8925A]/15 p-8 md:p-12 rounded-xl relative overflow-hidden shadow-xl text-[#FAF6EE]">
+            <div className="bg-[#1c1c1b] dark:bg-[#1f1f1f] border border-[#B8925A]/15 dark:border-[#B8925A]/30 p-8 md:p-12 rounded-xl relative overflow-hidden shadow-xl text-[#FAF6EE]">
               
               {/* Conditional rendering for Form vs Success Message */}
               {!isSubmitted ? (
@@ -314,7 +316,7 @@ export default function ConnectForm() {
                   
                   {/* Category Type selector */}
                   <div className="space-y-3">
-                    <label className="block font-display text-sm text-[#ECE3D2]/80 uppercase tracking-widest font-black">
+                    <label className="block font-display text-sm text-[#ECE3D2]/80 dark:text-[#FAF6EE] uppercase tracking-widest font-black">
                       What can we help you solve?
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
