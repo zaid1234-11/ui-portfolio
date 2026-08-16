@@ -161,11 +161,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
 
         const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
 
-        let baseColor = letterRef.dataset.baseColor;
-        if (!baseColor) {
-          baseColor = fromColor || getComputedStyle(letterRef).color;
-          letterRef.dataset.baseColor = baseColor;
-        }
+        const baseColor = fromColor || "#FAF6EE";
 
         let targetFalloff = 0;
         if (distance < radius) {
