@@ -21,7 +21,13 @@ export const PROJECTS: Project[] = [
       { label: 'Server Compute', value: '0%' }
     ],
     galleryImages: [
-      '/projects/pixel lab/hero page.png'
+      '/projects/pixel lab/hero page.png',
+      '/projects/pixel lab/result.webp',
+      '/projects/pixel lab/dither.webp',
+      '/projects/pixel lab/voronoi.webp',
+      '/projects/pixel lab/dots.webp',
+      '/projects/pixel lab/edge detection.webp',
+      '/projects/pixel lab/original.webp'
     ],
     nextProjectId: 'fintrac-ai',
     liveUrl: 'https://retro-lab-pixel-art.vercel.app',

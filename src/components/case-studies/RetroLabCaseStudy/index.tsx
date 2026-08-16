@@ -67,8 +67,19 @@ export default function RetroLabCaseStudy() {
             ))}
           </div>
 
-          <div className="pt-8">
-            <ImagePlaceholder label="Hero Image Placeholder — split-screen comparison of a high-fidelity image transforming into pixel art" aspect="aspect-[21/9]" />
+          <div className="pt-8 relative group">
+            <div className="relative aspect-[21/9] w-full bg-[#111310] border border-[#9ca777]/30 rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src="/projects/pixel lab/hero page.png"
+                alt="RetroLab Real-Time Pixel Art Processing Suite"
+                className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%)] bg-[size:100%_4px] pointer-events-none z-10"></div>
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-[#9ca777]/30 text-[#9ca777] font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full z-20 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#9ca777] animate-pulse"></span>
+                <span>Real-Time Canvas Engine</span>
+              </div>
+            </div>
           </div>
         </header>
 
@@ -243,8 +254,31 @@ export default function RetroLabCaseStudy() {
             ))}
           </div>
 
-          <div className="mt-8">
-            <ImagePlaceholder label="Sitemap Placeholder — single-page app structure and control panel groupings" aspect="aspect-[16/6]" />
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] group">
+              <img src="/projects/pixel lab/dither.webp" alt="Dither Engine" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 flex flex-col justify-end">
+                <span className="font-mono text-[9px] text-[#9ca777] uppercase tracking-wider font-bold">Dither Matrix</span>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] group">
+              <img src="/projects/pixel lab/voronoi.webp" alt="Voronoi Geometry" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 flex flex-col justify-end">
+                <span className="font-mono text-[9px] text-[#9ca777] uppercase tracking-wider font-bold">Voronoi Mesh</span>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] group">
+              <img src="/projects/pixel lab/dots.webp" alt="Halftone Density" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 flex flex-col justify-end">
+                <span className="font-mono text-[9px] text-[#9ca777] uppercase tracking-wider font-bold">Halftone Grid</span>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] group">
+              <img src="/projects/pixel lab/edge detection.webp" alt="Sobel Edge Filter" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 flex flex-col justify-end">
+                <span className="font-mono text-[9px] text-[#9ca777] uppercase tracking-wider font-bold">Sobel Edge</span>
+              </div>
+            </div>
           </div>
         </CaseStudySection>
 
@@ -339,14 +373,16 @@ export default function RetroLabCaseStudy() {
           <div className="space-y-6">
             <h3 className="font-mono text-sm text-[#9ca777] uppercase tracking-widest font-bold">Desktop Workspace</h3>
             <p className="text-white/70 font-light">Dual-column layout, pinned control panel, maximum canvas real estate. Custom pixel-art cursor states on hover.</p>
-            <ImagePlaceholder label="Desktop Workspace Placeholder" aspect="aspect-[16/9]" />
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] shadow-2xl">
+              <img src="/projects/pixel lab/hero page.png" alt="Desktop Workspace" className="w-full h-full object-cover" />
+            </div>
           </div>
 
           <div className="space-y-6 pt-12">
             <h3 className="font-mono text-sm text-[#9ca777] uppercase tracking-widest font-bold">Mobile Studio</h3>
             <p className="text-white/70 font-light">Single-column, swipe-to-scrub controls; an 8-bit themed sliding drawer replaces the desktop panel. Split-compare slider maps to raw touch events for 1:1 finger tracking.</p>
-            <div className="max-w-sm mx-auto">
-              <ImagePlaceholder label="Mobile Workspace Placeholder" aspect="aspect-[9/19]" />
+            <div className="max-w-md mx-auto relative aspect-[4/5] rounded-2xl overflow-hidden border border-[#9ca777]/20 bg-[#111310] shadow-2xl">
+              <img src="/projects/pixel lab/result.webp" alt="Mobile Studio Render" className="w-full h-full object-cover" />
             </div>
           </div>
         </CaseStudySection>
