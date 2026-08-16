@@ -159,14 +159,13 @@ export default function App() {
         <div className="noise-overlay" aria-hidden="true"></div>
         <div className="dark-grid-overlay pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500" aria-hidden="true">
           <ShapeGrid
-            speed={0.45}
-            squareSize={44}
+            speed={0.8}
+            squareSize={40}
             direction="diagonal"
-            borderColor="rgba(255, 255, 255, 0.08)"
-            hoverFillColor="#B8925A"
+            borderColor="rgba(255, 255, 255, 0.15)"
+            hoverFillColor="#FAF6EE"
             shape="square"
-            hoverTrailAmount={6}
-            excludeHero={true}
+            hoverTrailAmount={4}
           />
         </div>
 
