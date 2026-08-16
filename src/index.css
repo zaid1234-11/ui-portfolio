@@ -951,10 +951,21 @@ html.dark .folder-tab {
   border-color: rgba(184, 146, 90, 0.3) !important;
 }
 
-/* Typography & Contrast Overrides */
+/* Typography & Contrast Overrides for Dark Mode Headings */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
 html.dark .text-\[\#1c1c1b\],
 html.dark .text-\[\#1a1c17\] {
   color: #FAF6EE !important;
+}
+
+html.dark .text-3d-ivory {
+  color: #FAF6EE !important;
+  text-shadow: 0 2px 0 rgba(184, 146, 90, 0.5), 0 4px 16px rgba(0, 0, 0, 0.8) !important;
 }
 
 html.dark .text-\[\#4E4842\],

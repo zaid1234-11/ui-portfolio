@@ -360,7 +360,7 @@ export default function About() {
             
             {/* Punchy Block Header from Image 2 */}
             <div className="relative inline-block">
-              <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] tracking-tighter">
+              <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tighter">
                 <VariableProximity
                   label="HI!!"
                   fromFontVariationSettings="'wght' 400"
@@ -368,6 +368,8 @@ export default function About() {
                   containerRef={sectionRef}
                   radius={120}
                   falloff="gaussian"
+                  fromColor="currentColor"
+                  toColor="#B8925A"
                   className="font-display font-bold"
                 />
               </h3>
@@ -375,7 +377,7 @@ export default function About() {
               <div className="absolute -right-8 bottom-3 w-4 h-4 rounded-full bg-[#B8925A] animate-ping"></div>
             </div>
 
-            <p className="text-lg md:text-xl text-[#4E4842] font-medium leading-relaxed max-w-xl italic">
+            <p className="text-lg md:text-xl text-[#4E4842] dark:text-[#ECE3D2] font-medium leading-relaxed max-w-xl italic">
               <VariableProximity
                 label="My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist."
                 fromFontVariationSettings="'wght' 400"
@@ -383,11 +385,13 @@ export default function About() {
                 containerRef={sectionRef}
                 radius={120}
                 falloff="gaussian"
+                fromColor="currentColor"
+                toColor="#B8925A"
               />
             </p>
 
             {/* Paragraphs with playful serif drop-ins from Image 1 & 2 */}
-            <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 leading-relaxed font-light max-w-xl">
+            <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 dark:text-[#ECE3D2]/90 leading-relaxed font-light max-w-xl">
               <p>
                 <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
                   <VariableProximity
