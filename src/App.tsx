@@ -49,6 +49,15 @@ export default function App() {
     }
   }, []);
 
+  // Dynamic Title Management for Search Engine Optimization (SEO)
+  useEffect(() => {
+    if (selectedProject) {
+      document.title = `${selectedProject.title} Case Study | Zaid Saifi (Zaids) - UI/UX Portfolio`;
+    } else {
+      document.title = 'Zaid Saifi (Zaids) | Lead UI/UX Engineer & Product Designer Portfolio | Zaid UI';
+    }
+  }, [selectedProject]);
+
   // Monitor scroll height to show back-to-top and handle active section highlights
   useEffect(() => {
     const handleScroll = () => {

@@ -1,0 +1,21 @@
+{
+  "name": "Zaid Saifi - Zaid UI Portfolio",
+  "short_name": "Zaid UI",
+  "description": "Portfolio of Zaid Saifi (Zaids) — Lead UI/UX Engineer & Product Designer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/me.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/me.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

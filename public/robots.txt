@@ -1,0 +1,6 @@
+# Robots.txt for Zaid Saifi (Zaids) UI/UX Portfolio
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://zaidsportfolio.in/sitemap.xml
