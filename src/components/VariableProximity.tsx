@@ -158,6 +158,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         const rect = letterRef.getBoundingClientRect();
         const letterCenterX = rect.left + rect.width / 2;
         const letterCenterY = rect.top + rect.height / 2;
+        const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
 
         let baseColor = fromColor;
         if (!baseColor) {
