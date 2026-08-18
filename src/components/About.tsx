@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Layers, Code, Zap, Award, Download, Check, Sparkles, ExternalLink } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useMotionTemplate } from 'motion/react';
 import { TIMELINE, SKILL_GROUPS } from '../data';
 import AnimatedSignature from './AnimatedSignature';
 import VariableProximity from './VariableProximity';
@@ -240,14 +240,67 @@ const AboutMeScribble = () => {
 
 export default function About() {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
-  const [isPhotoColored, setIsPhotoColored] = useState(false);
+  const [isPhotoHovered, setIsPhotoHovered] = useState(false);
+  const photoCardRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const collageRef = useRef<HTMLDivElement>(null);
 
-  // Initialize scroll tracking inside the biography container
+  const handlePhotoMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = photoCardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--reveal-x', `${x}%`);
+    card.style.setProperty('--reveal-y', `${y}%`);
+  };
+
+  const handlePhotoMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    handlePhotoMouseMove(e);
+    setIsPhotoHovered(true);
+  };
+
+  const handlePhotoTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const card = photoCardRef.current;
+    if (!card) return;
+    const touch = e.touches[0];
+    const rect = card.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 100;
+    const y = ((touch.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--reveal-x', `${x}%`);
+    card.style.setProperty('--reveal-y', `${y}%`);
+    setIsPhotoHovered((prev) => !prev);
+  };
+
+  // Scroll tracking inside the whole section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
+
+  // Dedicated scroll tracking with extended runway for sticky pinned presentation
+  const { scrollYProgress: collageScroll } = useScroll({
+    target: collageRef,
+    offset: ['start start', 'end end'],
+  });
+  const smoothCollage = useSpring(collageScroll, { stiffness: 50, damping: 25, mass: 0.5 });
+
+  // 1. Scroll-Driven Image Reveal: smoothly unrolls from 0% to 100% over the first ~35% of scroll
+  const colorInsetBottom = useTransform(smoothCollage, [0.03, 0.35], [100, 0]);
+  const colorClipPath = useMotionTemplate`inset(0 0 ${colorInsetBottom}% 0)`;
+
+  // 2. Sequential Story & Info Steps: spaced out with generous runway
+  const step1Opacity = useTransform(smoothCollage, [0.22, 0.45], [0, 1]);
+  const step1Y = useTransform(smoothCollage, [0.22, 0.45], [40, 0]);
+
+  const step2Opacity = useTransform(smoothCollage, [0.42, 0.65], [0, 1]);
+  const step2Y = useTransform(smoothCollage, [0.42, 0.65], [40, 0]);
+
+  const step3Opacity = useTransform(smoothCollage, [0.60, 0.82], [0, 1]);
+  const step3Y = useTransform(smoothCollage, [0.60, 0.82], [40, 0]);
+
+  const step4Opacity = useTransform(smoothCollage, [0.75, 0.95], [0, 1]);
+  const step4Y = useTransform(smoothCollage, [0.75, 0.95], [40, 0]);
 
   const { scrollYProgress: zoomProgress } = useScroll({
     target: sectionRef,
@@ -258,12 +311,12 @@ export default function About() {
   const sectionY = useTransform(smoothZoom, [0, 1], [60, 0]);
 
   // Polaroid frame-level transitions: smooth scaling up as it enters viewport, and rolling tilt!
-  const polaroidY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const polaroidScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.05, 0.9]);
-  const polaroidRotate = useTransform(scrollYProgress, [0, 1], [-8, 6]);
+  const polaroidY = useTransform(smoothCollage, [0, 1], [30, -30]);
+  const polaroidScale = useTransform(smoothCollage, [0, 0.5, 1], [0.92, 1.02, 0.96]);
+  const polaroidRotate = useTransform(smoothCollage, [0, 1], [-6, 4]);
 
   // Photo Zoom inside: OPPOSES the polaroid scale (Ken Burns perspective parallax!)
-  const innerPhotoScale = useTransform(scrollYProgress, [0, 1], [1.25, 1.0]);
+  const innerPhotoScale = useTransform(smoothCollage, [0, 1], [1.18, 1.0]);
 
   const handleDownloadCV = () => {
     setDownloadSuccess(true);
@@ -289,184 +342,239 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative lg:pt-24 lg:pb-32 pt-20 pb-28 bg-transparent overflow-hidden"
+      className="relative bg-transparent"
     >
       {/* Background Grids */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
 
-      {/* Top Content Wrapper with padding */}
-      <div className="px-6 md:px-12">
-        <motion.div style={{ scale: sectionScale, y: sectionY }} className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 transform-gpu origin-top">
-          
-          {/* Overhaul Core Grid: Collage and Typo details */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-28">
-          
-          {/* Left Collage Column (5 cols) */}
-          <div className="lg:col-span-5 relative flex items-center justify-center min-h-[440px] pt-12">
+      {/* Pinned Scroll Track for Biography Collage */}
+      <div ref={collageRef} className="relative lg:h-[250vh] h-auto">
+        <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center py-16 lg:py-0 px-6 md:px-12 z-10 will-change-transform">
+          <div className="relative z-10 max-w-7xl mx-auto w-full pl-0 md:pl-10">
             
-            {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
-            <AboutMeScribble />
-            <RetroStarDoodle scrollProgress={scrollYProgress} />
-            <WireframeArchDoodle scrollProgress={scrollYProgress} />
-            <OverlappingOvalsDoodle scrollProgress={scrollYProgress} />
-            <SunburstDoodle scrollProgress={scrollYProgress} />
-            <RotatingTextBadge scrollProgress={scrollYProgress} />
-
-            {/* Asymmetrical side marker "L" */}
-            <div className="absolute right-0 bottom-4 font-display text-[110px] font-extrabold text-[#1c1c1b]/[0.03] select-none pointer-events-none tracking-tighter leading-none">
-              L
-            </div>
-
-            {/* Tilted Polaroid Frame: reacting with scale, translation, and rotational scroll-driven parameters */}
-            <motion.div
-              style={{
-                y: polaroidY,
-                scale: polaroidScale,
-                rotate: polaroidRotate,
-              }}
-              className="relative bg-[#1c1c1b] p-4 pb-12 shadow-[0_20px_50px_rgba(28,28,27,0.15)] border border-[#B8925A]/15 max-w-[310px] w-full rounded-sm transition-shadow duration-500 hover:shadow-2xl z-10"
-            >
-              {/* Grayscale Portrait */}
-              <div className="aspect-[4/5] w-full overflow-hidden bg-stone-900 border border-white/5 relative">
-                <motion.img
-                  style={{
-                    scale: innerPhotoScale,
-                  }}
-                  src="/me.jpg"
-                  alt="Zaid Saifi Portrait"
-                  referrerPolicy="no-referrer"
-                  onClick={() => setIsPhotoColored(!isPhotoColored)}
-                  className={`w-full h-full object-cover contrast-[1.12] brightness-[0.93] transition-all duration-700 ease-out md:hover:grayscale-0 cursor-pointer ${isPhotoColored ? 'grayscale-0' : 'grayscale'}`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1b]/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
-              </div>
+            {/* Overhaul Core Grid: Collage and Typo details */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            
+            {/* Left Collage Column (5 cols) */}
+            <div className="lg:col-span-5 relative flex items-center justify-center min-h-[440px] pt-12">
               
-              {/* Polaroid bottom border felt-tip ink text */}
-              <div className="mt-5 flex flex-row justify-between items-center px-1">
-                <div className="font-display text-[11px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
-                  DESIGN ARCHIVE
-                </div>
-                <div className="font-display text-[10px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
-                  EDITION: 2026
-                </div>
+              {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
+              <AboutMeScribble />
+              <RetroStarDoodle scrollProgress={smoothCollage} />
+              <WireframeArchDoodle scrollProgress={smoothCollage} />
+              <OverlappingOvalsDoodle scrollProgress={smoothCollage} />
+              <SunburstDoodle scrollProgress={smoothCollage} />
+              <RotatingTextBadge scrollProgress={smoothCollage} />
+
+              {/* Asymmetrical side marker "L" */}
+              <div className="absolute right-0 bottom-4 font-display text-[110px] font-extrabold text-[#1c1c1b]/[0.03] select-none pointer-events-none tracking-tighter leading-none">
+                L
               </div>
 
-            </motion.div>
+              {/* Tilted Polaroid Frame: reacting with scale, translation, and rotational scroll-driven parameters */}
+              <motion.div
+                style={{
+                  y: polaroidY,
+                  scale: polaroidScale,
+                  rotate: polaroidRotate,
+                }}
+                className="relative bg-[#1c1c1b] p-4 pb-12 shadow-[0_20px_50px_rgba(28,28,27,0.15)] border border-[#B8925A]/15 max-w-[320px] w-full rounded-sm transition-shadow duration-500 hover:shadow-2xl z-10 group/polaroid"
+              >
+                {/* Cinematic Scroll & Hover Reveal Portrait Container */}
+                <div 
+                  ref={photoCardRef}
+                  onMouseEnter={handlePhotoMouseEnter}
+                  onMouseMove={handlePhotoMouseMove}
+                  onMouseLeave={() => setIsPhotoHovered(false)}
+                  onTouchStart={handlePhotoTouchStart}
+                  className="aspect-[4/5] w-full overflow-hidden bg-stone-900 border border-white/10 relative rounded-sm group cursor-pointer select-none"
+                >
+                  {/* Background: Grayscale Image */}
+                  <motion.img
+                    style={{
+                      scale: innerPhotoScale,
+                    }}
+                    src="/me.jpg"
+                    alt="Zaid Saifi Portrait (Grayscale)"
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover grayscale contrast-[1.15] brightness-[0.95] opacity-90"
+                  />
 
-          </div>
+                  {/* Foreground: Color Image (Scroll-driven unroll mask + Interactive Hover) */}
+                  <motion.div
+                    className="absolute inset-0 w-full h-full will-change-[clip-path]"
+                    style={{
+                      clipPath: isPhotoHovered
+                        ? `circle(150% at var(--reveal-x, 50%) var(--reveal-y, 50%))`
+                        : colorClipPath,
+                      transition: isPhotoHovered ? 'clip-path 1.8s cubic-bezier(0.15, 0.85, 0.35, 1)' : 'none',
+                    }}
+                  >
+                    <motion.img
+                      style={{
+                        scale: innerPhotoScale,
+                      }}
+                      src="/me.jpg"
+                      alt="Zaid Saifi Portrait (Full Color)"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover contrast-[1.08] brightness-[1.02]"
+                    />
+                  </motion.div>
 
-          {/* Right Typography & Narrative Column (7 cols) */}
-          <div className="lg:col-span-7 space-y-8">
-            
-            {/* Punchy Block Header from Image 2 */}
-            <div className="relative inline-block">
-              <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tighter">
-                <VariableProximity
-                  label="HI!!"
-                  fromFontVariationSettings="'wght' 400"
-                  toFontVariationSettings="'wght' 900"
-                  containerRef={sectionRef}
-                  radius={120}
-                  falloff="gaussian"
-                  className="font-display font-bold"
-                />
-              </h3>
-              {/* Decorative gold dot detail */}
-              <div className="absolute -right-8 bottom-3 w-4 h-4 rounded-full bg-[#B8925A] animate-ping"></div>
+                  {/* Subtle dark gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1b]/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-700 pointer-events-none"></div>
+
+                  {/* Floating Interactive Badge */}
+                  <motion.div
+                    style={{ opacity: step1Opacity }}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-fit pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                  >
+                    <div className="bg-[#1c1c1b]/90 backdrop-blur-md text-[#FAF6EE] text-[9px] uppercase tracking-[0.2em] font-mono py-1.5 px-4 rounded-full border border-[#B8925A]/40 whitespace-nowrap shadow-xl flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A] animate-pulse"></span>
+                      <span>CREATIVE CRAFT</span>
+                    </div>
+                  </motion.div>
+
+                  {/* Decorative Architectural Corners */}
+                  <div className="absolute top-0 left-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute top-0 left-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute top-0 right-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute top-0 right-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute bottom-0 right-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                  <div className="absolute bottom-0 right-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
+                </div>
+                
+                {/* Polaroid bottom border felt-tip ink text */}
+                <div className="mt-5 flex flex-row justify-between items-center px-1">
+                  <div className="font-display text-[11px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
+                    DESIGN ARCHIVE
+                  </div>
+                  <div className="font-display text-[10px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
+                    EDITION: 2026
+                  </div>
+                </div>
+
+              </motion.div>
+
             </div>
 
-            <p className="text-lg md:text-xl text-[#4E4842] dark:text-[#ECE3D2] font-medium leading-relaxed max-w-xl italic">
-              <VariableProximity
-                label="My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist."
-                fromFontVariationSettings="'wght' 400"
-                toFontVariationSettings="'wght' 700"
-                containerRef={sectionRef}
-                radius={120}
-                falloff="gaussian"
-              />
-            </p>
+            {/* Right Typography & Narrative Column (7 cols) with sequential scroll reveal */}
+            <div className="lg:col-span-7 space-y-8">
+              
+              {/* Step 1: Punchy Block Header and Intro */}
+              <motion.div style={{ opacity: step1Opacity, y: step1Y }} className="space-y-6">
+                <div className="relative inline-block">
+                  <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tighter">
+                    <VariableProximity
+                      label="HI!!"
+                      fromFontVariationSettings="'wght' 400"
+                      toFontVariationSettings="'wght' 900"
+                      containerRef={sectionRef}
+                      radius={120}
+                      falloff="gaussian"
+                      className="font-display font-bold"
+                    />
+                  </h3>
+                  {/* Decorative gold dot detail */}
+                  <div className="absolute -right-8 bottom-3 w-4 h-4 rounded-full bg-[#B8925A] animate-ping"></div>
+                </div>
 
-            {/* Paragraphs with playful serif drop-ins from Image 1 & 2 */}
-            <div className="space-y-6 text-sm md:text-base text-[#4E4842]/90 dark:text-[#ECE3D2]/90 leading-relaxed font-light max-w-xl">
-              <p>
-                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                <p className="text-lg md:text-xl text-[#4E4842] dark:text-[#ECE3D2] font-medium leading-relaxed max-w-xl italic">
                   <VariableProximity
-                    label="Ever since"
+                    label="My name is Zaid Saifi, I'm a UI/UX designer, developer, and creative technologist."
                     fromFontVariationSettings="'wght' 400"
-                    toFontVariationSettings="'wght' 800"
+                    toFontVariationSettings="'wght' 700"
                     containerRef={sectionRef}
-                    radius={100}
+                    radius={120}
                     falloff="gaussian"
                   />
-                </span>{' '}
-                <VariableProximity
-                  label="I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code."
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 700"
-                  containerRef={sectionRef}
-                  radius={120}
-                  falloff="gaussian"
-                />
-              </p>
-              <p>
-                <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                </p>
+              </motion.div>
+
+              {/* Step 2: Story Paragraphs with playful serif drop-ins */}
+              <motion.div style={{ opacity: step2Opacity, y: step2Y }} className="space-y-6 text-sm md:text-base text-[#4E4842]/90 dark:text-[#ECE3D2]/90 leading-relaxed font-light max-w-xl">
+                <p>
+                  <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                    <VariableProximity
+                      label="Ever since"
+                      fromFontVariationSettings="'wght' 400"
+                      toFontVariationSettings="'wght' 800"
+                      containerRef={sectionRef}
+                      radius={100}
+                      falloff="gaussian"
+                    />
+                  </span>{' '}
                   <VariableProximity
-                    label="I live to"
-                    fromFontVariationSettings="'wght' 400"
-                    toFontVariationSettings="'wght' 800"
+                    label="I remember, I've had a profound passion for visual communication, bridging raw human feelings with clean, performant full-stack interactive code."
+                    fromFontVariationSettings="'wght' 300"
+                    toFontVariationSettings="'wght' 700"
                     containerRef={sectionRef}
-                    radius={100}
+                    radius={120}
                     falloff="gaussian"
                   />
-                </span>{' '}
-                <VariableProximity
-                  label="discover, experiment, and craft immersive digital experiences that leave a lasting impact."
-                  fromFontVariationSettings="'wght' 300"
-                  toFontVariationSettings="'wght' 700"
-                  containerRef={sectionRef}
-                  radius={120}
-                  falloff="gaussian"
-                />
-              </p>
-            </div>
+                </p>
+                <p>
+                  <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
+                    <VariableProximity
+                      label="I live to"
+                      fromFontVariationSettings="'wght' 400"
+                      toFontVariationSettings="'wght' 800"
+                      containerRef={sectionRef}
+                      radius={100}
+                      falloff="gaussian"
+                    />
+                  </span>{' '}
+                  <VariableProximity
+                    label="discover, experiment, and craft immersive digital experiences that leave a lasting impact."
+                    fromFontVariationSettings="'wght' 300"
+                    toFontVariationSettings="'wght' 700"
+                    containerRef={sectionRef}
+                    radius={120}
+                    falloff="gaussian"
+                  />
+                </p>
+              </motion.div>
 
-            {/* Animated Calligraphy Sign-off Signature */}
-            <div className="flex justify-start max-w-xl pl-2">
-              <AnimatedSignature />
-            </div>
+              {/* Step 3: Animated Calligraphy Sign-off Signature */}
+              <motion.div style={{ opacity: step3Opacity, y: step3Y }} className="flex justify-start max-w-xl pl-2">
+                <AnimatedSignature />
+              </motion.div>
 
-            {/* Pill-shaped Contact Info Stripe matching the Image 2 bottom layout */}
-            <div className="pt-6 border-t border-[#B8925A]/15 flex flex-wrap items-center gap-3">
-              <a 
-                href="mailto:zaidsaifi150105@gmail.com" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
-              >
-                zaidsaifi150105@gmail.com
-              </a>
-              <span className="text-[#B8925A] select-none text-[10px]">✦</span>
-              <a 
-                href="https://github.com/zaid1234-11" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
-              >
-                github.com/zaid1234-11
-              </a>
-              <span className="text-[#B8925A] select-none text-[10px]">✦</span>
-              <a 
-                href="https://linkedin.com/in/zaidsaifiai" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
-              >
-                linkedin.com/in/zaidsaifiai
-              </a>
+              {/* Step 4: Pill-shaped Contact Info Stripe matching the bottom layout */}
+              <motion.div style={{ opacity: step4Opacity, y: step4Y }} className="pt-6 border-t border-[#B8925A]/15 flex flex-wrap items-center gap-3">
+                <a 
+                  href="mailto:zaidsaifi150105@gmail.com" 
+                  className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                >
+                  zaidsaifi150105@gmail.com
+                </a>
+                <span className="text-[#B8925A] select-none text-[10px]">✦</span>
+                <a 
+                  href="https://github.com/zaid1234-11" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                >
+                  github.com/zaid1234-11
+                </a>
+                <span className="text-[#B8925A] select-none text-[10px]">✦</span>
+                <a 
+                  href="https://linkedin.com/in/zaidsaifiai" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"
+                >
+                  linkedin.com/in/zaidsaifiai
+                </a>
+              </motion.div>
+
             </div>
 
           </div>
-
+          </div>
         </div>
-        </motion.div>
       </div>
 
       {/* Editorial Areas of Practice Section - Moved outside padded container for full width */}
