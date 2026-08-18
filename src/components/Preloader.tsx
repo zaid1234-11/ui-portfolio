@@ -203,7 +203,7 @@ export default function Preloader({ onComplete, themeMode = 'light' }: Preloader
             </span>
           </div>
           <span className={`font-mono text-[8.5px] sm:text-[10px] font-medium uppercase tracking-widest ${isDark ? 'text-[#ECE3D2]/80' : 'text-[#4E4842]'}`}>
-            Lead UI/UX Engineer & Creative Technologist
+            UI/UX Designer · Product Designer · Front-End Engineer
           </span>
         </div>
 

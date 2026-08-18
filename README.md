@@ -2,7 +2,7 @@
 
 # ARTEFACT
 ### Personal UI/UX & Frontend Engineering Portfolio
-**Zaid Saifi** — Lead UI/UX Engineer & Product Designer
+**Zaid Saifi** — UI/UX Designer · Product Designer · Front-End Engineer
 
 [Live Website](https://zaidsportfolio.in/) • [GitHub](https://github.com/zaid1234-11) • [Email](mailto:zaidsaifi150105@gmail.com)
 

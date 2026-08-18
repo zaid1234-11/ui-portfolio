@@ -63,7 +63,7 @@ function PortfolioApp() {
     if (selectedProject) {
       document.title = `${selectedProject.title} Case Study | Zaid Saifi (Zaids) - UI/UX Portfolio`;
     } else {
-      document.title = 'Zaid Saifi (Zaids) | Lead UI/UX Engineer & Product Designer Portfolio | Zaid UI';
+      document.title = 'Zaid Saifi (Zaids) | UI/UX Designer · Product Designer · Front-End Engineer';
     }
   }, [selectedProject]);
 
