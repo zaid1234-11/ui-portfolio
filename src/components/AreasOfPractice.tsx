@@ -122,13 +122,19 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
 
   // Reusable Marquee Content Block
   const MarqueeContent = () => (
-    <div className="marquee-part flex items-center flex-shrink-0 text-[#FAF6EE]">
+    <div className="marquee-part flex items-center flex-shrink-0 !text-[#111110]" style={{ color: '#111110' }}>
       {area.tools.map((tool, idx) => (
         <React.Fragment key={idx}>
-          <span className="whitespace-nowrap font-display font-black text-5xl md:text-[75px] leading-none px-5 md:px-8 tracking-tighter uppercase">
+          <span 
+            className="whitespace-nowrap font-display font-black text-5xl md:text-[75px] leading-none px-5 md:px-8 tracking-tighter uppercase !text-[#111110]"
+            style={{ color: '#111110' }}
+          >
             {tool}
           </span>
-          <span className="text-[#B8925A] opacity-60 text-3xl md:text-[45px] leading-none px-3 select-none">
+          <span 
+            className="!text-[#111110]/50 text-3xl md:text-[45px] leading-none px-3 select-none"
+            style={{ color: 'rgba(17, 17, 16, 0.5)' }}
+          >
             ✦
           </span>
         </React.Fragment>
@@ -139,7 +145,7 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
   return (
     <div 
       ref={itemRef}
-      className="group relative flex flex-col md:flex-row md:items-center justify-between border-b border-[#1c1c1b]/15 dark:border-white/15 transition-colors duration-500 hover:bg-[#1c1c1b] dark:hover:bg-[#1f1f1f] w-full overflow-hidden cursor-crosshair"
+      className="group relative flex flex-col md:flex-row md:items-center justify-between border-b border-[#1c1c1b]/15 dark:border-white/15 transition-colors duration-500 hover:bg-[#8C6E45] dark:hover:bg-[#8C6E45] w-full overflow-hidden cursor-crosshair"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -152,27 +158,27 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
         {/* Column 1: Archival Label (Rotated on Desktop) */}
         <div className="md:col-span-1 hidden md:flex justify-center items-center h-full">
           <div className="transform -rotate-90 origin-center whitespace-nowrap">
-            <span className="font-mono text-[9px] text-[#4E4842]/60 group-hover:text-[#FAF6EE]/50 tracking-[0.2em] uppercase transition-colors duration-500">
+            <span className="font-mono text-[9px] text-[#4E4842]/60 group-hover:text-[#1c1c1b]/70 tracking-[0.2em] uppercase transition-colors duration-500">
               REF: {area.label}
             </span>
           </div>
         </div>
 
         {/* Mobile-only Label */}
-        <div className="md:hidden font-mono text-[9px] text-[#4E4842]/60 tracking-[0.2em] uppercase group-hover:text-[#FAF6EE]/50 transition-colors duration-500 border-l border-[#B8925A] pl-2">
+        <div className="md:hidden font-mono text-[9px] text-[#4E4842]/60 tracking-[0.2em] uppercase group-hover:text-[#1c1c1b]/70 transition-colors duration-500 border-l border-[#8C6E45] pl-2">
           REF: {area.label}
         </div>
 
         {/* Column 2: Massive Title */}
         <div className="md:col-span-8 flex items-center">
-          <h3 className="font-display font-black text-6xl sm:text-7xl md:text-[85px] lg:text-[110px] text-[#1c1c1b] dark:text-[#FAF6EE] group-hover:text-[#FAF6EE] leading-none tracking-tighter uppercase transition-colors duration-500">
+          <h3 className="font-display font-black text-6xl sm:text-7xl md:text-[85px] lg:text-[110px] text-[#1c1c1b] dark:text-[#FAF6EE] group-hover:text-[#1c1c1b] leading-none tracking-tighter uppercase transition-colors duration-500">
             {area.title}
           </h3>
         </div>
 
         {/* Column 4: Static Tool Prompt */}
         <div className="md:col-span-3 flex md:justify-end items-center h-full min-h-[130px]">
-          <div className="font-mono text-[9px] text-[#1c1c1b]/30 group-hover:text-transparent tracking-[0.15em] uppercase w-full text-left md:text-right transition-colors duration-200">
+          <div className="font-mono text-[9px] text-[#1c1c1b]/30 group-hover:text-[#1c1c1b]/60 tracking-[0.15em] uppercase w-full text-left md:text-right transition-colors duration-200">
             — Hover to View Toolkit —
           </div>
         </div>
@@ -180,9 +186,9 @@ const AreaRow: React.FC<{ area: typeof PRACTICE_AREAS[0] }> = ({ area }) => {
 
       {/* Marquee Revealed From Direction of Mouse Entry */}
       <div
-        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%] z-20 flex items-center"
+        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%] z-20 flex items-center bg-[#8C6E45]"
         ref={marqueeRef}
-        style={{ backgroundColor: '#1c1c1b' }}
+        style={{ backgroundColor: '#8C6E45' }}
       >
         <div className="h-fit flex items-center" ref={marqueeInnerRef}>
           {[...Array(repetitions)].map((_, idx) => (

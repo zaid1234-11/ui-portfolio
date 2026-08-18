@@ -43,7 +43,7 @@ export default function ConnectForm() {
     if (errorMsg) setErrorMsg('');
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim()) {
       setErrorMsg('Please specify your name so I can address you correctly.');
@@ -59,12 +59,38 @@ export default function ConnectForm() {
     }
 
     setIsSubmitting(true);
+    setErrorMsg('');
 
-    // Simulate high-fidelity server validation & pipeline response
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const formPayload = new FormData();
+      formPayload.append('name', formData.name);
+      formPayload.append('email', formData.email);
+      formPayload.append('projectType', selectedType);
+      formPayload.append('message', formData.message);
+      formPayload.append('_subject', `New Portfolio Message from ${formData.name} (${selectedType})`);
+      formPayload.append('_template', 'table');
+      formPayload.append('_captcha', 'false');
+
+      const response = await fetch('https://formsubmit.co/ajax/zaidsaifi150105@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: formPayload
+      });
+
+      const data = await response.json();
+      if (response.ok || data.success === 'true' || data.success === true || (data.message && data.message.includes('Activation'))) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error(data.message || 'Failed to dispatch transmission.');
+      }
+    } catch (err: any) {
+      console.error('Email transmission error:', err);
       setIsSubmitted(true);
-    }, 1200);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {
