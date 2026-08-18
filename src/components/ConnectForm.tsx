@@ -182,21 +182,19 @@ export default function ConnectForm() {
   }, [isSubmitted]);
 
   return (
-    <section ref={sectionRef} id="connect" className="relative py-24 px-6 md:px-12 bg-transparent">
+    <section ref={sectionRef} id="connect" className="relative py-24 px-6 md:px-12 bg-transparent overflow-hidden">
       {/* Background Notebook Decorative Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0 dark:hidden"></div>
-      {/* ShapeGrid canvas background for dark mode */}
-      <div className="absolute inset-0 z-0 hidden dark:block">
-        <ShapeGrid
-          speed={0.3}
-          squareSize={40}
-          direction="diagonal"
-          borderColor="rgba(255, 255, 255, 0.08)"
-          hoverFillColor="#B8925A"
-          shape="square"
-          hoverTrailAmount={5}
-        />
-      </div>
+      <div 
+        className="absolute inset-0 pointer-events-none z-0 opacity-60 dark:opacity-20"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse at 50% 30%, rgba(184, 146, 90, 0.08) 0%, transparent 70%),
+            linear-gradient(to right, rgba(184, 146, 90, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(184, 146, 90, 0.06) 1px, transparent 1px)
+          `,
+          backgroundSize: '100% 100%, 3rem 3rem, 3rem 3rem'
+        }}
+      ></div>
 
       <motion.div style={{ scale, y }} className="relative z-10 max-w-7xl mx-auto pl-0 md:pl-10 transform-gpu origin-top">
         

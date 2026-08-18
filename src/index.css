@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Caveat:wght@400..700&family=La+Belle+Aurore&family=Reenie+Beanie&family=Pinyon+Script&family=Didact+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Kaushan+Script&family=Rock+Salt&family=Herr+Von+Muellerhoff&family=Monsieur+La+Doulaise&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Dancing+Script:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=La+Belle+Aurore&family=Reenie+Beanie&family=Pinyon+Script&family=Herr+Von+Muellerhoff&display=swap');
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -10,18 +10,23 @@
 }
 
 @theme {
-  --font-sans: "Didact Gothic", sans-serif;
-  --font-display: "Fraunces", serif;
-  --font-fraunces: "Fraunces", serif;
-  --font-syne: "Fraunces", serif;
-  --font-mono: "Caveat", cursive;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "DM Serif Display", serif;
+  --font-serif: "DM Serif Display", serif;
+  --font-fraunces: "DM Serif Display", serif;
+  --font-syne: "DM Serif Display", serif;
+  --font-ui: "Manrope", sans-serif;
+  --font-nav: "Manrope", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+  --font-mono: "Manrope", "Space Mono", monospace;
+  --font-kalam: "Kalam", cursive;
   --font-marker: "La Belle Aurore", cursive;
   --font-brush: "Reenie Beanie", cursive;
   --font-sketch: "La Belle Aurore", cursive;
-  --font-brush-bold: "Kaushan Script", cursive;
-  --font-rock-salt: "Rock Salt", cursive;
-  --font-symphonie: "Herr Von Muellerhoff", "Monsieur La Doulaise", "Pinyon Script", cursive;
-  --font-magilio: "Magilio", "Fraunces", "Bodoni Moda", serif;
+  --font-script: "Kalam", "Dancing Script", "Caveat", cursive;
+  --font-symphonie: "Herr Von Muellerhoff", "Pinyon Script", cursive;
+  --font-magilio: "DM Serif Display", serif;
   --font-geraldine: "Geraldine", cursive;
 
   --color-obsidian: #FAF6EE;
@@ -1070,6 +1075,73 @@ html.dark body::before {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+/* -------------------------------------------------------------------------- */
+/* HANDWRITTEN SCRIPT 3-LINE WORD-BY-WORD KEYFRAME TYPING ANIMATION           */
+/* -------------------------------------------------------------------------- */
+
+.handwritten-3lines-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 600px;
+}
+
+.handwritten-word-flow {
+  font-family: 'Kalam', cursive;
+  font-size: 17.5px;
+  font-weight: 400;
+  color: #1c1c1b;
+  line-height: 1.55;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5px;
+  row-gap: 1px;
+}
+
+.handwritten-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(2px);
+  will-change: opacity, transform, filter;
+  text-shadow: 0.5px 0.5px 1.5px rgba(0, 0, 0, 0.1);
+  -webkit-text-stroke: 0.2px #1c1c1b;
+  animation: writeWord 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+html.dark .handwritten-word-flow,
+html.dark .handwritten-word {
+  color: #FAF6EE;
+  -webkit-text-stroke: 0.2px #FAF6EE;
+  text-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes writeWord {
+  0% {
+    opacity: 0;
+    transform: translateY(3px) scale(0.97);
+    filter: blur(1.5px);
+  }
+  60% {
+    filter: blur(0.2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@media (max-width: 640px) {
+  .handwritten-word-flow {
+    font-size: 15.5px;
+    line-height: 1.5;
+    column-gap: 4px;
+  }
+}
+
+
+
 
 
 

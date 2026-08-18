@@ -56,15 +56,10 @@ export default function Header({
         </filter>
       </svg>
 
-      <header className="fixed top-3 sm:top-4 md:top-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6 md:px-4">
+      <header className="fixed top-3 sm:top-4 md:top-5 left-0 right-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6 md:px-4">
         <motion.div 
-          className={`pointer-events-auto flex flex-col md:flex-row md:items-center justify-between p-2.5 sm:p-3 md:p-1.5 transition-all duration-500 ease-out border shadow-xl backdrop-blur-md w-full max-w-4xl transform-gpu
-            ${isMobileMenuOpen ? 'rounded-[1.5rem] sm:rounded-[2rem]' : 'rounded-full'}
-            ${isScrolled 
-              ? (themeMode === 'dark' 
-                  ? 'bg-[#1c1c1b]/90 border-[#B8925A]/25 shadow-black/30' 
-                  : 'bg-white/85 border-stone-200/50 shadow-black/5')
-              : 'bg-[#1c1c1b]/95 border-[#B8925A]/20 shadow-black/20'}`}
+          className={`pointer-events-auto flex flex-col md:flex-row md:items-center justify-between p-2 sm:p-2.5 md:py-2 md:px-4 transition-all duration-500 ease-out border border-[#383734] shadow-2xl backdrop-blur-md w-full max-w-4xl transform-gpu bg-[#1c1c1b]/95 text-[#FAF6EE]
+            ${isMobileMenuOpen ? 'rounded-[1.5rem] sm:rounded-[2rem]' : 'rounded-full'}`}
           initial={{ y: -100, opacity: 0 }}
           animate={isAboutSection ? { y: -120, opacity: 0 } : { y: 0, opacity: 1 }}
           style={{ pointerEvents: isAboutSection ? 'none' : 'auto' }}
@@ -75,14 +70,14 @@ export default function Header({
             {/* Logo */}
             <button 
               onClick={() => { handleNavClick('hero'); setIsMobileMenuOpen(false); }}
-              className="flex items-center gap-2 text-left focus:outline-none relative z-20 pl-1 sm:pl-2 group"
+              className="flex items-center gap-2.5 text-left focus:outline-none relative z-20 pl-1 sm:pl-1.5 group cursor-pointer"
             >
-              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled && themeMode !== 'dark' ? 'bg-[#1c1c1b]' : (isScrolled && themeMode === 'dark' ? 'bg-[#B8925A]' : 'bg-[#FAF6EE]')}`}>
-                <span className={`font-display italic text-xs sm:text-sm font-semibold ${isScrolled && themeMode !== 'dark' ? 'text-[#FAF6EE]' : (isScrolled && themeMode === 'dark' ? 'text-[#1c1c1b]' : 'text-[#1c1c1b]')}`}>a.</span>
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FAF6EE] text-[#1c1c1b] flex items-center justify-center shadow-inner">
+                <span className="font-display italic text-xs sm:text-sm font-bold text-[#1c1c1b]">a.</span>
               </div>
-              <div className="flex flex-col justify-start leading-none">
-                <span className={`font-display font-bold tracking-widest text-[10px] sm:text-xs uppercase transition-colors duration-300 ${isScrolled && themeMode !== 'dark' ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
-                <span className="font-mono text-[7px] sm:text-[8px] tracking-widest text-[#B8925A] italic">the journal</span>
+              <div className="flex flex-col justify-start leading-tight">
+                <span className="font-display font-bold tracking-widest text-[11px] sm:text-xs uppercase text-[#FAF6EE]">ARTEFACT</span>
+                <span className="font-serif italic text-[9px] sm:text-[10px] text-[#B8925A]">by Zaid Saifi</span>
               </div>
             </button>
 
@@ -201,12 +196,9 @@ export default function Header({
 
             <button 
               onClick={onNavigateToConnect}
-              className={`px-6 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300 group focus:outline-none cursor-pointer
-              ${isScrolled 
-                ? 'bg-[#1c1c1b] text-[#FAF6EE] hover:bg-[#B8925A]' 
-                : 'bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE]'}`}
+              className="px-5 py-2 rounded-full font-mono text-[10.5px] font-bold uppercase tracking-wider bg-[#B8925A] text-[#1c1c1b] hover:bg-[#FAF6EE] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer"
             >
-              <span className="font-semibold">Hire Me</span>
+              Hire Me
             </button>
           </div>
 

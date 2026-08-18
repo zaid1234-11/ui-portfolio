@@ -593,23 +593,17 @@ export default function About() {
               </div>
 
               {/* Resume CV Download Action */}
-              <button
+              <a
                 id="download-resume-btn"
-                onClick={handleDownloadCV}
+                href="/Zaid_Saifi_Resume.pdf"
+                download="Zaid_Saifi_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-[#1c1c1b] hover:bg-[#FAF6EE] border-2 border-[#1c1c1b] hover:text-[#1c1c1b] text-[#FAF6EE] text-[9.5px] tracking-widest uppercase font-bold px-5 py-2.5 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
               >
-                {downloadSuccess ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 animate-bounce" />
-                    CV DOWNLOADED
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-3.5 h-3.5 text-[#B8925A]" />
-                    DOWNLOAD RESUME
-                  </>
-                )}
-              </button>
+                <Download className="w-3.5 h-3.5 text-[#B8925A]" />
+                <span>DOWNLOAD RESUME</span>
+              </a>
             </div>
 
             <div className="relative border-l-2 border-dashed border-[#B8925A]/30 ml-4 md:ml-32 pl-8 md:pl-12 space-y-20">

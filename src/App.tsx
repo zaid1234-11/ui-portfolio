@@ -120,15 +120,8 @@ function PortfolioApp() {
     if (lenis) {
       lenis.scrollTo('#work', { offset: 0, duration: 1.2 });
     } else {
-      document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const workEl = document.getElementById('work');
+      workEl?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -141,13 +134,21 @@ function PortfolioApp() {
     }
   };
 
+  const scrollToTop = () => {
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <>
       <AnimatePresence mode="wait">
         {isLoading && <Preloader themeMode={themeMode} onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
-      <div className="relative min-h-screen w-full bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
+      <div className="relative min-h-screen w-full bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] selection:bg-[#B8925A]/30 selection:text-[#1c1c1b] antialiased transition-colors duration-500">
 
         {/* 1. Global Noise & Dark Grid Texture Film overlays */}
         <div className="noise-overlay" aria-hidden="true"></div>
@@ -157,11 +158,8 @@ function PortfolioApp() {
         <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 pointer-events-none flex-col justify-between py-6 pl-3 bg-gradient-to-r from-stone-300/30 via-stone-200/10 to-transparent">
           {Array.from({ length: 24 }).map((_, idx) => (
             <div key={idx} className="relative w-6 h-6 flex items-center justify-start group">
-              {/* Dark binder hole in paper */}
               <div className="w-3.5 h-3.5 rounded-full bg-stone-900 border border-stone-800 shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)]"></div>
-              {/* Silver metallic spiral wire wrapping from outside onto the paper */}
               <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-5.5 h-4.5 rounded-l-full border-t-[2.5px] border-b-[2.5px] border-l-[2.5px] border-stone-400/80 bg-gradient-to-b from-stone-200 via-stone-300 to-stone-400 shadow-[1px_2px_3px_rgba(0,0,0,0.18)]"></div>
-              {/* Reflection shine on metallic spiral */}
               <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-3 bg-white/20 rounded-sm"></div>
             </div>
           ))}
@@ -242,7 +240,7 @@ function PortfolioApp() {
               >
                 <main className="relative">
                   {/* Hero Segment */}
-                  <Hero onExploreClick={scrollToWork} />
+                  <Hero isLoading={isLoading} onExploreClick={scrollToWork} />
 
                   {/* Visual spacer to separate Hero from Work Gallery */}
                   <div className="h-16 md:h-28" />
@@ -273,16 +271,24 @@ function PortfolioApp() {
         </div>
 
         {/* 5. High-End Minimalist Footer */}
-        <footer className="bg-obsidian-dark dark:bg-[#1a1a1a] border-t border-white/5 dark:border-white/10 py-10 md:py-16 px-4 md:px-12 relative z-30">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12">
+        <footer className="bg-[#ECE3D2] dark:bg-[#111110] border-t border-[#1c1c1b]/10 dark:border-white/10 py-10 md:py-16 px-4 md:px-12 relative z-30 transition-colors duration-500 overflow-hidden">
+          {/* Background Notebook Draft Grid Pattern in Footer */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 z-0"
+            style={{
+              backgroundImage: 'linear-gradient(to right, rgba(184, 146, 90, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(184, 146, 90, 0.1) 1px, transparent 1px)',
+              backgroundSize: '2.5rem 2.5rem'
+            }}
+          ></div>
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12 relative z-10">
 
             {/* Column A: Logo and Motto */}
             <div className="space-y-4 max-w-sm">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-sage" />
-                <span className="font-display text-lg tracking-widest text-ivory dark:text-[#FAF6EE] font-bold">ARTEFACT</span>
+                <span className="font-display text-lg tracking-widest text-[#1c1c1b] dark:text-[#FAF6EE] font-bold">ARTEFACT</span>
               </div>
-              <p className="text-xs text-ivory-dim/40 dark:text-[#ECE3D2]/70 leading-relaxed font-light">
+              <p className="text-xs text-[#4E4842] dark:text-[#ECE3D2]/70 leading-relaxed font-light">
                 Meticulous craftsmanship in digital interfaces. Merging raw visual weight with reactive frontend logic for elite brand presentation.
               </p>
             </div>
@@ -293,22 +299,22 @@ function PortfolioApp() {
                 <span className="text-[10px] text-sand dark:text-[#B8925A] uppercase tracking-widest block font-bold">Index</span>
                 <ul className="space-y-2">
                   <li>
-                    <button onClick={() => handleSetActiveSection('hero')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                    <button onClick={() => handleSetActiveSection('hero')} className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
                       00. Hero Gate
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => handleSetActiveSection('work')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                    <button onClick={() => handleSetActiveSection('work')} className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
                       01. Archive Work
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => handleSetActiveSection('process')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                    <button onClick={() => handleSetActiveSection('process')} className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
                       02. Methodology
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => handleSetActiveSection('about')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                    <button onClick={() => handleSetActiveSection('about')} className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
                       03. Biography
                     </button>
                   </li>
@@ -319,17 +325,17 @@ function PortfolioApp() {
                 <span className="text-[10px] text-sand dark:text-[#B8925A] uppercase tracking-widest block font-bold">Transmit</span>
                 <ul className="space-y-2">
                   <li>
-                    <a href="https://github.com/zaid1234-11" target="_blank" rel="noopener noreferrer" className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
+                    <a href="https://github.com/zaid1234-11" target="_blank" rel="noopener noreferrer" className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
                       GitHub Code
                     </a>
                   </li>
                   <li>
-                    <button onClick={handleNavigateToConnect} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors text-left cursor-pointer">
+                    <button onClick={handleNavigateToConnect} className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors text-left cursor-pointer">
                       Direct Dispatch
                     </button>
                   </li>
                   <li>
-                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
+                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-[#4E4842]/75 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
                       zaidsaifi150105@gmail.com
                     </a>
                   </li>
@@ -344,7 +350,7 @@ function PortfolioApp() {
                 SAN FRANCISCO edition · 2026
               </div>
 
-              <p className="text-[10px] font-mono text-ivory-dim/30 dark:text-[#ECE3D2]/50 leading-normal">
+              <p className="text-[10px] font-mono text-[#4E4842]/50 dark:text-[#ECE3D2]/50 leading-normal">
                 © 2026 ARTEFACT. Hand-coded with TSX + Tailwind CSS.
               </p>
             </div>
