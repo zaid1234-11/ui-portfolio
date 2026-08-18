@@ -14,7 +14,7 @@ export default function Header({
   activeSection, 
   setActiveSection, 
   onNavigateToConnect,
-  themeMode = 'dark',
+  themeMode = 'light',
   toggleTheme
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);

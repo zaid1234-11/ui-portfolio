@@ -21,13 +21,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
-  const [themeMode, setThemeMode] = useState<'dark' | 'light'>(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('site_theme');
-      if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
-    }
-    return 'dark';
-  });
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
 
   useEffect(() => {
     const root = document.documentElement;
@@ -38,7 +32,6 @@ export default function App() {
       root.classList.add('light');
       root.classList.remove('dark');
     }
-    localStorage.setItem('site_theme', themeMode);
   }, [themeMode]);
 
   const toggleTheme = () => {
