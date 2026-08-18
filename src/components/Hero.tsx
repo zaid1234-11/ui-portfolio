@@ -17,6 +17,13 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
     return false;
   });
 
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
+
   useEffect(() => {
     const checkDark = () => setIsDark(document.documentElement.classList.contains('dark'));
     checkDark();
@@ -27,26 +34,49 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
       attributeFilter: ['class'],
     });
 
-    return () => observer.disconnect();
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-between pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-12 md:pb-14 px-6 sm:px-10 md:px-14 lg:px-18 xl:px-24 bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] overflow-hidden transition-colors duration-500 font-sans"
+      className="relative min-h-[100dvh] md:min-h-screen flex flex-col justify-between pt-20 xs:pt-22 sm:pt-28 md:pt-32 pb-4 sm:pb-12 md:pb-14 px-5 xs:px-6 sm:px-10 md:px-14 lg:px-18 xl:px-24 bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] overflow-hidden transition-colors duration-500 font-sans"
     >
       {/* 1. Full-screen Interactive Hover Mask Reveal Background Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
-        <HoverMaskReveal
-          imageBase={{ src: isDark ? '/dark front 2.webp' : '/front.webp', positionX: '50%', positionY: '50%' }}
-          imageHover={{ src: isDark ? '/dark back.webp' : '/back.webp', positionX: '50%', positionY: '50%' }}
-          radius={150}
-          blur={0.5}
-          splatRadius={0.08}
-          circleBoost={0.6}
-          parallax={false}
-          pressureIterations={5}
-        />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-100 overflow-hidden">
+        <div className="w-full h-full transform scale-[1.08] sm:scale-100 origin-center transition-transform duration-500">
+          <HoverMaskReveal
+            imageBase={{ 
+              src: isDark 
+                ? (isMobile ? '/mobile dark 2.webp' : '/dark front 2.webp') 
+                : (isMobile ? '/mobile light.webp' : '/front.webp'), 
+              positionX: '50%', 
+              positionY: '50%' 
+            }}
+            imageHover={{ 
+              src: isDark 
+                ? (isMobile ? '/mobile dark 2.webp' : '/dark back.webp') 
+                : (isMobile ? '/mobile light.webp' : '/back.webp'), 
+              positionX: '50%', 
+              positionY: '50%' 
+            }}
+            radius={150}
+            blur={0.5}
+            splatRadius={0.08}
+            circleBoost={0.6}
+            parallax={false}
+            pressureIterations={5}
+          />
+        </div>
       </div>
 
       {/* 2. Dark Mode Editorial Atmosphere: Ghosted Typography, Notebook Spine, Chalk Doodles */}
@@ -59,8 +89,8 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
           ))}
         </div>
 
-        {/* Ghosted "Design" Large Editorial Serif in Dark Mode Background */}
-        <div className="absolute left-6 sm:left-12 top-28 opacity-0 dark:opacity-8 pointer-events-none z-0">
+        {/* Ghosted "Design" Large Editorial Serif in Dark Mode Background (Desktop Only) */}
+        <div className="hidden md:block absolute left-6 sm:left-12 top-28 opacity-0 dark:opacity-8 pointer-events-none z-0">
           <span 
             className="text-[90px] sm:text-[140px] md:text-[180px] font-normal leading-none text-[#FAF6EE] tracking-tight block"
             style={{ fontFamily: "'DM Serif Display', serif" }}
@@ -84,16 +114,15 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
 
       </div>
 
-      {/* 3. Top Architectural Date & Volume Sub-header Strip */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between text-[9.5px] sm:text-[10px] md:text-[10.5px] font-ui font-semibold text-[#8C7A65] dark:text-[#8C7A65] tracking-wider mb-6 md:mb-8 select-none border-b border-[#8C7A65]/10 dark:border-white/5 pb-2.5">
-        <div className="flex items-center gap-2">
-          <span className="w-5 h-[1.5px] bg-[#8C7A65]/40 inline-block"></span>
-          <span className="uppercase tracking-[0.2em] font-bold">THE DIGITAL DIARY // VOL. 04</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-3">
-          <span className="tracking-[0.2em] font-bold">DATE / 31 / 12 / 2025</span>
-          <span className="text-[#8C7A65]/40">·</span>
-          <span className="tracking-widest uppercase opacity-75 font-medium">
+      {/* 3. Top Architectural Date & Volume Sub-header Strip (Desktop Only) */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full hidden md:flex items-center justify-between text-[9.5px] sm:text-[10px] md:text-[10.5px] font-ui font-semibold text-[#8C7A65] dark:text-[#8C7A65] tracking-wider mb-6 md:mb-8 select-none border-b border-[#8C7A65]/10 dark:border-white/5 pb-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5">
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-[1.5px] bg-[#8C7A65]/40 inline-block"></span>
+            <span className="uppercase tracking-[0.18em] sm:tracking-[0.2em] font-bold">DATE | 31 / 12 / 2025 / VOL. 04</span>
+          </div>
+          <span className="text-[#8C7A65]/40 hidden sm:inline">·</span>
+          <span className="tracking-widest uppercase opacity-75 font-medium text-[8.5px] sm:text-[9.5px] md:text-[10px] pl-6 sm:pl-0">
             MOMENTS, THOUGHTS &amp; MEMORIES
           </span>
         </div>
@@ -130,31 +159,33 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
         </div>
       </div>
 
-      {/* 4. Main Editorial Content (Left-Aligned, Spacious, No Image or Placeholder Box) */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-start justify-center my-auto py-4 md:py-8">
-        <div className="max-w-[760px] flex flex-col items-start">
+      {/* 4. Main Editorial Content */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center md:items-start justify-between my-auto py-1 md:py-8">
+        
+        {/* TOP BLOCK (Above Central Photo on Mobile) */}
+        <div className="max-w-[760px] w-full flex flex-col items-center md:items-start text-center md:text-left">
           
-          {/* STEP 1: Small Eyebrow in Manrope (Warm Antique Camel Gold) */}
+          {/* STEP 1: Small Eyebrow in Manrope (Desktop Only) */}
           <motion.div 
             initial={{ opacity: 0, y: -8 }}
             animate={!isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            className="mb-3 sm:mb-4"
+            className="mb-3 sm:mb-4 hidden md:block"
           >
             <span className="font-ui text-[10px] sm:text-[11px] md:text-[11.5px] font-bold tracking-[0.22em] text-[#9E8365] dark:text-[#C59B63] uppercase inline-block">
               UI/UX DESIGNER • PRODUCT DESIGNER • FRONT-END ENGINEER
             </span>
           </motion.div>
 
-          {/* STEP 2: Main Headline in DM Serif Display with Botanical Motif */}
-          <div className="relative mb-4 sm:mb-5 w-full">
+          {/* STEP 2: Main Headline in DM Serif Display */}
+          <div className="relative mb-2 md:mb-5 w-full">
             
-            {/* Botanical Flower Illustration (pinned beside "that") */}
+            {/* Botanical Flower Illustration (Desktop Only) */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.8 }}
               animate={!isLoading ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ delay: 0.35, duration: 0.7 }}
-              className="absolute -left-7 sm:-left-9 top-[36%] -translate-y-1/2 w-8 h-10 sm:w-9 sm:h-11 pointer-events-none select-none z-20 drop-shadow-sm hidden xs:block"
+              className="absolute -left-7 sm:-left-9 top-[36%] -translate-y-1/2 w-8 h-10 sm:w-9 sm:h-11 pointer-events-none select-none z-20 drop-shadow-sm hidden md:block"
             >
               <svg viewBox="0 0 60 70" fill="none" className="w-full h-full">
                 <path d="M30,35 Q15,20 18,5 Q32,15 30,35 Z" fill="#4B634B" className="dark:fill-[#4B634B]" opacity="0.9" />
@@ -172,11 +203,98 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
               </svg>
             </motion.div>
 
+            {/* Mobile-Optimized Headline (3 Lines Centered) */}
             <h1 
-              className="font-display text-[32px] sm:text-[42px] md:text-[50px] lg:text-[56px] xl:text-[62px] font-normal leading-[1.1] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE]"
+              className="md:hidden font-display text-[26px] xs:text-[28px] font-normal leading-[1.12] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE] text-center"
               style={{ fontFamily: "'DM Serif Display', serif" }}
             >
-              {/* Line 1 */}
+              <div className="block overflow-hidden">
+                <SplitText
+                  text="I design digital products"
+                  className="font-display inline font-normal leading-[1.12] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE]"
+                  delay={24}
+                  duration={0.85}
+                  ease="power3.out"
+                  splitType="words, chars"
+                  from={{ opacity: 0, y: 24 }}
+                  to={{ opacity: 1, y: 0 }}
+                  textAlign="center"
+                  tag="span"
+                  isReady={!isLoading}
+                />
+              </div>
+              <div className="block overflow-hidden">
+                <SplitText
+                  text="that make complex"
+                  className="font-display inline font-normal leading-[1.12] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE]"
+                  delay={28}
+                  duration={0.85}
+                  ease="power3.out"
+                  splitType="words, chars"
+                  from={{ opacity: 0, y: 24 }}
+                  to={{ opacity: 1, y: 0 }}
+                  textAlign="center"
+                  tag="span"
+                  isReady={!isLoading}
+                />
+              </div>
+              <div className="flex items-center justify-center gap-x-2 overflow-hidden">
+                <SplitText
+                  text="workflows feel"
+                  className="font-display inline font-normal leading-[1.12] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE]"
+                  delay={32}
+                  duration={0.85}
+                  ease="power3.out"
+                  splitType="words, chars"
+                  from={{ opacity: 0, y: 24 }}
+                  to={{ opacity: 1, y: 0 }}
+                  textAlign="center"
+                  tag="span"
+                  isReady={!isLoading}
+                />
+                <span className="relative inline-block italic font-normal text-[#20321E] dark:text-[#C59B63]">
+                  <SplitText
+                    text="simple."
+                    className="italic font-normal text-[#20321E] dark:text-[#C59B63]"
+                    delay={36}
+                    duration={0.85}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 24 }}
+                    to={{ opacity: 1, y: 0 }}
+                    textAlign="center"
+                    tag="span"
+                    isReady={!isLoading}
+                  />
+                  <svg 
+                    viewBox="0 0 160 14" 
+                    fill="none" 
+                    className="absolute -bottom-1 left-0 w-full h-2 text-[#20321E] dark:text-[#C59B63] pointer-events-none overflow-visible opacity-90"
+                    preserveAspectRatio="none"
+                  >
+                    <path d="M2,9 C45,4 95,3 158,8 C115,11 60,12 3,10" fill="currentColor" />
+                  </svg>
+                </span>
+              </div>
+            </h1>
+
+            {/* Mobile Eyebrow below headline */}
+            <motion.div 
+              initial={{ opacity: 0, y: 6 }}
+              animate={!isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-1 md:hidden block text-center"
+            >
+              <span className="font-ui text-[8.5px] xs:text-[9.5px] font-bold tracking-[0.16em] text-[#C59B63] uppercase inline-block">
+                UI/UX DESIGNER • PRODUCT DESIGNER • FRONT-END ENGINEER
+              </span>
+            </motion.div>
+
+            {/* Desktop Headline (Left-Aligned 3-line flow) */}
+            <h1 
+              className="hidden md:block font-display text-[48px] lg:text-[56px] xl:text-[62px] font-normal leading-[1.1] tracking-[-0.015em] text-[#1c1c1b] dark:text-[#FAF6EE]"
+              style={{ fontFamily: "'DM Serif Display', serif" }}
+            >
               <div className="block overflow-hidden">
                 <SplitText
                   text="I design digital products"
@@ -192,8 +310,6 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
                   isReady={!isLoading}
                 />
               </div>
-
-              {/* Line 2 */}
               <div className="block overflow-hidden">
                 <SplitText
                   text="that make complex"
@@ -209,8 +325,6 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
                   isReady={!isLoading}
                 />
               </div>
-
-              {/* Line 3 */}
               <div className="flex items-center flex-wrap gap-x-2 sm:gap-x-3 overflow-hidden">
                 <SplitText
                   text="workflows feel"
@@ -239,29 +353,24 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
                     tag="span"
                     isReady={!isLoading}
                   />
-                  {/* Refined subtle organic ink brush underline (Gold in dark mode) */}
                   <svg 
                     viewBox="0 0 160 14" 
                     fill="none" 
                     className="absolute -bottom-1 sm:-bottom-1.5 left-0 w-full h-2 sm:h-3 text-[#20321E] dark:text-[#C59B63] pointer-events-none overflow-visible opacity-90"
                     preserveAspectRatio="none"
                   >
-                    <path 
-                      d="M2,9 C45,4 95,3 158,8 C115,11 60,12 3,10" 
-                      fill="currentColor" 
-                    />
+                    <path d="M2,9 C45,4 95,3 158,8 C115,11 60,12 3,10" fill="currentColor" />
                   </svg>
                 </span>
               </div>
             </h1>
           </div>
 
-          {/* STEP 3: Supporting Copy in Handwritten Kalam (3 distinct lines) */}
-          <div className="handwritten-3lines-container mb-4 sm:mb-5">
-            {/* Line 1 */}
-            <p className="handwritten-word-flow">
+          {/* STEP 3: Supporting Copy on Desktop */}
+          <div className="hidden md:flex flex-col gap-1 mb-2 md:mb-5 items-start text-left max-w-[600px]">
+            <p className="handwritten-word-flow justify-start">
               {!isLoading && [
-                "From", "fintech", "and", "AI", "products", "to", "data-heavy", "enterprise", "experiences", "—"
+                "From", "fintech", "and", "AI", "products", "to", "data-heavy", "enterprise", "experiences"
               ].map((word, i) => (
                 <span
                   key={`l1-${i}`}
@@ -272,9 +381,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
                 </span>
               ))}
             </p>
-
-            {/* Line 2 */}
-            <p className="handwritten-word-flow">
+            <p className="handwritten-word-flow justify-start">
               {!isLoading && [
                 "I", "turn", "complex", "systems", "into", "intuitive,", "thoughtful", "interfaces,"
               ].map((word, i) => (
@@ -287,9 +394,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
                 </span>
               ))}
             </p>
-
-            {/* Line 3 */}
-            <p className="handwritten-word-flow">
+            <p className="handwritten-word-flow justify-start">
               {!isLoading && [
                 "and", "bring", "them", "to", "life", "with", "modern", "frontend", "engineering."
               ].map((word, i) => (
@@ -304,12 +409,12 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
             </p>
           </div>
 
-          {/* STEP 4: Understated Location / Availability Line in Manrope */}
+          {/* STEP 4: Understated Location Line (Desktop Only) */}
           <motion.div 
             initial={{ opacity: 0, y: 8 }}
             animate={!isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="flex items-center gap-1.5 mb-6 sm:mb-7 text-[#8C7A65] dark:text-[#A89F91] select-none"
+            className="hidden md:flex items-center gap-1.5 mb-6 sm:mb-7 text-[#8C7A65] dark:text-[#A89F91] select-none"
           >
             <MapPin className="w-3.5 h-3.5 text-[#B8925A] dark:text-[#C59B63] flex-shrink-0" />
             <span className="font-ui text-[10px] sm:text-[10.5px] md:text-[11px] font-semibold tracking-[0.16em] uppercase text-[#736350] dark:text-[#A89F91]">
@@ -317,40 +422,87 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
             </span>
           </motion.div>
 
-          {/* STEP 5: Compact & Elegant CTAs in Manrope */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={!isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-wrap items-center gap-3 font-ui"
-          >
-            {/* Primary Button */}
-            <button
-              id="hero-explore-btn"
-              onClick={onExploreClick}
-              className="group flex items-center gap-2 bg-[#1C1C1B] dark:bg-[#141413] border border-transparent dark:border-[#2B2723] text-[#FAF6EE] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-ui text-[10.5px] sm:text-[11px] font-semibold tracking-wider uppercase shadow-sm hover:bg-[#B8925A] dark:hover:bg-[#C59B63] hover:text-[#1c1c1b] dark:hover:text-[#141413] transition-all duration-300 cursor-pointer"
-            >
-              <span>VIEW SELECTED WORK</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#B8925A] dark:text-[#C59B63] group-hover:text-[#1c1c1b] dark:group-hover:text-[#141413] group-hover:translate-x-0.5 transition-all duration-300" />
-            </button>
+        </div>
 
-            {/* Secondary Button - Download Resume */}
-            <a
-              href="/Zaid_Saifi_Resume.pdf"
-              download="Zaid_Saifi_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 bg-transparent dark:bg-[#141413]/30 text-[#1C1C1B] dark:text-[#A89F91] border border-[#1C1C1B]/30 dark:border-[#423931] hover:border-[#1C1C1B] dark:hover:border-[#C59B63] dark:hover:text-[#FAF6EE] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-ui text-[10.5px] sm:text-[11px] font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-[#1c1c1b]/5 dark:hover:bg-white/5 cursor-pointer"
+        {/* MIDDLE TRANSPARENT SPACER (Leaves Central Background Photo 100% Uncovered on Mobile) */}
+        <div className="h-[220px] xs:h-[240px] sm:h-[280px] md:hidden w-full pointer-events-none"></div>
+
+        {/* LOWER BLOCK (Below Central Photo on Mobile) */}
+        <div className="w-full flex flex-col items-start text-left md:items-start">
+          
+          {/* Mobile Narrative Copy (Rendered directly above buttons) */}
+          <div className="md:hidden block mb-3.5 max-w-[620px] w-full">
+            <p className="font-serif italic text-[#1c1c1b] dark:text-[#FAF6EE] text-[13px] xs:text-[14px] leading-[1.45] text-left">
+              From fintech and AI products to data-heavy enterprise experiences — I turn complex systems into intuitive, thoughtful interfaces, and bring them to life with modern frontend engineering.
+            </p>
+          </div>
+
+          {/* Buttons Row with "keep it simple." Doodle */}
+          <div className="flex items-center justify-between w-full mb-3 md:mb-0">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={!isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex flex-col sm:flex-row items-start md:items-center gap-2 sm:gap-3 font-ui"
             >
-              <span>DOWNLOAD RESUME</span>
-              <Download className="w-3.5 h-3.5 text-[#8C7A65] dark:text-[#C59B63] group-hover:translate-y-0.5 transition-all duration-300" />
-            </a>
-          </motion.div>
+              {/* Primary Button */}
+              <button
+                id="hero-explore-btn"
+                onClick={onExploreClick}
+                className="group flex items-center justify-center gap-2 bg-[#1C1C1B] dark:bg-[#141413] border border-transparent dark:border-[#2B2723] text-[#FAF6EE] px-4.5 sm:px-6 py-2 sm:py-3 rounded-full font-ui text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase shadow-sm hover:bg-[#B8925A] dark:hover:bg-[#C59B63] hover:text-[#1c1c1b] dark:hover:text-[#141413] transition-all duration-300 cursor-pointer min-w-[185px] sm:min-w-0"
+              >
+                <span>VIEW SELECTED WORK</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#B8925A] dark:text-[#C59B63] group-hover:text-[#1c1c1b] dark:group-hover:text-[#141413] group-hover:translate-x-0.5 transition-all duration-300" />
+              </button>
+
+              {/* Secondary Button */}
+              <a
+                href="/Zaid_Saifi_Resume.pdf"
+                download="Zaid_Saifi_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 bg-[#FAF6EE] dark:bg-[#141413]/60 text-[#1C1C1B] dark:text-[#A89F91] border border-[#1C1C1B]/30 dark:border-[#2B2723] hover:border-[#1C1C1B] dark:hover:border-[#C59B63] dark:hover:text-[#FAF6EE] px-4.5 sm:px-6 py-2 sm:py-3 rounded-full font-ui text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-[#1c1c1b]/5 dark:hover:bg-white/5 cursor-pointer min-w-[185px] sm:min-w-0 shadow-xs"
+              >
+                <span>DOWNLOAD RESUME</span>
+                <Download className="w-3.5 h-3.5 text-[#8C7A65] dark:text-[#C59B63] group-hover:translate-y-0.5 transition-all duration-300" />
+              </a>
+            </motion.div>
+
+            {/* Handwritten "keep it simple. ♡" Doodle beside buttons on mobile */}
+            <div className="flex md:hidden flex-col items-center opacity-85 select-none pointer-events-none transform -rotate-6 mr-1">
+              <span 
+                className="text-xs xs:text-sm text-[#C5A880] tracking-wide block font-normal leading-tight text-center"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
+                keep it<br />simple.
+              </span>
+              <span className="text-[10px] text-[#C5A880] leading-none mt-0.5">♡</span>
+            </div>
+          </div>
+
+          {/* Mobile Bottom Date, Location & Mini Stamp Strip */}
+          <div className="flex md:hidden items-end justify-between w-full text-[#8C7A65] pt-1.5 select-none border-t border-[#8C7A65]/10 dark:border-white/5 mt-1">
+            <div className="flex flex-col gap-0.5 text-[8.5px] xs:text-[9px] font-ui font-semibold uppercase tracking-wider">
+              <span className="text-[#8C7A65] dark:text-[#8C7A65]">DATE / 31 / 12 / 2025</span>
+              <div className="flex items-center gap-1 text-[#736350] dark:text-[#A89F91]">
+                <MapPin className="w-2.5 h-2.5 text-[#B8925A] dark:text-[#C59B63] flex-shrink-0" />
+                <span>OPEN TO RELOCATE · <span className="dark:text-[#C59B63]">BANGALORE / MUMBAI</span></span>
+              </div>
+            </div>
+
+            {/* Mobile Mini Note Stamp */}
+            <div className="bg-[#EFE6D6] dark:bg-[#1E1B18] border border-[#C5B5A2] dark:border-[#38332E] px-2 py-1 rounded-xs transform -rotate-1">
+              <span className="font-ui text-[6.5px] font-bold tracking-widest text-[#3D2C27] dark:text-[#C5A880] uppercase block leading-tight">
+                DESIGN IS<br />THINKING<br />MADE VISUAL.
+              </span>
+            </div>
+          </div>
 
         </div>
+
       </div>
 
-      {/* Bottom-Right Corner Taped Lined Note Scrap */}
+      {/* Bottom-Right Corner Taped Lined Note Scrap (Desktop Only) */}
       <div className="absolute bottom-6 right-8 sm:bottom-8 sm:right-16 z-20 pointer-events-none select-none hidden md:block opacity-85">
         <div className="bg-[#EFE6D6] dark:bg-[#1E1B18] border border-[#C5B5A2] dark:border-[#38332E] px-3.5 py-2.5 rounded-xs shadow-sm transform -rotate-1 max-w-[155px]">
           <span className="font-ui text-[8.5px] font-bold tracking-widest text-[#3D2C27] dark:text-[#C5A880] uppercase block leading-tight mb-1">
@@ -362,14 +514,14 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
         </div>
       </div>
 
-      {/* 5. Minimalist Bottom Scroll Indicator */}
-      <div className="relative z-10 w-full flex flex-col items-center justify-center pt-2 text-center select-none">
+      {/* 5. Minimalist Bottom Scroll Indicator (Desktop Only) */}
+      <div className="hidden md:flex relative z-10 w-full flex-col items-center justify-center pt-2 text-center select-none">
         <button
           onClick={onExploreClick}
           className="group flex flex-col items-center gap-1 font-ui text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.25em] text-[#8C7A65]/80 dark:text-[#C5A880]/80 hover:text-[#1c1c1b] dark:hover:text-[#FAF6EE] transition-colors cursor-pointer"
         >
-          <span className="w-[1px] h-2.5 bg-[#8C7A65]/40 dark:bg-[#C5A880]/40 group-hover:h-3.5 transition-all duration-300"></span>
           <span>SCROLL TO EXPLORE</span>
+          <span className="text-[11px] font-mono leading-none transition-transform duration-300 group-hover:translate-y-1">↓</span>
         </button>
       </div>
 

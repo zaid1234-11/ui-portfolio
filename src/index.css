@@ -1088,8 +1088,9 @@ html.dark body::before {
 }
 
 .handwritten-word-flow {
-  font-family: 'Kalam', cursive;
-  font-size: 17.5px;
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 16.5px;
   font-weight: 400;
   color: #1c1c1b;
   line-height: 1.55;
@@ -1104,12 +1105,18 @@ html.dark body::before {
   opacity: 0;
   transform: translateY(2px);
   will-change: opacity, transform, filter;
-  text-shadow: 0.5px 0.5px 1.5px rgba(0, 0, 0, 0.1);
-  -webkit-text-stroke: 0.2px #1c1c1b;
   animation: writeWord 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-html.dark .handwritten-word-flow,
+html.dark .handwritten-word-flow {
+  font-family: 'Kalam', cursive;
+  font-style: normal;
+  font-size: 17.5px;
+  color: #FAF6EE;
+  -webkit-text-stroke: 0.2px #FAF6EE;
+  text-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.4);
+}
+
 html.dark .handwritten-word {
   color: #FAF6EE;
   -webkit-text-stroke: 0.2px #FAF6EE;
@@ -1134,9 +1141,13 @@ html.dark .handwritten-word {
 
 @media (max-width: 640px) {
   .handwritten-word-flow {
+    font-size: 14.5px;
+    line-height: 1.45;
+    column-gap: 4px;
+  }
+  html.dark .handwritten-word-flow {
     font-size: 15.5px;
     line-height: 1.5;
-    column-gap: 4px;
   }
 }
 
