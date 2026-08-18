@@ -41,11 +41,11 @@ export default function AnimatedSignature() {
       </svg>
 
       {/* Shadow placeholder / faint dry-imprint sketch line */}
-      <div className="absolute inset-0 opacity-[0.06] grayscale contrast-200 brightness-0">
+      <div className="absolute inset-0 opacity-[0.06] dark:opacity-[0.1] grayscale contrast-200 brightness-0 dark:brightness-100 dark:invert">
         <img 
           src="/signature.png" 
           alt="Signature Shadow" 
-          className="w-full h-full object-contain object-left"
+          className="w-full h-full object-contain object-left dark:invert"
         />
       </div>
 
@@ -63,7 +63,7 @@ export default function AnimatedSignature() {
         <img 
           src="/signature.png" 
           alt="Signature" 
-          className="w-full h-full object-contain object-left opacity-90"
+          className="w-full h-full object-contain object-left opacity-90 dark:opacity-100 dark:invert"
         />
       </motion.div>
     </div>
