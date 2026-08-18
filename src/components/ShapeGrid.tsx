@@ -382,8 +382,20 @@ const ShapeGrid = ({
       hoveredSquareRef.current = null;
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mousemove', handleMouseMove);
+    // Simulate mouseleave by checking bounds inside handleMouseMove
+    const handleDocMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const isInside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+      if (!isInside) {
+        handleMouseLeave();
+      }
+    };
+    document.addEventListener('mousemove', handleDocMouseMove);
     let isVisible = false;
     let isPageVisible = !document.hidden;
 
@@ -421,8 +433,8 @@ const ShapeGrid = ({
       tryStop();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousemove', handleDocMouseMove);
     };
   }, [direction, speed, borderColor, hoverFillColor, squareSize, shape, hoverTrailAmount]);
 
