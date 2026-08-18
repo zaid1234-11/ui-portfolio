@@ -39,6 +39,8 @@ export default function Header({
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const isAboutSection = activeSection === 'about';
+
   return (
     <>
       {/* SVG Filter for Liquidmorphism */}
@@ -59,11 +61,14 @@ export default function Header({
           className={`pointer-events-auto flex flex-col md:flex-row md:items-center justify-between p-2.5 sm:p-3 md:p-1.5 transition-all duration-500 ease-out border shadow-xl backdrop-blur-md w-full max-w-4xl transform-gpu
             ${isMobileMenuOpen ? 'rounded-[1.5rem] sm:rounded-[2rem]' : 'rounded-full'}
             ${isScrolled 
-              ? 'bg-white/85 border-stone-200/50 shadow-black/5' 
+              ? (themeMode === 'dark' 
+                  ? 'bg-[#1c1c1b]/90 border-[#B8925A]/25 shadow-black/30' 
+                  : 'bg-white/85 border-stone-200/50 shadow-black/5')
               : 'bg-[#1c1c1b]/95 border-[#B8925A]/20 shadow-black/20'}`}
           initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
+          animate={isAboutSection ? { y: -120, opacity: 0 } : { y: 0, opacity: 1 }}
+          style={{ pointerEvents: isAboutSection ? 'none' : 'auto' }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           {/* Logo & Toggle Wrapper */}
           <div className="flex items-center justify-between w-full md:w-auto">
@@ -72,11 +77,11 @@ export default function Header({
               onClick={() => { handleNavClick('hero'); setIsMobileMenuOpen(false); }}
               className="flex items-center gap-2 text-left focus:outline-none relative z-20 pl-1 sm:pl-2 group"
             >
-              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#FAF6EE]'}`}>
-                <span className={`font-display italic text-xs sm:text-sm font-semibold ${isScrolled ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]'}`}>a.</span>
+              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled && themeMode !== 'dark' ? 'bg-[#1c1c1b]' : (isScrolled && themeMode === 'dark' ? 'bg-[#B8925A]' : 'bg-[#FAF6EE]')}`}>
+                <span className={`font-display italic text-xs sm:text-sm font-semibold ${isScrolled && themeMode !== 'dark' ? 'text-[#FAF6EE]' : (isScrolled && themeMode === 'dark' ? 'text-[#1c1c1b]' : 'text-[#1c1c1b]')}`}>a.</span>
               </div>
               <div className="flex flex-col justify-start leading-none">
-                <span className={`font-display font-bold tracking-widest text-[10px] sm:text-xs uppercase transition-colors duration-300 ${isScrolled ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
+                <span className={`font-display font-bold tracking-widest text-[10px] sm:text-xs uppercase transition-colors duration-300 ${isScrolled && themeMode !== 'dark' ? 'text-[#1c1c1b]' : 'text-[#FAF6EE]'}`}>ARTEFACT</span>
                 <span className="font-mono text-[7px] sm:text-[8px] tracking-widest text-[#B8925A] italic">the journal</span>
               </div>
             </button>
@@ -131,7 +136,7 @@ export default function Header({
                   {activeSection === item.id && (
                     <motion.div
                       layoutId="navbar-active"
-                      className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
+                      className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${isScrolled && themeMode !== 'dark' ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -140,7 +145,7 @@ export default function Header({
                   {hoveredSection === item.id && (
                     <motion.div
                       layoutId="navbar-hover"
-                      className={`absolute inset-0 rounded-full ${isScrolled ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
+                      className={`absolute inset-0 rounded-full ${isScrolled && themeMode !== 'dark' ? 'bg-[#1c1c1b]' : 'bg-[#B8925A]'}`}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -155,9 +160,11 @@ export default function Header({
                 const isHovered = hoveredSection === item.id;
                 
                 let textColor = '';
-                if (isScrolled) {
+                if (isScrolled && themeMode !== 'dark') {
+                  // Light mode scrolled: white bg, dark text
                   textColor = isHovered ? 'text-white' : (isActive ? 'text-[#1c1c1b] font-bold' : 'text-stone-500 hover:text-[#1c1c1b]');
                 } else {
+                  // Dark mode scrolled OR unscrolled (both have dark bg): light text
                   textColor = isHovered ? 'text-[#1c1c1b] font-bold' : (isActive ? 'text-[#FAF6EE] font-bold' : 'text-stone-400 hover:text-[#FAF6EE]');
                 }
                 
