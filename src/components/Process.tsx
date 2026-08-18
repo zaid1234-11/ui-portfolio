@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { motion, useScroll, AnimatePresence } from 'motion/react';
 import VariableProximity from './VariableProximity';
@@ -7,6 +7,18 @@ export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isDark, setIsDark] = useState(() =>
+    typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+  );
+
+  useEffect(() => {
+    const checkDark = () => setIsDark(document.documentElement.classList.contains('dark'));
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   // Setup scroll tracking for sticky pinning and step transitions
   const { scrollYProgress } = useScroll({
@@ -242,7 +254,9 @@ export default function Process() {
                 <div 
                   className="absolute top-[11%] bottom-[16%] left-[7%] right-[29%] z-10 bg-[#FAF6EE] dark:bg-[#1a1a1a] rounded-[1.5rem] shadow-[inset_0_4px_12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8 flex flex-col justify-between overflow-y-auto overflow-x-hidden"
                   style={{
-                    backgroundImage: 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
+                    backgroundImage: isDark
+                      ? 'radial-gradient(circle at center, #1a1a1a 0%, #141414 100%)'
+                      : 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
                   }}
                 >
                   <AnimatePresence>
