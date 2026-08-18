@@ -428,12 +428,34 @@
   --ease-spring: cubic-bezier(.32, 1.44, .62, 1);
   --ease-soft: cubic-bezier(.4, 0, .2, 1);
 
-  --folder-w: 240px;
+  --folder-w: 250px;
   --folder-overlap: 130px;
   --folder-h: 620px;
   --tab-h: 154px;
   --tab-w: 52px;
   --tab-inset: 72px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --folder-w: 285px;
+    --folder-overlap: 140px;
+    --folder-h: 630px;
+    --tab-h: 156px;
+    --tab-w: 54px;
+    --tab-inset: 74px;
+  }
+}
+
+@media (min-width: 1400px) {
+  :root {
+    --folder-w: 300px;
+    --folder-overlap: 145px;
+    --folder-h: 635px;
+    --tab-h: 156px;
+    --tab-w: 54px;
+    --tab-inset: 76px;
+  }
 }
 
 .folder-stack {
