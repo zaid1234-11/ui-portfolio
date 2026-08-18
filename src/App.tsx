@@ -11,10 +11,11 @@ import { Project } from './types';
 import { PROJECTS } from './data';
 import { ArrowUp, Sparkles, Code, Globe, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ReactLenis } from 'lenis/react';
+import { ReactLenis, useLenis } from 'lenis/react';
 import Preloader from './components/Preloader';
 
-export default function App() {
+function PortfolioApp() {
+  const lenis = useLenis();
   const [activeSection, setActiveSection] = useState('hero');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -38,26 +39,23 @@ export default function App() {
     setThemeMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
+  // Lock virtual scroll during preloader, restore on completion
   useEffect(() => {
-    const handleLoad = async () => {
-      await document.fonts.ready;
-      setTimeout(() => {
-        setIsLoading(false);
-        setTimeout(() => {
-          import('./components/WorkGallery');
-          import('./components/Process');
-          import('./components/About');
-          import('./components/ConnectForm');
-        }, 500);
-      }, 800);
-    };
-
-    if (document.readyState === 'complete') {
-      handleLoad();
+    if (isLoading) {
+      lenis?.stop();
     } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
+      lenis?.start();
     }
+  }, [isLoading, lenis]);
+
+  useEffect(() => {
+    // Preload below-the-fold modules in background
+    setTimeout(() => {
+      import('./components/WorkGallery');
+      import('./components/Process');
+      import('./components/About');
+      import('./components/ConnectForm');
+    }, 400);
   }, []);
 
   // Dynamic Title Management for Search Engine Optimization (SEO)
@@ -69,39 +67,34 @@ export default function App() {
     }
   }, [selectedProject]);
 
-  // Monitor scroll height to show back-to-top and handle active section highlights
-  useEffect(() => {
-    const handleScroll = () => {
-      // Back to top visibility
-      setShowScrollTop(window.scrollY > 400);
+  // Synchronize Lenis scroll position with active sections and Back to Top
+  useLenis(({ scroll }) => {
+    setShowScrollTop(scroll > 400);
 
-      // Section highlighters
-      const sections = ['hero', 'work', 'process', 'about', 'connect'];
-      const scrollPos = window.scrollY + 200;
+    const sections = ['hero', 'work', 'process', 'about', 'connect'];
+    const scrollPos = scroll + 200;
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
-          }
+    for (const section of sections) {
+      const el = document.getElementById(section);
+      if (el) {
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          setActiveSection(section);
+          break;
         }
       }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    }
+  });
 
   const handleNavigateToConnect = () => {
     setSelectedProject(null);
     setTimeout(() => {
-      const connectEl = document.getElementById('connect');
-      if (connectEl) {
-        connectEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (lenis) {
+        lenis.scrollTo('#connect', { offset: 0, duration: 1.2 });
+      } else {
+        const connectEl = document.getElementById('connect');
+        connectEl?.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
   };
@@ -110,39 +103,48 @@ export default function App() {
     setSelectedProject(null);
     setActiveSection(sectionId);
     setTimeout(() => {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (lenis) {
+        if (sectionId === 'hero') {
+          lenis.scrollTo(0, { duration: 1.2 });
+        } else {
+          lenis.scrollTo(`#${sectionId}`, { offset: 0, duration: 1.2 });
+        }
+      } else {
+        const el = document.getElementById(sectionId);
+        el?.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
   };
 
   const scrollToWork = () => {
-    const workEl = document.getElementById('work');
-    if (workEl) {
-      workEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (lenis) {
+      lenis.scrollTo('#work', { offset: 0, duration: 1.2 });
+    } else {
+      document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleSelectProject = (project: Project) => {
+    setSelectedProject(project);
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.1,
-        wheelMultiplier: 1.0,
-        touchMultiplier: 1.0,
-        syncTouch: false,
-        smoothTouch: false,
-        autoRaf: true,
-      }}
-    >
+    <>
       <AnimatePresence mode="wait">
-        {isLoading && <Preloader />}
+        {isLoading && <Preloader themeMode={themeMode} onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
       <div className="relative min-h-screen w-full bg-obsidian text-ivory-dim selection:bg-sand/30 selection:text-ivory antialiased">
@@ -217,8 +219,11 @@ export default function App() {
                 <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-ivory-dim/50 font-mono text-xs tracking-widest uppercase">Loading Case Study...</div>}>
                   <CaseStudyDetail
                     project={selectedProject}
-                    onBack={() => setSelectedProject(null)}
-                    onNavigateToProject={(p) => setSelectedProject(p)}
+                    onBack={() => {
+                      setSelectedProject(null);
+                      if (lenis) lenis.scrollTo(0, { immediate: true });
+                    }}
+                    onNavigateToProject={(p) => handleSelectProject(p)}
                   />
                 </Suspense>
               </motion.div>
@@ -244,7 +249,7 @@ export default function App() {
 
                   {/* Below-The-Fold Lazy Loaded Segments (each independent so they don't block each other) */}
                   <Suspense fallback={<div className="min-h-screen" />}>
-                    <WorkGallery onSelectProject={(project) => setSelectedProject(project)} />
+                    <WorkGallery onSelectProject={(project) => handleSelectProject(project)} />
                   </Suspense>
 
                   <Suspense fallback={<div className="min-h-screen" />}>
@@ -268,77 +273,63 @@ export default function App() {
         </div>
 
         {/* 5. High-End Minimalist Footer */}
-        <footer className="bg-obsidian-dark dark:bg-[#1a1a1a] border-t border-white/5 dark:border-white/10 py-10 md:py-16 px-4 md:px-12 relative z-30">
+        <footer className="bg-obsidian-dark dark:bg-[#1a1a1a] border-t border-white/5 dark:border-white/10 py-10 md:py-16 px-4 md:px-12 relative z-30">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12">
 
             {/* Column A: Logo and Motto */}
             <div className="space-y-4 max-w-sm">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-sage" />
-                <span className="font-display text-lg tracking-widest text-ivory dark:text-[#FAF6EE] font-bold">ARTEFACT</span>
+                <Sparkles className="w-5 h-5 text-sage" />
+                <span className="font-display text-lg tracking-widest text-ivory dark:text-[#FAF6EE] font-bold">ARTEFACT</span>
               </div>
-              <p className="text-xs text-ivory-dim/40 dark:text-[#ECE3D2]/70 leading-relaxed font-light">
+              <p className="text-xs text-ivory-dim/40 dark:text-[#ECE3D2]/70 leading-relaxed font-light">
                 Meticulous craftsmanship in digital interfaces. Merging raw visual weight with reactive frontend logic for elite brand presentation.
               </p>
             </div>
 
-            {/* Column B: Links Navigation */}
-            <div className="grid grid-cols-2 gap-12">
+            {/* Column B: Interactive Directories */}
+            <div className="grid grid-cols-2 gap-8 text-xs font-mono">
               <div className="space-y-3">
-                <span className="block font-mono text-[9px] text-ivory-dim/40 dark:text-[#B8925A] uppercase tracking-widest">
-                  ARCHITECT
-                </span>
-                <ul className="space-y-2 text-xs">
+                <span className="text-[10px] text-sand dark:text-[#B8925A] uppercase tracking-widest block font-bold">Index</span>
+                <ul className="space-y-2">
                   <li>
-                    <button
-                      onClick={() => handleSetActiveSection('hero')}
-                      className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors focus:outline-none"
-                    >
-                      Home Index
+                    <button onClick={() => handleSetActiveSection('hero')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                      00. Hero Gate
                     </button>
                   </li>
                   <li>
-                    <button
-                      onClick={() => handleSetActiveSection('work')}
-                      className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors focus:outline-none"
-                    >
-                      Portfolio Work
+                    <button onClick={() => handleSetActiveSection('work')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                      01. Archive Work
                     </button>
                   </li>
                   <li>
-                    <button
-                      onClick={() => handleSetActiveSection('process')}
-                      className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors focus:outline-none"
-                    >
-                      Methodology
+                    <button onClick={() => handleSetActiveSection('process')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                      02. Methodology
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleSetActiveSection('about')} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors cursor-pointer">
+                      03. Biography
                     </button>
                   </li>
                 </ul>
               </div>
 
               <div className="space-y-3">
-                <span className="block font-mono text-[9px] text-ivory-dim/40 dark:text-[#B8925A] uppercase tracking-widest">
-                  CONTACTS
-                </span>
-                <ul className="space-y-2 text-xs">
+                <span className="text-[10px] text-sand dark:text-[#B8925A] uppercase tracking-widest block font-bold">Transmit</span>
+                <ul className="space-y-2">
                   <li>
-                    <button
-                      onClick={() => handleSetActiveSection('about')}
-                      className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors focus:outline-none"
-                    >
-                      Biography
+                    <a href="https://github.com/zaid1234-11" target="_blank" rel="noopener noreferrer" className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
+                      GitHub Code
+                    </a>
+                  </li>
+                  <li>
+                    <button onClick={handleNavigateToConnect} className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors text-left cursor-pointer">
+                      Direct Dispatch
                     </button>
                   </li>
                   <li>
-                    <button
-                      onClick={() => handleSetActiveSection('connect')}
-                      className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors focus:outline-none"
-                    >
-                      Inquire Project
-                    </button>
-                  </li>
-                  <li>
-                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
+                    <a href="mailto:zaidsaifi150105@gmail.com" className="text-ivory-dim/55 dark:text-[#FAF6EE]/80 hover:text-sage dark:hover:text-[#B8925A] transition-colors">
                       zaidsaifi150105@gmail.com
                     </a>
                   </li>
@@ -348,12 +339,12 @@ export default function App() {
 
             {/* Column C: Technical Credits */}
             <div className="space-y-4 text-right md:text-left self-stretch md:self-auto flex flex-col justify-between items-end md:items-start">
-              <div className="font-mono text-[9px] text-sand/60 dark:text-[#ECE3D2]/80 bg-white/5 dark:bg-[#242424] border border-white/5 dark:border-[#B8925A]/30 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                <Globe className="w-3 h-3 text-sage" />
+              <div className="font-mono text-[9px] text-sand/60 dark:text-[#ECE3D2]/80 bg-white/5 dark:bg-[#242424] border border-white/5 dark:border-[#B8925A]/30 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                <Globe className="w-3 h-3 text-sage" />
                 SAN FRANCISCO edition · 2026
               </div>
 
-              <p className="text-[10px] font-mono text-ivory-dim/30 dark:text-[#ECE3D2]/50 leading-normal">
+              <p className="text-[10px] font-mono text-ivory-dim/30 dark:text-[#ECE3D2]/50 leading-normal">
                 © 2026 ARTEFACT. Hand-coded with TSX + Tailwind CSS.
               </p>
             </div>
@@ -361,26 +352,7 @@ export default function App() {
           </div>
         </footer>
 
-        {/* 6. Floating Action Buttons: Theme Toggle & Back to Top */}
-        <button
-          id="global-theme-toggle-btn"
-          onClick={toggleTheme}
-          className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-50 px-3.5 py-2.5 rounded-full bg-[#1c1c1b] text-[#B8925A] border border-[#B8925A]/40 shadow-2xl hover:border-[#B8925A] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 group cursor-pointer"
-          title={themeMode === 'dark' ? 'Switch to Light Scrapbook Theme' : 'Switch to Obsidian Dark Theme'}
-        >
-          {themeMode === 'dark' ? (
-            <>
-              <Sun className="w-4 h-4 text-[#B8925A] group-hover:rotate-45 transition-transform duration-300" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[#FAF6EE] hidden sm:inline font-bold">Light</span>
-            </>
-          ) : (
-            <>
-              <Moon className="w-4 h-4 text-[#B8925A] group-hover:-rotate-12 transition-transform duration-300" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[#FAF6EE] hidden sm:inline font-bold">Dark</span>
-            </>
-          )}
-        </button>
-
+        {/* 6. Floating Back to Top Button */}
         {showScrollTop && (
           <button
             id="scroll-to-top-btn"
@@ -393,6 +365,26 @@ export default function App() {
         )}
 
       </div>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.08,
+        duration: 1.2,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.2,
+        syncTouch: false,
+        smoothWheel: true,
+        autoRaf: true,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      }}
+    >
+      <PortfolioApp />
     </ReactLenis>
   );
 }
