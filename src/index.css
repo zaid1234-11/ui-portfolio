@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Caveat:wght@400..700&family=La+Belle+Aurore&family=Reenie+Beanie&family=Pinyon+Script&family=Didact+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Kaushan+Script&family=Rock+Salt&family=Herr+Von+Muellerhoff&family=Monsieur+La+Doulaise&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: "Geraldine";
@@ -1000,7 +1001,7 @@ html.dark select {
   50% { opacity: 1; }
 }
 
-.dark-grid-overlay {
+html.dark .dark-grid-overlay {
   animation: pixelGlow 6s ease-in-out infinite alternate;
   background-image: 
     /* Ambient warm gold vignette spotlight */
