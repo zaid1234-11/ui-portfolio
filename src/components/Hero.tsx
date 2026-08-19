@@ -50,7 +50,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
   return (
     <section
       id="hero"
-      className="relative min-h-[100dvh] md:min-h-screen flex flex-col justify-start md:justify-between pt-14 xs:pt-16 sm:pt-24 md:pt-32 pb-4 sm:pb-12 md:pb-14 px-5 xs:px-6 sm:px-10 md:px-14 lg:px-18 xl:px-24 bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] overflow-hidden transition-colors duration-500 font-sans"
+      className="relative min-h-[100dvh] md:min-h-screen flex flex-col justify-start md:justify-between pt-10 xs:pt-12 sm:pt-16 md:pt-24 pb-4 sm:pb-12 md:pb-14 px-5 xs:px-6 sm:px-10 md:px-14 lg:px-18 xl:px-24 bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] overflow-hidden transition-colors duration-500 font-sans"
     >
       {/* 1. Full-screen Background Layer: HoverMaskReveal on Desktop, ScrollDissolveCanvas on Mobile */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100 overflow-hidden">
@@ -80,7 +80,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
           /* Mobile (Light & Dark): WebGL Noise Dissolve Transition at bottom edge */
           <div className="w-full h-full transform scale-100 origin-center">
             <ScrollDissolveCanvas
-              imageSrc={isDark ? '/mobile dark 2.webp' : '/mobile light.webp'}
+              imageSrc={isDark ? '/mobile dark 3.webp' : '/mobile light 2.png'}
               isDark={isDark}
             />
           </div>
@@ -123,7 +123,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
       </div>
 
       {/* 3. Top Architectural Date & Volume Sub-header Strip (Desktop Only) */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full hidden md:flex items-center justify-between text-[9.5px] sm:text-[10px] md:text-[10.5px] font-ui font-semibold text-[#8C7A65] dark:text-[#8C7A65] tracking-wider mb-6 md:mb-8 select-none border-b border-[#8C7A65]/10 dark:border-white/5 pb-2.5">
+      <div className="relative z-10 max-w-7xl mx-auto w-full hidden md:flex items-center justify-between text-[9.5px] sm:text-[10px] md:text-[10.5px] font-ui font-semibold text-[#8C7A65] dark:text-[#8C7A65] tracking-wider mb-4 md:mb-6 select-none border-b border-[#8C7A65]/10 dark:border-white/5 pb-2">
         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5">
           <div className="flex items-center gap-2">
             <span className="w-4 h-[1.5px] bg-[#8C7A65]/40 inline-block"></span>
@@ -168,7 +168,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
       </div>
 
       {/* 4. Main Editorial Content */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center md:items-start justify-start md:justify-between my-0 md:my-auto py-0 md:py-8">
+      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center md:items-start justify-start md:justify-between my-0 md:my-auto py-0 md:py-4">
         
         {/* ========================================================================= */}
         {/* [A] LIGHT MODE ONLY (MOBILE VIEWPORT MATCHING USER SCREENSHOT)            */}
@@ -177,7 +177,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
           <div className="md:hidden w-full flex flex-col items-center text-center">
             
             {/* Top Architectural Date Strip in Light Mode */}
-            <div className="w-full flex flex-col items-start text-left mb-4 select-none pt-24 xs:pt-30">
+            <div className="w-full flex flex-col items-start text-left mb-3 select-none pt-10 xs:pt-14">
               <div className="flex items-center gap-1.5 text-[8.5px] xs:text-[9.5px] font-ui font-bold text-[#8C7A65] tracking-wider uppercase">
                 <span>DATE</span>
                 <span>|</span>
@@ -222,7 +222,7 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
             </h1>
 
             {/* Centered Narrative Copy Directly Below Headline */}
-            <div className="mt-2.5 xs:mt-3.5 mb-2 max-w-[460px] w-full px-2 text-center mx-auto">
+            <div className="mt-2 xs:mt-2.5 mb-2 max-w-[460px] w-full px-2 text-center mx-auto">
               <p className="font-serif italic text-[#1c1c1b] text-[13px] xs:text-[14px] sm:text-[15px] leading-[1.42] text-center">
                 From fintech and AI products to data-heavy enterprise experiences<br />
                 I turn complex systems into intuitive, thoughtful interfaces,<br />
@@ -232,10 +232,10 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
             </div>
 
             {/* Transparent Window Spacer Over Central Postage Stamp Photo */}
-            <div className="h-[350px] xs:h-[380px] sm:h-[410px] w-full pointer-events-none select-none" aria-hidden="true" />
+            <div className="h-[395px] xs:h-[435px] sm:h-[465px] w-full pointer-events-none select-none" aria-hidden="true" />
 
             {/* Centered Stacked Action Buttons */}
-            <div className="flex flex-col items-center justify-center gap-2.5 w-full mt-2 mb-4">
+            <div className="flex flex-col items-center justify-center gap-2.5 w-full mt-4 xs:mt-5 mb-4">
               <button
                 id="hero-explore-btn-light-mobile"
                 onClick={onExploreClick}
