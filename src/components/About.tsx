@@ -11,7 +11,7 @@ import AboutGraffiti from './AboutGraffiti';
 // --- Handdrawn Doodle Components in the spirit of Image 2 with Scroll Reactivity ---
 
 interface ScrollProps {
-  scrollProgress: any;
+  scrollProgress: import('motion/react').MotionValue<number>;
 }
 
 const RetroStarDoodle = ({ scrollProgress }: ScrollProps) => {
