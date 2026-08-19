@@ -20,9 +20,15 @@ function initGlobalMouse() {
       globalMouse.y = ev.touches[0].clientY;
     }
   };
+  const handleTouchEnd = () => {
+    globalMouse.x = -9999;
+    globalMouse.y = -9999;
+  };
 
   window.addEventListener('mousemove', handleMouseMove, { passive: true });
   window.addEventListener('touchmove', handleTouchMove, { passive: true });
+  window.addEventListener('touchend', handleTouchEnd, { passive: true });
+  window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 }
 
 interface VariableProximityProps {

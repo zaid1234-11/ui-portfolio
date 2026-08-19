@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Layers, Code, Zap, Award, Download, Check, Sparkles, ExternalLink } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionTemplate } from 'motion/react';
 import { TIMELINE, SKILL_GROUPS } from '../data';
 import AnimatedSignature from './AnimatedSignature';
 import VariableProximity from './VariableProximity';
 import AreasOfPractice from './AreasOfPractice';
+import AlbumCoverPortrait from './AlbumCoverPortrait';
+import AboutGraffiti from './AboutGraffiti';
 
 // --- Handdrawn Doodle Components in the spirit of Image 2 with Scroll Reactivity ---
 
@@ -20,7 +22,7 @@ const RetroStarDoodle = ({ scrollProgress }: ScrollProps) => {
   return (
     <motion.div
       style={{ y, scale, rotate }}
-      className="absolute -top-12 -left-8 w-20 h-20 select-none pointer-events-none drop-shadow-md z-20"
+      className="hidden md:block absolute -top-12 -left-8 w-20 h-20 select-none pointer-events-none drop-shadow-md z-20"
     >
       <svg viewBox="0 0 100 100" className="w-full h-full text-[#1c1c1b] fill-current">
         <path d="M50 0 L58 35 L93 25 L65 50 L93 75 L58 65 L50 100 L42 65 L7 75 L35 50 L7 25 L42 35 Z" />
@@ -135,7 +137,7 @@ const WireframeArchDoodle = ({ scrollProgress }: ScrollProps) => {
   return (
     <motion.div
       style={{ y, scale }}
-      className="absolute -top-20 left-16 flex flex-col items-center select-none pointer-events-none z-20"
+      className="hidden md:flex absolute -top-20 left-16 flex-col items-center select-none pointer-events-none z-20"
     >
       <svg viewBox="0 0 100 140" className="w-16 h-24 stroke-[1.5] fill-none text-[#4E4842]" stroke="currentColor">
         <path d="M 20,130 L 20,50 A 30,30 0 0 1 80,50 L 80,130 Z" />
@@ -154,7 +156,7 @@ const OverlappingOvalsDoodle = ({ scrollProgress }: ScrollProps) => {
   return (
     <motion.div
       style={{ y, scale }}
-      className="absolute -bottom-12 -left-8 w-32 h-32 select-none pointer-events-none drop-shadow-md z-20"
+      className="hidden md:block absolute -bottom-12 -left-8 w-32 h-32 select-none pointer-events-none drop-shadow-md z-20"
     >
       <svg viewBox="0 0 100 100" className="w-full h-full text-[#B8925A] stroke-[1] fill-none" stroke="currentColor">
         <ellipse cx="50" cy="40" rx="45" ry="15" transform="rotate(-15 50 40)" />
@@ -174,7 +176,7 @@ const SunburstDoodle = ({ scrollProgress }: ScrollProps) => {
   return (
     <motion.div
       style={{ scale, rotate }}
-      className="absolute -right-8 top-1/4 w-16 h-16 select-none pointer-events-none z-20"
+      className="hidden md:block absolute -right-8 top-1/4 w-16 h-16 select-none pointer-events-none z-20"
     >
       <svg viewBox="0 0 100 100" className="w-full h-full text-[#1c1c1b] stroke-[1] fill-none" stroke="currentColor">
         <line x1="50" y1="5" x2="50" y2="95" />
@@ -194,7 +196,7 @@ const RotatingTextBadge = ({ scrollProgress }: ScrollProps) => {
   const rotate = useTransform(scrollProgress, [0, 1], [0, 240]);
 
   return (
-    <div className="absolute -left-12 bottom-6 w-28 h-28 select-none pointer-events-none z-20">
+    <div className="hidden md:block absolute -left-12 bottom-6 w-28 h-28 select-none pointer-events-none z-20">
       <motion.svg viewBox="0 0 100 100" style={{ rotate }} className="w-full h-full">
         <path
           id="circlePath"
@@ -219,8 +221,8 @@ const RotatingTextBadge = ({ scrollProgress }: ScrollProps) => {
 const AboutMeScribble = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <div ref={containerRef} className="absolute -top-20 left-16 select-none z-20">
-      <span className="font-display italic text-3xl md:text-4xl text-[#1c1c1b] font-bold relative inline-block tracking-wide cursor-pointer">
+    <div ref={containerRef} className="absolute -top-14 md:-top-20 left-4 md:left-16 select-none z-20">
+      <span className="font-display italic text-3xl md:text-4xl text-[#1c1c1b] dark:text-[#FAF6EE] font-bold relative inline-block tracking-wide cursor-pointer">
         <VariableProximity
           label="About Me"
           fromFontVariationSettings="'wght' 400"
@@ -228,7 +230,7 @@ const AboutMeScribble = () => {
           containerRef={containerRef}
           radius={120}
           falloff="gaussian"
-          className="font-display italic font-bold"
+          className="font-display italic font-bold text-[#1c1c1b] dark:text-[#FAF6EE]"
         />
         <svg className="absolute -bottom-2 -left-2 w-[115%] h-3 text-[#B8925A] stroke-[2] fill-none pointer-events-none" stroke="currentColor">
           <path d="M 5,5 Q 55,11 110,6 T 5,9" strokeLinecap="round" />
@@ -240,37 +242,24 @@ const AboutMeScribble = () => {
 
 export default function About() {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
-  const [isPhotoHovered, setIsPhotoHovered] = useState(false);
-  const photoCardRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024;
+    }
+    return false;
+  });
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const collageRef = useRef<HTMLDivElement>(null);
 
-  const handlePhotoMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = photoCardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--reveal-x', `${x}%`);
-    card.style.setProperty('--reveal-y', `${y}%`);
-  };
-
-  const handlePhotoMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    handlePhotoMouseMove(e);
-    setIsPhotoHovered(true);
-  };
-
-  const handlePhotoTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const card = photoCardRef.current;
-    if (!card) return;
-    const touch = e.touches[0];
-    const rect = card.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 100;
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--reveal-x', `${x}%`);
-    card.style.setProperty('--reveal-y', `${y}%`);
-    setIsPhotoHovered((prev) => !prev);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Scroll tracking inside the whole section
   const { scrollYProgress } = useScroll({
@@ -278,18 +267,14 @@ export default function About() {
     offset: ['start end', 'end start'],
   });
 
-  // Dedicated scroll tracking with extended runway for sticky pinned presentation
+  // Dedicated scroll tracking with extended runway for desktop sticky pinned presentation
   const { scrollYProgress: collageScroll } = useScroll({
     target: collageRef,
     offset: ['start start', 'end end'],
   });
   const smoothCollage = useSpring(collageScroll, { stiffness: 50, damping: 25, mass: 0.5 });
 
-  // 1. Scroll-Driven Image Reveal: smoothly unrolls from 0% to 100% over the first ~35% of scroll
-  const colorInsetBottom = useTransform(smoothCollage, [0.03, 0.35], [100, 0]);
-  const colorClipPath = useMotionTemplate`inset(0 0 ${colorInsetBottom}% 0)`;
-
-  // 2. Sequential Story & Info Steps: spaced out with generous runway
+  // Sequential Story & Info Steps (desktop scroll unroll)
   const step1Opacity = useTransform(smoothCollage, [0.22, 0.45], [0, 1]);
   const step1Y = useTransform(smoothCollage, [0.22, 0.45], [40, 0]);
 
@@ -310,13 +295,17 @@ export default function About() {
   const sectionScale = useTransform(smoothZoom, [0, 1], [1.15, 1]);
   const sectionY = useTransform(smoothZoom, [0, 1], [60, 0]);
 
-  // Polaroid frame-level transitions: smooth scaling up as it enters viewport, and rolling tilt!
+  // Frame-level transitions on desktop
   const polaroidY = useTransform(smoothCollage, [0, 1], [30, -30]);
   const polaroidScale = useTransform(smoothCollage, [0, 0.5, 1], [0.92, 1.02, 0.96]);
   const polaroidRotate = useTransform(smoothCollage, [0, 1], [-6, 4]);
 
-  // Photo Zoom inside: OPPOSES the polaroid scale (Ken Burns perspective parallax!)
-  const innerPhotoScale = useTransform(smoothCollage, [0, 1], [1.18, 1.0]);
+  // Conditionally assigned styles so mobile renders instantly without scroll-lag
+  const step1Style = isMobile ? undefined : { opacity: step1Opacity, y: step1Y };
+  const step2Style = isMobile ? undefined : { opacity: step2Opacity, y: step2Y };
+  const step3Style = isMobile ? undefined : { opacity: step3Opacity, y: step3Y };
+  const step4Style = isMobile ? undefined : { opacity: step4Opacity, y: step4Y };
+  const polaroidStyle = isMobile ? undefined : { y: polaroidY, scale: polaroidScale, rotate: polaroidRotate };
 
   const handleDownloadCV = () => {
     setDownloadSuccess(true);
@@ -352,6 +341,19 @@ export default function About() {
         <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center py-16 lg:py-0 px-6 md:px-12 z-10 will-change-transform">
           <div className="relative z-10 max-w-7xl mx-auto w-full pl-0 md:pl-10">
             
+            {/* Top Architectural Section Index Bar */}
+            <div className="hidden lg:flex items-center justify-between border-b border-[#B8925A]/15 pb-3 mb-8 select-none">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A] animate-pulse" />
+                <span className="font-ui text-[9px] font-bold tracking-[0.25em] text-[#8C7A65] dark:text-[#C5A880] uppercase">
+                  SECTION 02 • THE HUMAN LAYER &amp; CREATIVE ARCHIVE
+                </span>
+              </div>
+              <div className="font-mono text-[8.5px] text-[#8C7A65]/70 dark:text-[#C5A880]/70 tracking-widest uppercase">
+                33⅓ RPM HI-FI STEREO • FOLIO 2026
+              </div>
+            </div>
+
             {/* Overhaul Core Grid: Collage and Typo details */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             
@@ -360,6 +362,7 @@ export default function About() {
               
               {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
               <AboutMeScribble />
+              <AboutGraffiti />
               <RetroStarDoodle scrollProgress={smoothCollage} />
               <WireframeArchDoodle scrollProgress={smoothCollage} />
               <OverlappingOvalsDoodle scrollProgress={smoothCollage} />
@@ -371,100 +374,31 @@ export default function About() {
                 L
               </div>
 
-              {/* Tilted Polaroid Frame: reacting with scale, translation, and rotational scroll-driven parameters */}
-              <motion.div
-                style={{
-                  y: polaroidY,
-                  scale: polaroidScale,
-                  rotate: polaroidRotate,
-                }}
-                className="relative bg-[#1c1c1b] p-4 pb-12 shadow-[0_20px_50px_rgba(28,28,27,0.15)] border border-[#B8925A]/15 max-w-[320px] w-full rounded-sm transition-shadow duration-500 hover:shadow-2xl z-10 group/polaroid"
-              >
-                {/* Cinematic Scroll & Hover Reveal Portrait Container */}
-                <div 
-                  ref={photoCardRef}
-                  onMouseEnter={handlePhotoMouseEnter}
-                  onMouseMove={handlePhotoMouseMove}
-                  onMouseLeave={() => setIsPhotoHovered(false)}
-                  onTouchStart={handlePhotoTouchStart}
-                  className="aspect-[4/5] w-full overflow-hidden bg-stone-900 border border-white/10 relative rounded-sm group cursor-pointer select-none"
-                >
-                  {/* Background: Grayscale Image */}
-                  <motion.img
-                    style={{
-                      scale: innerPhotoScale,
-                    }}
-                    src="/me.jpg"
-                    alt="Zaid Saifi Portrait (Grayscale)"
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover grayscale contrast-[1.15] brightness-[0.95] opacity-90"
-                  />
-
-                  {/* Foreground: Color Image (Scroll-driven unroll mask + Interactive Hover) */}
-                  <motion.div
-                    className="absolute inset-0 w-full h-full will-change-[clip-path]"
-                    style={{
-                      clipPath: isPhotoHovered
-                        ? `circle(150% at var(--reveal-x, 50%) var(--reveal-y, 50%))`
-                        : colorClipPath,
-                      transition: isPhotoHovered ? 'clip-path 1.8s cubic-bezier(0.15, 0.85, 0.35, 1)' : 'none',
-                    }}
-                  >
-                    <motion.img
-                      style={{
-                        scale: innerPhotoScale,
-                      }}
-                      src="/me.jpg"
-                      alt="Zaid Saifi Portrait (Full Color)"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover contrast-[1.08] brightness-[1.02]"
-                    />
-                  </motion.div>
-
-                  {/* Subtle dark gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1b]/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-700 pointer-events-none"></div>
-
-                  {/* Floating Interactive Badge */}
-                  <motion.div
-                    style={{ opacity: step1Opacity }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-fit pointer-events-none transition-transform duration-500 group-hover:scale-105"
-                  >
-                    <div className="bg-[#1c1c1b]/90 backdrop-blur-md text-[#FAF6EE] text-[9px] uppercase tracking-[0.2em] font-mono py-1.5 px-4 rounded-full border border-[#B8925A]/40 whitespace-nowrap shadow-xl flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#B8925A] animate-pulse"></span>
-                      <span>CREATIVE CRAFT</span>
-                    </div>
-                  </motion.div>
-
-                  {/* Decorative Architectural Corners */}
-                  <div className="absolute top-0 left-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute top-0 left-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute top-0 right-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute top-0 right-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute bottom-0 left-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute bottom-0 left-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute bottom-0 right-0 w-6 h-[1px] bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                  <div className="absolute bottom-0 right-0 w-[1px] h-6 bg-[#B8925A]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 pointer-events-none"></div>
-                </div>
-                
-                {/* Polaroid bottom border felt-tip ink text */}
-                <div className="mt-5 flex flex-row justify-between items-center px-1">
-                  <div className="font-display text-[11px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
-                    DESIGN ARCHIVE
-                  </div>
-                  <div className="font-display text-[10px] font-black text-[#FAF6EE] tracking-widest uppercase select-none">
-                    EDITION: 2026
-                  </div>
-                </div>
-
-              </motion.div>
+              {/* Interactive Vinyl Album Cover Sleeve & Sliding Disc */}
+              <div className="relative z-10">
+                <AlbumCoverPortrait
+                  style={polaroidStyle}
+                  imageSrc="/me.jpg"
+                  title="Zaid Saifi"
+                  type="UI/UX &amp; Creative Tech"
+                  year="Edition 2026"
+                />
+              </div>
 
             </div>
 
             {/* Right Typography & Narrative Column (7 cols) with sequential scroll reveal */}
-            <div className="lg:col-span-7 space-y-8">
+            <div className="lg:col-span-7 space-y-7">
               
               {/* Step 1: Punchy Block Header and Intro */}
-              <motion.div style={{ opacity: step1Opacity, y: step1Y }} className="space-y-6">
+              <motion.div 
+                style={step1Style}
+                initial={isMobile ? { opacity: 0, y: 15 } : undefined}
+                whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5 }}
+                className="space-y-4"
+              >
                 <div className="relative inline-block">
                   <h3 className="font-display font-bold text-7xl sm:text-8xl md:text-[95px] leading-none text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tighter">
                     <VariableProximity
@@ -493,8 +427,15 @@ export default function About() {
                 </p>
               </motion.div>
 
-              {/* Step 2: Story Paragraphs with playful serif drop-ins */}
-              <motion.div style={{ opacity: step2Opacity, y: step2Y }} className="space-y-6 text-sm md:text-base text-[#4E4842]/90 dark:text-[#ECE3D2]/90 leading-relaxed font-light max-w-xl">
+              {/* Step 2: Story Paragraphs with playful serif drop-ins & Core Craft Pills */}
+              <motion.div 
+                style={step2Style}
+                initial={isMobile ? { opacity: 0, y: 15 } : undefined}
+                whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="space-y-5 text-sm md:text-base text-[#4E4842]/90 dark:text-[#ECE3D2]/90 leading-relaxed font-light max-w-xl"
+              >
                 <p>
                   <span className="font-display text-2xl md:text-3xl italic font-bold text-[#B8925A] mr-1.5 align-middle leading-none tracking-tight">
                     <VariableProximity
@@ -535,15 +476,38 @@ export default function About() {
                     falloff="gaussian"
                   />
                 </p>
+
+                {/* Core Craft Pills */}
+                <div className="pt-2 flex flex-wrap items-center gap-2 select-none">
+                  {['Interactive UI/UX', 'WebGL & Creative Tech', 'Design Systems', 'Full-Stack Eng.'].map((tag, i) => (
+                    <span key={i} className="font-ui text-[8.5px] font-semibold text-[#8C7A65] dark:text-[#C5A880] bg-[#EFE6D6]/60 dark:bg-[#1E1B18]/60 border border-[#C5B5A2]/30 dark:border-[#38332E] px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
 
               {/* Step 3: Animated Calligraphy Sign-off Signature */}
-              <motion.div style={{ opacity: step3Opacity, y: step3Y }} className="flex justify-start max-w-xl pl-2">
+              <motion.div 
+                style={step3Style}
+                initial={isMobile ? { opacity: 0, y: 15 } : undefined}
+                whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="flex justify-start max-w-xl pl-2"
+              >
                 <AnimatedSignature />
               </motion.div>
 
               {/* Step 4: Pill-shaped Contact Info Stripe matching the bottom layout */}
-              <motion.div style={{ opacity: step4Opacity, y: step4Y }} className="pt-6 border-t border-[#B8925A]/15 flex flex-wrap items-center gap-3">
+              <motion.div 
+                style={step4Style}
+                initial={isMobile ? { opacity: 0, y: 15 } : undefined}
+                whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="pt-6 border-t border-[#B8925A]/15 flex flex-wrap items-center gap-3"
+              >
                 <a 
                   href="mailto:zaidsaifi150105@gmail.com" 
                   className="bg-[#1c1c1b] hover:bg-[#FAF6EE] border border-[#1c1c1b] px-4 py-2 rounded-full font-display text-[11px] font-bold text-[#FAF6EE] hover:text-[#1c1c1b] tracking-widest transition-all duration-300 shadow"

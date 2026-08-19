@@ -44,6 +44,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
   const scale = useTransform(smoothProgress, [0, 1], [1.15, 1], { clamp: true });
   const y = useTransform(smoothProgress, [0, 1], [60, 0], { clamp: true });
+  const galleryStyle = isMobile ? undefined : { scale, y };
 
   const filters = ['All', 'UI/UX', 'Web App', 'Branding', 'E-Commerce', 'Data Vis'];
 
@@ -95,7 +96,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
       ></div>
 
       <motion.div 
-        style={{ scale, y }} 
+        style={galleryStyle} 
         className={`relative z-10 max-w-7xl mx-auto transform-gpu`}
       >
 

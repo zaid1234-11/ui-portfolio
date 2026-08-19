@@ -25,8 +25,6 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
     return false;
   });
 
-  const [scrollProgress, setScrollProgress] = useState(0);
-
   useEffect(() => {
     const checkDark = () => setIsDark(document.documentElement.classList.contains('dark'));
     checkDark();

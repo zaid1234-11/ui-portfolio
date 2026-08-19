@@ -129,27 +129,27 @@ export default function ScrollDissolveCanvas({
           return;
         }
 
-        // Smooth organic liquid undulating wave & metaball contour
-        float liquidWave = sin(coverUv.x * 4.2 + u_time * 0.5) * 0.09
-                         + cos(coverUv.x * 7.8 - u_time * 0.35) * 0.045
-                         + sin(coverUv.x * 12.5 + u_time * 0.7) * 0.025
-                         + snoise(vec2(coverUv.x * 2.5, u_time * 0.18)) * 0.10;
+        // Smooth organic liquid undulating wave & metaball contour with refined gentle amplitude
+        float liquidWave = sin(coverUv.x * 4.2 + u_time * 0.45) * 0.055
+                         + cos(coverUv.x * 7.8 - u_time * 0.3) * 0.03
+                         + sin(coverUv.x * 12.5 + u_time * 0.6) * 0.018
+                         + snoise(vec2(coverUv.x * 2.2, u_time * 0.15)) * 0.055;
 
-        // Melt level sweeps smoothly upward from bottom with progress
-        float meltLevel = u_progress * 1.32 - 0.14;
+        // Melt level sweeps gently and steadily from bottom
+        float meltLevel = u_progress * 1.05 - 0.05;
         float liquidBoundary = meltLevel + liquidWave;
 
         // Distance from current UV height to the organic liquid boundary
         float distToBoundary = coverUv.y - liquidBoundary;
 
         // Viscous liquid downward surface-tension stretch near the melting lip
-        float stretchFactor = smoothstep(0.20, 0.0, max(0.0, distToBoundary)) * u_progress * 0.07;
+        float stretchFactor = smoothstep(0.18, 0.0, max(0.0, distToBoundary)) * u_progress * 0.045;
         vec2 displacedUv = coverUv;
-        displacedUv.y -= stretchFactor * (1.0 + sin(coverUv.x * 5.5 + u_time * 0.3) * 0.4);
-        displacedUv.x += stretchFactor * 0.25 * cos(coverUv.x * 7.5);
+        displacedUv.y -= stretchFactor * (1.0 + sin(coverUv.x * 5.5 + u_time * 0.3) * 0.30);
+        displacedUv.x += stretchFactor * 0.15 * cos(coverUv.x * 7.5);
 
         // Crisp, anti-aliased smooth liquid cutout contour
-        float liquidAlpha = smoothstep(-0.006, 0.006, distToBoundary);
+        float liquidAlpha = smoothstep(-0.005, 0.005, distToBoundary);
 
         // Sample texture with viscous liquid displacement
         vec4 texColor = texture2D(u_texture, displacedUv);
@@ -205,20 +205,27 @@ export default function ScrollDissolveCanvas({
       const btn = document.getElementById('hero-explore-btn-light-mobile') || document.getElementById('hero-explore-btn');
       if (btn) {
         const btnRect = btn.getBoundingClientRect();
-        // Exact start threshold matching screenshot (when buttons reach mid-screen around 46% height)
-        const startThreshold = window.innerHeight * 0.46;
-        if (btnRect.top > startThreshold) {
+        // Start threshold: when explore buttons reach ~80% viewport height
+        const startThreshold = window.innerHeight * 0.80;
+        // Completion Boundary: fully reaches 100% dissolution precisely when buttons reach just below the navbar at ~2% screen height
+        const endThreshold = window.innerHeight * 0.02;
+
+        if (btnRect.top >= startThreshold) {
           return 0;
         }
-        // Dissolve smoothly sweeps 0.0 -> 1.0 from this exact position upwards
-        const scrollDistance = startThreshold + 100;
-        return Math.max(0, Math.min(1, (startThreshold - btnRect.top) / scrollDistance));
+        if (btnRect.top <= endThreshold) {
+          return 1.0;
+        }
+
+        const scrollDistance = startThreshold - endThreshold;
+        const rawProgress = (startThreshold - btnRect.top) / scrollDistance;
+        return Math.max(0, Math.min(1, rawProgress));
       }
       if (!container) return 0;
       const rect = container.getBoundingClientRect();
       const heroHeight = container.offsetHeight || window.innerHeight;
       const raw = Math.max(0, Math.min(1, -rect.top / heroHeight));
-      return Math.max(0, Math.min(1, (raw - 0.38) / 0.62));
+      return Math.max(0, Math.min(1, (raw - 0.25) / 0.55));
     };
 
     // 6. 120fps Animation frame loop with smooth spring lerp
@@ -228,15 +235,16 @@ export default function ScrollDissolveCanvas({
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      clockTime += 0.016;
+      // Gentle, slow-motion viscous wave flow
+      clockTime += 0.007;
 
       if (materialRef.current) {
         materialRef.current.uniforms.u_time.value = clockTime;
         materialRef.current.uniforms.u_isDark.value = isDark ? 1.0 : 0.0;
 
         const target = calculateTargetProgress();
-        // Silky smooth spring interpolation (inertial lerp)
-        currentProgress += (target - currentProgress) * 0.12;
+        // Luxurious, silky-smooth inertial damping (eliminates abrupt jumps)
+        currentProgress += (target - currentProgress) * 0.06;
         materialRef.current.uniforms.u_progress.value = currentProgress;
       }
 

@@ -107,17 +107,25 @@
   }
 }
 
-/* Mobile touch optimizations */
+/* Mobile touch & high-performance scroll optimizations */
 @media (max-width: 768px) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
+    touch-action: pan-y pinch-zoom;
   }
   
-  /* Ensure minimum tap target sizes */
-  button, a, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
+  /* Ensure fast touch response without 300ms tap delay */
+  button, a, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Hardware acceleration for mobile composite layers */
+  .will-change-transform {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }
 
