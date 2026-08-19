@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, Download, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 import HoverMaskReveal from './HoverMaskReveal';
+import ScrollDissolveCanvas from './ScrollDissolveCanvas';
 import SplitText from './SplitText';
 
 interface HeroProps {
@@ -23,6 +24,8 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
     }
     return false;
   });
+
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const checkDark = () => setIsDark(document.documentElement.classList.contains('dark'));
@@ -51,32 +54,39 @@ export default function Hero({ onExploreClick, isLoading = false }: HeroProps) {
       id="hero"
       className="relative min-h-[100dvh] md:min-h-screen flex flex-col justify-start md:justify-between pt-14 xs:pt-16 sm:pt-24 md:pt-32 pb-4 sm:pb-12 md:pb-14 px-5 xs:px-6 sm:px-10 md:px-14 lg:px-18 xl:px-24 bg-[#FAF6EE] dark:bg-[#111110] text-[#1c1c1b] dark:text-[#FAF6EE] overflow-hidden transition-colors duration-500 font-sans"
     >
-      {/* 1. Full-screen Interactive Hover Mask Reveal Background Layer */}
+      {/* 1. Full-screen Background Layer: HoverMaskReveal on Desktop, ScrollDissolveCanvas on Mobile */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100 overflow-hidden">
-        <div className="w-full h-full transform scale-100 origin-center transition-transform duration-500">
-          <HoverMaskReveal
-            imageBase={{ 
-              src: isDark 
-                ? (isMobile ? '/mobile dark 2.webp' : '/dark front 2.webp') 
-                : (isMobile ? '/mobile light.webp' : '/front.webp'), 
-              positionX: '50%', 
-              positionY: '50%' 
-            }}
-            imageHover={{ 
-              src: isDark 
-                ? (isMobile ? '/mobile dark 2.webp' : '/dark back.webp') 
-                : (isMobile ? '/mobile light.webp' : '/back.webp'), 
-              positionX: '50%', 
-              positionY: '50%' 
-            }}
-            radius={150}
-            blur={0.5}
-            splatRadius={0.08}
-            circleBoost={0.6}
-            parallax={false}
-            pressureIterations={5}
-          />
-        </div>
+        {!isMobile ? (
+          /* Desktop: Classic Interactive Hover Mask Reveal */
+          <div className="w-full h-full transform scale-100 origin-center transition-transform duration-500">
+            <HoverMaskReveal
+              imageBase={{ 
+                src: isDark ? '/dark front 2.webp' : '/front.webp', 
+                positionX: '50%', 
+                positionY: '50%' 
+              }}
+              imageHover={{ 
+                src: isDark ? '/dark back.webp' : '/back.webp', 
+                positionX: '50%', 
+                positionY: '50%' 
+              }}
+              radius={150}
+              blur={0.5}
+              splatRadius={0.08}
+              circleBoost={0.6}
+              parallax={false}
+              pressureIterations={5}
+            />
+          </div>
+        ) : (
+          /* Mobile (Light & Dark): WebGL Noise Dissolve Transition at bottom edge */
+          <div className="w-full h-full transform scale-100 origin-center">
+            <ScrollDissolveCanvas
+              imageSrc={isDark ? '/mobile dark 2.webp' : '/mobile light.webp'}
+              isDark={isDark}
+            />
+          </div>
+        )}
       </div>
 
       {/* 2. Dark Mode Editorial Atmosphere: Ghosted Typography, Notebook Spine, Chalk Doodles */}
