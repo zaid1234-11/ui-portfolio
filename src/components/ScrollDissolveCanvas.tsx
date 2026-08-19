@@ -129,7 +129,8 @@ export default function ScrollDissolveCanvas({
           }
         }
 
-        // Zoom image: scale 1.15 times in dark mode
+        // Zoom image: scale 1.15 times in dark mode to fill mobile display edge-to-edge
+        // In light mode: use 1.02 UV scale for optimal scrapbook margin framing
         float zoomMultiplier = (u_isDark > 0.5) ? (1.0 / 1.15) : 1.02;
         coverUv = (coverUv - vec2(0.5, 0.5)) * zoomMultiplier + vec2(0.5, 0.5);
 
