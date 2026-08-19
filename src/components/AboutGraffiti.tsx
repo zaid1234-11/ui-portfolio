@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 
 interface AboutGraffitiProps {
   className?: string;
-  scrollProgress?: any;
+  scrollProgress?: number;
 }
 
 export default function AboutGraffiti({ className = '' }: AboutGraffitiProps) {
