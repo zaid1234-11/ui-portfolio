@@ -12,6 +12,7 @@ export default function CustomCursor() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    // Detect mobile touch devices to completely unbind mouse listeners & spring calculations
     const isTouch = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
     setIsTouchDevice(isTouch);
     if (isTouch) return;
