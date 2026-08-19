@@ -7,6 +7,7 @@ import {
   Mesh,
   ShaderMaterial,
   LinearFilter,
+  ClampToEdgeWrapping,
   TextureLoader,
   Texture
 } from 'three';
@@ -50,13 +51,18 @@ export default function ScrollDissolveCanvas({
     const camera = new PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 1;
 
-    // 2. Texture loading
+    // 2. Texture loading & immediate aspect detection
     const loader = new TextureLoader();
     const texture = loader.load(imageSrc, (tex) => {
       tex.minFilter = LinearFilter;
       tex.magFilter = LinearFilter;
-      if (materialRef.current) {
-        materialRef.current.uniforms.u_textureAspect.value = tex.image.width / tex.image.height;
+      tex.wrapS = ClampToEdgeWrapping;
+      tex.wrapT = ClampToEdgeWrapping;
+      if (tex.image && tex.image.width && tex.image.height) {
+        const aspect = tex.image.width / tex.image.height;
+        if (materialRef.current) {
+          materialRef.current.uniforms.u_textureAspect.value = aspect;
+        }
       }
     });
     textureRef.current = texture;
@@ -111,17 +117,21 @@ export default function ScrollDissolveCanvas({
       void main() {
         vec2 uv = vUv;
 
-        // Responsive cover UV mapping
+        // Responsive cover UV mapping: scale texture to always fill the screen without leaving unmapped gaps
         vec2 coverUv = uv;
         if (u_textureAspect > 0.0 && u_containerAspect > 0.0) {
-          if (u_textureAspect > u_containerAspect) {
-            float scale = u_textureAspect / u_containerAspect;
-            coverUv.x = (uv.x - 0.5) / scale + 0.5;
+          if (u_containerAspect > u_textureAspect) {
+            float s = u_containerAspect / u_textureAspect;
+            coverUv.y = (uv.y - 0.5) * s + 0.5;
           } else {
-            float scale = u_containerAspect / u_textureAspect;
-            coverUv.y = (uv.y - 0.5) / scale + 0.5;
+            float s = u_textureAspect / u_containerAspect;
+            coverUv.x = (uv.x - 0.5) / s + 0.5;
           }
         }
+
+        // Zoom image: scale 1.15 times in dark mode
+        float zoomMultiplier = (u_isDark > 0.5) ? (1.0 / 1.15) : 1.02;
+        coverUv = (coverUv - vec2(0.5, 0.5)) * zoomMultiplier + vec2(0.5, 0.5);
 
         // Fast path: when progress is negligible, output un-displaced texture
         if (u_progress <= 0.001) {
