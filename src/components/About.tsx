@@ -267,25 +267,25 @@ export default function About() {
     offset: ['start end', 'end start'],
   });
 
-  // Dedicated scroll tracking with extended runway for desktop sticky pinned presentation
+  // Dedicated scroll tracking with snappy runway for desktop sticky pinned presentation
   const { scrollYProgress: collageScroll } = useScroll({
     target: collageRef,
     offset: ['start start', 'end end'],
   });
-  const smoothCollage = useSpring(collageScroll, { stiffness: 50, damping: 25, mass: 0.5 });
+  const smoothCollage = useSpring(collageScroll, { stiffness: 100, damping: 20, mass: 0.4 });
 
-  // Sequential Story & Info Steps (desktop scroll unroll)
-  const step1Opacity = useTransform(smoothCollage, [0.22, 0.45], [0, 1]);
-  const step1Y = useTransform(smoothCollage, [0.22, 0.45], [40, 0]);
+  // Sequential Story & Info Steps (desktop snappy scroll unroll)
+  const step1Opacity = useTransform(smoothCollage, [0.02, 0.18], [0, 1]);
+  const step1Y = useTransform(smoothCollage, [0.02, 0.18], [24, 0]);
 
-  const step2Opacity = useTransform(smoothCollage, [0.42, 0.65], [0, 1]);
-  const step2Y = useTransform(smoothCollage, [0.42, 0.65], [40, 0]);
+  const step2Opacity = useTransform(smoothCollage, [0.16, 0.36], [0, 1]);
+  const step2Y = useTransform(smoothCollage, [0.16, 0.36], [24, 0]);
 
-  const step3Opacity = useTransform(smoothCollage, [0.60, 0.82], [0, 1]);
-  const step3Y = useTransform(smoothCollage, [0.60, 0.82], [40, 0]);
+  const step3Opacity = useTransform(smoothCollage, [0.34, 0.54], [0, 1]);
+  const step3Y = useTransform(smoothCollage, [0.34, 0.54], [24, 0]);
 
-  const step4Opacity = useTransform(smoothCollage, [0.75, 0.95], [0, 1]);
-  const step4Y = useTransform(smoothCollage, [0.75, 0.95], [40, 0]);
+  const step4Opacity = useTransform(smoothCollage, [0.52, 0.72], [0, 1]);
+  const step4Y = useTransform(smoothCollage, [0.52, 0.72], [24, 0]);
 
   const { scrollYProgress: zoomProgress } = useScroll({
     target: sectionRef,
@@ -318,26 +318,38 @@ export default function About() {
     switch (category) {
       case 'Design & Motion':
         return <Layers className="w-4 h-4 text-pink-500" />;
-      case 'Frontend Engineering':
-        return <Code className="w-4 h-4 text-white" />;
-      case 'Creative Technology':
-        return <Zap className="w-4 h-4 text-pink-500" />;
+      case 'Engineering':
+        return <Code className="w-4 h-4 text-pink-400" />;
+      case 'UX & Strategy':
+        return <Zap className="w-4 h-4 text-pink-600" />;
+      case 'Leadership & Impact':
+        return <Award className="w-4 h-4 text-pink-500" />;
       default:
-        return <Award className="w-4 h-4 text-white" />;
+        return <Check className="w-4 h-4 text-pink-500" />;
     }
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative bg-transparent"
+    <section 
+      ref={sectionRef} 
+      id="about" 
+      className="relative py-12 md:py-24 bg-transparent overflow-hidden"
     >
-      {/* Background Grids */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(184,146,90,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(184,146,90,0.02)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none z-0"></div>
+      {/* Background Notebook Architectural Draft Grid Lines */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0 opacity-70 dark:opacity-25"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse at 50% 30%, rgba(184, 146, 90, 0.1) 0%, transparent 70%),
+            linear-gradient(to right, rgba(184, 146, 90, 0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(184, 146, 90, 0.08) 1px, transparent 1px)
+          `,
+          backgroundSize: '100% 100%, 3rem 3rem, 3rem 3rem'
+        }}
+      ></div>
 
       {/* Pinned Scroll Track for Biography Collage */}
-      <div ref={collageRef} className="relative lg:h-[250vh] h-auto">
+      <div ref={collageRef} className="relative lg:h-[180vh] h-auto">
         <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center py-16 lg:py-0 px-6 md:px-12 z-10 will-change-transform">
           <div className="relative z-10 max-w-7xl mx-auto w-full pl-0 md:pl-10">
             
