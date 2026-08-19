@@ -9,7 +9,7 @@ interface AlbumCoverPortraitProps {
   type?: string;
   year?: string;
   className?: string;
-  style?: any;
+  style?: React.CSSProperties;
 }
 
 export default function AlbumCoverPortrait({
