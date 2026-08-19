@@ -272,20 +272,20 @@ export default function About() {
     target: collageRef,
     offset: ['start start', 'end end'],
   });
-  const smoothCollage = useSpring(collageScroll, { stiffness: 100, damping: 20, mass: 0.4 });
+  const smoothCollage = useSpring(collageScroll, { stiffness: 80, damping: 22, mass: 0.5 });
 
   // Sequential Story & Info Steps (desktop snappy scroll unroll)
-  const step1Opacity = useTransform(smoothCollage, [0.02, 0.18], [0, 1]);
-  const step1Y = useTransform(smoothCollage, [0.02, 0.18], [24, 0]);
+  const step1Opacity = useTransform(smoothCollage, [0.00, 0.16], [0, 1]);
+  const step1Y = useTransform(smoothCollage, [0.00, 0.16], [20, 0]);
 
-  const step2Opacity = useTransform(smoothCollage, [0.16, 0.36], [0, 1]);
-  const step2Y = useTransform(smoothCollage, [0.16, 0.36], [24, 0]);
+  const step2Opacity = useTransform(smoothCollage, [0.15, 0.38], [0, 1]);
+  const step2Y = useTransform(smoothCollage, [0.15, 0.38], [20, 0]);
 
-  const step3Opacity = useTransform(smoothCollage, [0.34, 0.54], [0, 1]);
-  const step3Y = useTransform(smoothCollage, [0.34, 0.54], [24, 0]);
+  const step3Opacity = useTransform(smoothCollage, [0.36, 0.60], [0, 1]);
+  const step3Y = useTransform(smoothCollage, [0.36, 0.60], [20, 0]);
 
-  const step4Opacity = useTransform(smoothCollage, [0.52, 0.72], [0, 1]);
-  const step4Y = useTransform(smoothCollage, [0.52, 0.72], [24, 0]);
+  const step4Opacity = useTransform(smoothCollage, [0.58, 0.82], [0, 1]);
+  const step4Y = useTransform(smoothCollage, [0.58, 0.82], [20, 0]);
 
   const { scrollYProgress: zoomProgress } = useScroll({
     target: sectionRef,
@@ -333,7 +333,7 @@ export default function About() {
     <section 
       ref={sectionRef} 
       id="about" 
-      className="relative py-12 md:py-24 bg-transparent overflow-hidden"
+      className="relative bg-transparent"
     >
       {/* Background Notebook Architectural Draft Grid Lines */}
       <div 
@@ -349,7 +349,7 @@ export default function About() {
       ></div>
 
       {/* Pinned Scroll Track for Biography Collage */}
-      <div ref={collageRef} className="relative lg:h-[180vh] h-auto">
+      <div ref={collageRef} className="relative lg:h-[240vh] h-auto">
         <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center py-16 lg:py-0 px-6 md:px-12 z-10 will-change-transform">
           <div className="relative z-10 max-w-7xl mx-auto w-full pl-0 md:pl-10">
             
