@@ -20,6 +20,7 @@ function initGlobalMouse() {
       globalMouse.y = ev.touches[0].clientY;
     }
   };
+  // Instant touch release reset to preserve mobile battery & GPU frame budget
   const handleTouchEnd = () => {
     globalMouse.x = -9999;
     globalMouse.y = -9999;
