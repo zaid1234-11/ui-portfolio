@@ -367,10 +367,10 @@ export default function About() {
             </div>
 
             {/* Overhaul Core Grid: Collage and Typo details */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-24 items-center">
             
             {/* Left Collage Column (5 cols) */}
-            <div className="lg:col-span-5 relative flex items-center justify-center min-h-[440px] pt-12">
+            <div className="lg:col-span-5 relative flex items-center justify-center lg:justify-start lg:pl-2 min-h-[440px] pt-12">
               
               {/* Artistic Doodles and SVGs reacting with deep scrolling parallax */}
               <AboutMeScribble />
@@ -400,7 +400,7 @@ export default function About() {
             </div>
 
             {/* Right Typography & Narrative Column (7 cols) with sequential scroll reveal */}
-            <div className="lg:col-span-7 space-y-7">
+            <div className="lg:col-span-7 space-y-7 lg:pl-4 xl:pl-8">
               
               {/* Step 1: Punchy Block Header and Intro */}
               <motion.div 

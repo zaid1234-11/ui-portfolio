@@ -92,9 +92,9 @@ export default function AlbumCoverPortrait({
         {/* ========================================================================= */}
         <motion.div
           animate={{
-            x: isPlaying ? '52%' : isHovered ? '12%' : '0%',
-            rotate: isPlaying ? [0, 360] : isHovered ? -20 : -45,
-            scale: isPlaying ? 1.0 : isHovered ? 0.98 : 0.92,
+            x: isPlaying ? '40%' : isHovered ? '8%' : '0%',
+            rotate: isPlaying ? [0, 360] : isHovered ? -15 : -35,
+            scale: isPlaying ? 1.0 : isHovered ? 0.98 : 0.94,
             opacity: isPlaying || isHovered ? 1 : 0.7,
           }}
           transition={
