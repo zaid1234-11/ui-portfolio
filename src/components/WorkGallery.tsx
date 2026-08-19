@@ -44,6 +44,7 @@ export default function WorkGallery({ onSelectProject }: WorkGalleryProps) {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.5 });
   const scale = useTransform(smoothProgress, [0, 1], [1.15, 1], { clamp: true });
   const y = useTransform(smoothProgress, [0, 1], [60, 0], { clamp: true });
+  // Bypass whole-section scaling on mobile to preserve GPU compositing performance
   const galleryStyle = isMobile ? undefined : { scale, y };
 
   const filters = ['All', 'UI/UX', 'Web App', 'Branding', 'E-Commerce', 'Data Vis'];
