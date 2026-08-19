@@ -4,7 +4,7 @@ import { motion, useScroll, AnimatePresence } from 'motion/react';
 import VariableProximity from './VariableProximity';
 
 export default function Process() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number | null>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingContainerRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +48,12 @@ export default function Process() {
   }, [scrollYProgress]);
 
   const handleStepClick = (index: number) => {
+    // If clicking the currently active step, toggle it closed
+    if (activeStep === index) {
+      setActiveStep(null);
+      return;
+    }
+
     setActiveStep(index);
     if (window.innerWidth >= 1024 && sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
@@ -118,7 +124,7 @@ export default function Process() {
                   03 - WORK METHODOLOGY
                 </span>
                 <span className="font-mono text-[9px] text-[#1c1c1b]/60 dark:text-[#ECE3D2]/70 tracking-[0.2em] uppercase bg-[#ECE3D2]/50 dark:bg-[#242424]/50 border border-[#B8925A]/15 px-2.5 py-0.5 rounded-full">
-                  CHANNEL 0{activeStep + 1} / 04
+                  CHANNEL 0{(activeStep ?? 0) + 1} / 04
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tight leading-none">
@@ -174,45 +180,61 @@ export default function Process() {
                   <button
                     id={`process-step-btn-${index}`}
                     onClick={() => handleStepClick(index)}
-                    className={`w-full text-left p-5 md:p-6 border transition-all duration-300 focus:outline-none flex gap-4 cursor-pointer ${
+                    className={`w-full text-left p-5 md:p-6 border transition-all duration-300 ease-out focus:outline-none flex items-center justify-between gap-4 cursor-pointer ${
                       activeStep === index
-                        ? 'bg-[#1c1c1b] dark:bg-[#1f1f1f] text-[#FAF6EE] border-[#B8925A]/50 shadow-xl rounded-xl lg:scale-[1.02]'
+                        ? 'bg-[#1c1c1b] dark:bg-[#1f1f1f] text-[#FAF6EE] border-[#B8925A]/50 shadow-xl rounded-t-xl lg:rounded-xl rounded-b-none lg:rounded-b-xl lg:scale-[1.02]'
                         : 'bg-transparent border-[#B8925A]/20 hover:border-[#1c1c1b] dark:hover:border-[#B8925A] hover:bg-[#ECE3D2]/30 dark:hover:bg-[#242424]/40 rounded-xl'
                     }`}
                   >
-                    <span className={`font-mono text-sm font-bold transition-colors duration-300 ${
-                      activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/60 dark:text-[#B8925A]/60'
-                    }`}>
-                      {step.num}
-                    </span>
+                    <div className="flex items-start gap-4">
+                      <span className={`font-mono text-sm font-bold transition-colors duration-300 ${
+                        activeStep === index ? 'text-[#B8925A]' : 'text-[#4E4842]/60 dark:text-[#B8925A]/60'
+                      }`}>
+                        {step.num}
+                      </span>
 
-                    <div className="space-y-1">
-                      <h3 className={`font-display text-base font-bold tracking-tight transition-colors duration-300 ${
-                        activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80 dark:text-[#FAF6EE]/80'
-                      }`}>
-                        {step.title}
-                      </h3>
-                      <p className={`text-xs font-light ${
-                        activeStep === index ? 'text-[#ECE3D2]/70' : 'text-[#4E4842]/60 dark:text-[#ECE3D2]/60'
-                      }`}>
-                        {step.tags.join(' · ')}
-                      </p>
+                      <div className="space-y-1">
+                        <h3 className={`font-display text-base font-bold tracking-tight transition-colors duration-300 ${
+                          activeStep === index ? 'text-[#FAF6EE]' : 'text-[#1c1c1b]/80 dark:text-[#FAF6EE]/80'
+                        }`}>
+                          {step.title}
+                        </h3>
+                        <p className={`text-xs font-light ${
+                          activeStep === index ? 'text-[#ECE3D2]/70' : 'text-[#4E4842]/60 dark:text-[#ECE3D2]/60'
+                        }`}>
+                          {step.tags.join(' · ')}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Mobile Expand Indicator Icon */}
+                    <div className="lg:hidden text-[#B8925A] font-mono text-xs transition-transform duration-300 ease-out transform" style={{ transform: activeStep === index ? 'rotate(45deg)' : 'rotate(0deg)' }}>
+                      +
                     </div>
                   </button>
                   
                   {/* Mobile Detail Panel (Accordion) */}
-                  <AnimatePresence>
+                  <AnimatePresence initial={false}>
                     {activeStep === index && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
+                        transition={{
+                          height: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.25, ease: 'easeInOut' }
+                        }}
                         className="lg:hidden overflow-hidden bg-[#FAF6EE] dark:bg-[#1c1c1b] border-x border-b border-[#B8925A]/20 rounded-b-xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.02)]"
                       >
-                        <div className="p-5 flex flex-col gap-4">
+                        <motion.div 
+                          initial={{ y: -8, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -6, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                          className="p-5 flex flex-col gap-4"
+                        >
                           <p className="text-sm text-[#4E4842] dark:text-[#ECE3D2] leading-relaxed font-light">
-                            {steps[activeStep].description}
+                            {step.description}
                           </p>
 
                           {/* Step Metric Highlight */}
@@ -222,14 +244,14 @@ export default function Process() {
                             </div>
                             <div>
                               <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 uppercase tracking-widest mb-0.5">
-                                {steps[activeStep].metric}
+                                {step.metric}
                               </span>
                               <span className="text-xs font-semibold text-[#B8925A]">
-                                {steps[activeStep].metricVal}
+                                {step.metricVal}
                               </span>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -259,13 +281,13 @@ export default function Process() {
                       : 'radial-gradient(circle at center, #FAF6EE 0%, #E8DFCE 100%)',
                   }}
                 >
-                  <AnimatePresence>
+                  <AnimatePresence mode="wait">
                     <motion.div
-                      key={activeStep}
+                      key={activeStep ?? 0}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                       className="h-full flex flex-col justify-between"
                     >
                       <div>
@@ -274,10 +296,10 @@ export default function Process() {
                           className="mb-3 block font-display text-xl sm:text-2xl font-bold text-[#1c1c1b] dark:text-[#FAF6EE] tracking-tight leading-snug"
                           style={{ fontFamily: "'Cormorant Garamond', serif" }}
                         >
-                          {steps[activeStep].title}
+                          {steps[activeStep ?? 0].title}
                         </h4>
                         <p className="text-xs sm:text-sm text-[#4E4842] dark:text-[#ECE3D2]/90 leading-relaxed font-light mb-4">
-                          {steps[activeStep].description}
+                          {steps[activeStep ?? 0].description}
                         </p>
                       </div>
 
@@ -288,10 +310,10 @@ export default function Process() {
                         </div>
                         <div>
                           <span className="block font-mono text-[8px] text-[#4E4842]/60 dark:text-[#ECE3D2]/60 uppercase tracking-widest mb-0.5">
-                            {steps[activeStep].metric}
+                            {steps[activeStep ?? 0].metric}
                           </span>
                           <span className="text-xs font-semibold text-[#B8925A]">
-                            {steps[activeStep].metricVal}
+                            {steps[activeStep ?? 0].metricVal}
                           </span>
                         </div>
                       </div>
