@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FL-03 — Prompt Ladder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #1e293b;
+    --primary-dark: #0f172a;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --bg-alt: #f8fafc;
+    --card-bg: #ffffff;
+    --green: #047857;
+    --green-bg: #ecfdf5;
+    --red: #b91c1c;
+    --red-bg: #fef2f2;
+    --amber: #b45309;
+    --amber-bg: #fffbeb;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background: #ffffff;
+    line-height: 1.42;
+    font-size: 8pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 9mm 11mm 9mm 11mm;
+  }
+
+  .page {
+    width: 100%;
+    min-height: auto;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 2px solid var(--primary-dark);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .doc-header-left h1 {
+    font-size: 14pt;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .doc-header-left .subtitle {
+    font-size: 7.8pt;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-size: 7.2pt;
+    color: var(--text-light);
+    line-height: 1.3;
+  }
+
+  .meta-tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: var(--primary);
+    font-weight: 600;
+    padding: 1.5px 6px;
+    border-radius: 3px;
+    margin-bottom: 1px;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 8.8pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: -0.01em;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Run Card */
+  .run-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 10px;
+    margin-bottom: 7px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    page-break-inside: avoid;
+  }
+
+  .run-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .run-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .run-num-pill {
+    background: var(--accent);
+    color: white;
+    font-size: 6.8pt;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .layer-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6.5pt;
+    font-weight: 600;
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid #bfdbfe;
+  }
+
+  /* Prompt Box */
+  .prompt-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 4px 7px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6.8pt;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .prompt-label {
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 6.2pt;
+    letter-spacing: 0.04em;
+    margin-bottom: 1px;
+  }
+
+  /* Output Box */
+  .output-box {
+    background: #ffffff;
+    border-left: 2.5px solid #cbd5e1;
+    padding: 3px 7px;
+    font-size: 7.4pt;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    line-height: 1.32;
+  }
+
+  /* Notes Grid */
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+    background: #fafbfd;
+    border: 1px solid #f1f5f9;
+    border-radius: 4px;
+    padding: 5px 7px;
+  }
+
+  .note-item {
+    font-size: 7.2pt;
+    line-height: 1.3;
+  }
+
+  .note-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 6.2pt;
+    letter-spacing: 0.03em;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .label-changed { color: var(--accent); }
+  .label-improved { color: var(--green); }
+  .label-failed { color: var(--red); }
+  .label-next { color: var(--amber); }
+
+  /* Final Prompt Card */
+  .final-prompt-card {
+    background: #f8fafc;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin-top: 5px;
+    margin-bottom: 7px;
+  }
+
+  .final-prompt-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7pt;
+    color: var(--primary-dark);
+    line-height: 1.35;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-top: 4px;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 8px;
+  }
+
+  .checklist li {
+    font-size: 7.2pt;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .check-icon {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* Doc Footer */
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+    margin-top: 4px;
+    font-size: 6.8pt;
+    color: var(--text-light);
+  }
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1: TASK, RUN 0 & RUN 1 -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>FL-03 — Prompt Ladder</h1>
+          <div class="subtitle">FlyRank AI Fluency Track &bull; Progressive Prompt Engineering &amp; Output Quality Ladder</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-03</div><br>
+          <span>Author: Zaid Saifi</span> &bull; <span>Date: August 2026</span>
+        </div>
+      </header>
+
+      <!-- Task Overview Card -->
+      <div style="background: #f8fafc; border-left: 3.5px solid var(--accent); border-radius: 0 5px 5px 0; padding: 6px 10px; margin-bottom: 8px; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
+        <div style="font-size: 7.5pt; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em;">Task Definition</div>
+        <div style="font-size: 7.8pt; color: var(--text-muted); line-height: 1.35; margin-top: 2px;">
+          Reviewing my personal UI/UX &amp; Frontend Systems Engineering portfolio (<code>ARTEFACT</code>) to identify the highest-impact improvements for clarity, credibility, mobile usability, and hiring conversion. Tested across 6 sequential runs, adding exactly one layer per iteration.
+        </div>
+      </div>
+
+      <div class="section-title">
+        <span>Prompt Iterations (Runs 0 &rarr; 1)</span>
+      </div>
+
+      <!-- RUN 0 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 0</span>
+            <span>Weak Baseline</span>
+          </div>
+          <span class="layer-pill">Layer: None (Unconstrained)</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          “Review my portfolio.”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong> “Your portfolio looks very creative! 1. Visual Design: Dark theme and gold look nice, ensure contrast is readable. 2. Navigation: Add links for Home, About, Projects, Contact. 3. Content: Add a blog section to share tech thoughts. 4. Social Proof: Add client testimonials and reviews. 5. Call to Action: Put contact button at top. 6. SEO: Add meta tags and alt text. Solid start!”
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Baseline run. No goal, audience, context, format, or quality constraints.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Baseline benchmark covering generic web design checklist items.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed">What still failed:</span>
+            Completely generic; suggested irrelevant blogs and fake testimonials; ignored actual code.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Add an action-oriented goal to focus the AI on identifying highest-impact improvements.
+          </div>
+        </div>
+      </div>
+
+      <!-- RUN 1 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 1</span>
+            <span>Clearer Goal</span>
+          </div>
+          <span class="layer-pill">+ Layer: Clearer Goal</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          “Review my portfolio and identify the most important changes I should make to make it stronger.”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong> “To make your portfolio stronger, focus on key structural improvements: 1. Clarify Value Proposition in first 3 seconds. 2. Elevate Featured Projects with problem/solution case studies. 3. Demonstrate Measurable Impact with metrics. 4. Streamline Mobile Usability to prevent animation lag. 5. Strengthen Contact Form with minimal fields.”
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Added <strong>Clearer Goal</strong> (“identify the most important changes... to make it stronger”).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Shifted from passive commentary into a structured list of actionable recommendations.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed">What still failed:</span>
+            Remained generic; unable to prioritize without knowing who is evaluating the portfolio.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Define the exact target audience (startup founders &amp; product leads hiring for UI/UX &amp; frontend).
+          </div>
+        </div>
+      </div>
+
+      <!-- RUN 2 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 2</span>
+            <span>Defined Audience</span>
+          </div>
+          <span class="layer-pill">+ Layer: Defined Audience</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          “Review my portfolio and identify the most important changes I should make to make it stronger for startup founders and product leads who may hire me for UI/UX and frontend work.”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong> “Startup leaders look for execution speed and design-to-code ability: 1. Frame Yourself as a Design Engineer bridging Figma directly to React code. 2. Highlight Technical Architecture in case studies (state, performance). 3. Make Live Demos Instantly Accessible at top of cards. 4. Clarify Ownership (what you designed vs built). 5. Align Contact CTA with hiring/roles.”
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Added <strong>Defined Audience</strong> (“for startup founders and product leads who may hire me...”).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Shifted into a hiring lens; prioritized hybrid design-engineering proof and live demo accessibility.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed">What still failed:</span>
+            AI guessed at portfolio content rather than evaluating real components in the repository.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Provide real project context (React, modern frontend, AI-assisted development, interactive UI).
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="doc-footer">
+      <span>FL-03 Deliverable &bull; FlyRank AI Fluency Track</span>
+      <span>Zaid Saifi &bull; UI/UX &amp; Frontend Systems Engineer</span>
+      <span>Page 1 of 3</span>
+    </footer>
+  </div>
+
+  <!-- PAGE 2: RUN 3 & RUN 4 -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>FL-03 — Prompt Ladder (Cont.)</h1>
+          <div class="subtitle">Context Injection, Output Structuring &amp; Format Progression</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-03</div><br>
+          <span>Track: Runs 3 &rarr; 4</span>
+        </div>
+      </header>
+
+      <div class="section-title">
+        <span>Prompt Iterations (Runs 3 &rarr; 4)</span>
+      </div>
+
+      <!-- RUN 3 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 3</span>
+            <span>Real Context</span>
+          </div>
+          <span class="layer-pill">+ Layer: Real Project Context</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          “Review my portfolio and identify the most important changes I should make to make it stronger for startup founders and product leads who may hire me for UI/UX and frontend work.<br><br>
+          Context: My portfolio showcases real UI/UX and frontend projects, including work involving React, modern frontend development, AI-assisted development, and interactive interfaces. The portfolio is intended to demonstrate what I can actually design and build rather than simply list my skills.”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong> “Your portfolio showcases real craft: In <strong>RetroLab</strong>, Canvas 2D client-side dithering is great; ensure trade-offs like <code>Uint8ClampedArray</code> in-place buffer mutation are highlighted to show memory awareness. In <strong>FinTrac AI</strong>, Liquid Glass and Future Simulator look polished; clarify Radix UI state mechanics. In <strong>SalesSphere</strong>, virtualizing 100K+ rows with TanStack Virtual is strong; highlight the 60 FPS / 285KB metrics near top. Vinyl player shows flair; ensure GitHub links are prominent.”
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Added <strong>Real Context</strong> (React, modern frontend, AI development, interactive interfaces).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Critique became deeply grounded in actual projects (RetroLab, FinTrac, SalesSphere, Canvas API).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed" style="color: var(--red); font-weight: 700;">Weakest Result (Narrative Bloat):</span>
+            Output degraded into unstructured narrative paragraphs of mixed commentary, praise, and essays that were hard to scan or execute.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Impose a strict output format (Top 5 problems, Why it matters, Specific change, Priority).
+          </div>
+        </div>
+      </div>
+
+      <!-- RUN 4 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 4</span>
+            <span>Specified Output Format</span>
+          </div>
+          <span class="layer-pill">+ Layer: Specified Output Format</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          [Run 3 Prompt] + “Return your review as: 1. Top 5 problems, 2. Why each problem matters, 3. Specific change recommended for each, 4. Priority: High / Medium / Low”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong><br>
+          • <strong>1. Mobile Hero Narrative Layout Pushed Below Viewport</strong> &bull; <em>Why:</em> Founders miss value proposition on mobile. &bull; <em>Fix:</em> Reduce spacer height and move subtitle directly under headline. &bull; <em>Priority:</em> High<br>
+          • <strong>2. Live Demo Links Buried at Bottom</strong> &bull; <em>Why:</em> Evaluators want to test immediately. &bull; <em>Fix:</em> Add top-level button bar with Vercel/GitHub links. &bull; <em>Priority:</em> High<br>
+          • <strong>3. Technical Depth in SalesSphere Hidden</strong> &bull; <em>Why:</em> Virtualizing 100K rows is a key differentiator. &bull; <em>Fix:</em> Add animated GIF/telemetry of virtual scroll. &bull; <em>Priority:</em> Medium<br>
+          • <strong>4. Contact Form Options Sound Like Agency</strong> &bull; <em>Why:</em> Confuses in-house hiring leads. &bull; <em>Fix:</em> Update pills to 'Frontend Eng', 'UI/UX Design'. &bull; <em>Priority:</em> Medium<br>
+          • <strong>5. Case Study Routing Lacks History State</strong> &bull; <em>Why:</em> Cannot direct-link to modal case studies. &bull; <em>Fix:</em> Add hash routing (<code>#fintrac</code>). &bull; <em>Priority:</em> Low
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Added <strong>Specified Output Format</strong> (4 structured fields: Problem, Why, Fix, Priority).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Massive leap in scanability and actionability; replaced prose with a prioritized engineering backlog.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed">What still failed:</span>
+            Did not rigorously separate critical conversion/credibility blockers from optional aesthetic polish.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Add explicit quality criteria (clarity, credibility, usability, conversion, anti-trend rules).
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="doc-footer">
+      <span>FL-03 Deliverable &bull; FlyRank AI Fluency Track</span>
+      <span>Zaid Saifi &bull; UI/UX &amp; Frontend Systems Engineer</span>
+      <span>Page 2 of 3</span>
+    </footer>
+  </div>
+
+  <!-- PAGE 3: RUN 5, FINAL PROMPT & LEARNING -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>FL-03 — Prompt Ladder (Final)</h1>
+          <div class="subtitle">Quality Criteria, Reusable Prompt Architecture &amp; Key Takeaways</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-03</div><br>
+          <span>Track: Final Delivery</span>
+        </div>
+      </header>
+
+      <!-- RUN 5 -->
+      <div class="run-card">
+        <div class="run-header">
+          <div class="run-title">
+            <span class="run-num-pill">Run 5</span>
+            <span>Quality Criteria (Gold Standard)</span>
+          </div>
+          <span class="layer-pill">+ Layer: Quality Criteria</span>
+        </div>
+        
+        <div class="prompt-box">
+          <div class="prompt-label">Prompt:</div>
+          [Run 4 Prompt] + “Quality criteria: Prioritize changes that improve clarity, credibility, usability, and conversion; recommendations must be specific enough to implement; base observations on actual portfolio; no trendy changes; distinguish serious problems from polish.”
+        </div>
+
+        <div class="output-box">
+          <strong>Output Excerpt:</strong><br>
+          • <strong>1. Synthetic Metric Risk in FinTrac AI (<code>data.ts:51-52</code>):</strong> Lists 97% retention which triggers skepticism for an internship/prototype. <em>Fix:</em> Replace with verifiable technical metrics (Lighthouse 98/100, &lt;10ms state recalculation). &bull; <em>Priority:</em> <strong>High (Credibility)</strong><br>
+          • <strong>2. Conversion Misalignment in Contact Form (<code>ConnectForm.tsx:33-38</code>):</strong> Options for 'Full Brand Identity' sound like agency consulting. <em>Fix:</em> Refactor pills to 'Frontend Engineering', 'UI/UX Design Systems', 'Full-Time Inquiries'. &bull; <em>Priority:</em> <strong>High (Conversion)</strong><br>
+          • <strong>3. Mobile Hero Layout Pushed Below Fold (<code>Hero.tsx:235</code>):</strong> Fixed spacer (<code>h-[395px]</code>) pushes value proposition off-screen on mobile. <em>Fix:</em> Move subtitle under headline and reduce mobile spacer height. &bull; <em>Priority:</em> <strong>High (Usability)</strong><br>
+          • <strong>4. SalesSphere Virtualization Proof Hidden:</strong> Emphasizes 100K rows but shows static charts. <em>Fix:</em> Add interactive table or 60 FPS viewport clip. &bull; <em>Priority:</em> <strong>Medium (Proof)</strong><br>
+          • <strong>5. Case Study Routing Lacks URL Deep-Linking:</strong> Evaluators cannot share direct project links. <em>Fix:</em> Bind active modal to <code>window.location.hash</code>. &bull; <em>Priority:</em> <strong>Medium (Usability)</strong>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-item">
+            <span class="note-label label-changed">What changed in prompt:</span>
+            Added <strong>Quality Criteria</strong> (clarity, credibility, usability, conversion, anti-trend constraint).
+          </div>
+          <div class="note-item">
+            <span class="note-label label-improved">What improved in output:</span>
+            Caught exact credibility risks (synthetic metrics in <code>data.ts</code>), conversion flaws in <code>ConnectForm</code>, and exact code line fixes.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-failed">What still failed:</span>
+            AI provides technical audits; human judgment remains necessary to balance creative aesthetic identity.
+          </div>
+          <div class="note-item">
+            <span class="note-label label-next">What I would try next:</span>
+            Package into a standardized, reusable prompt template for any design engineering review.
+          </div>
+        </div>
+      </div>
+
+      <!-- FINAL REUSABLE PROMPT -->
+      <div class="final-prompt-card">
+        <div style="font-size: 8pt; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em;">
+          Final Reusable Prompt Architecture
+        </div>
+        <div class="final-prompt-text">
+          Review my portfolio and identify the most important changes I should make to make it stronger for startup founders, engineering managers, and product leads who may hire me for UI/UX Design and Frontend Engineering roles.<br><br>
+          <strong>Context:</strong> My portfolio showcases real UI/UX design, design systems, and frontend engineering projects (built with React/Next.js, TypeScript, Tailwind CSS, Canvas API, Three.js shaders, and Framer Motion). The portfolio is intended to demonstrate what I can actually design, architect, and build into production code rather than simply list skills.<br><br>
+          <strong>Return your review as:</strong><br>
+          1. Top 5 problems<br>
+          2. Why each problem matters (focusing on hiring evaluation and user experience)<br>
+          3. Specific change recommended for each (with concrete implementation steps)<br>
+          4. Priority: High / Medium / Low (categorized by Credibility, Clarity, Usability, or Conversion)<br><br>
+          <strong>Quality criteria:</strong><br>
+          - Prioritize changes that directly improve clarity, technical credibility, mobile usability, and hiring conversion.<br>
+          - Recommendations must be specific enough to implement immediately in code or layout.<br>
+          - Base observations on actual repository evidence and project architecture rather than generic portfolio advice.<br>
+          - Avoid suggesting changes merely because they are trendy; prioritize functional engineering proof over cosmetic redesigns.<br>
+          - Strictly distinguish critical blockers from optional aesthetic polish.
+        </div>
+      </div>
+
+      <!-- FINAL LEARNING -->
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 5px; padding: 6px 9px;">
+        <div style="font-size: 7.5pt; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px;">
+          Key Takeaways &amp; Prompt Engineering Insights
+        </div>
+        <div style="font-size: 7.2pt; color: var(--text-muted); line-height: 1.32;">
+          <strong>1. Output Format &amp; Quality Criteria create the biggest qualitative leap:</strong> Goal (L1) and Audience (L2) orient tone, but Output Format (L4) and Quality Criteria (L5) turn vague feedback into an executable, high-credibility engineering audit.<br>
+          <strong>2. Context without formatting constraints causes narrative bloat:</strong> Run 3 proved that adding context alone causes verbose, essay-like praise. Context must always be paired with rigid output structuring.
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="doc-footer">
+      <span>FL-03 Deliverable &bull; FlyRank AI Fluency Track</span>
+      <span>Zaid Saifi &bull; UI/UX &amp; Frontend Systems Engineer</span>
+      <span>Page 3 of 3</span>
+    </footer>
+  </div>
+
+</body>
+</html>
