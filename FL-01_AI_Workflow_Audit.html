@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workflow Audit — FL-01</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #1e293b;
+    --primary-dark: #0f172a;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --bg-alt: #f8fafc;
+    --card-bg: #ffffff;
+    
+    --badge-just-me-bg: #fef2f2;
+    --badge-just-me-text: #991b1b;
+    --badge-just-me-border: #fecaca;
+    
+    --badge-delegate-bg: #fffbeb;
+    --badge-delegate-text: #92400e;
+    --badge-delegate-border: #fde68a;
+    
+    --badge-collab-bg: #eff6ff;
+    --badge-collab-text: #1e40af;
+    --badge-collab-border: #bfdbfe;
+    
+    --badge-auto-bg: #ecfdf5;
+    --badge-auto-text: #065f46;
+    --badge-auto-border: #a7f3d0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background: #ffffff;
+    line-height: 1.45;
+    font-size: 9pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  .page {
+    width: 100%;
+    min-height: auto;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 2px solid var(--primary-dark);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .doc-header-left h1 {
+    font-size: 16pt;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .doc-header-left .subtitle {
+    font-size: 8.5pt;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-size: 7.5pt;
+    color: var(--text-light);
+    line-height: 1.35;
+  }
+
+  .meta-tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: var(--primary);
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+  }
+
+  /* Principles Callout */
+  .principles-card {
+    background: #f8fafc;
+    border-left: 3.5px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #f1f5f9;
+    border-right: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .principles-title {
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .principles-text {
+    font-size: 8pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Audit Table */
+  table.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.8pt;
+    margin-bottom: 8px;
+  }
+
+  table.audit-table th {
+    background: #f1f5f9;
+    color: var(--primary-dark);
+    font-weight: 700;
+    text-align: left;
+    padding: 5px 6px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1.5px solid #cbd5e1;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  table.audit-table td {
+    padding: 4.2px 6px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    line-height: 1.25;
+  }
+
+  table.audit-table tr:nth-child(even) td {
+    background-color: #fafbfd;
+  }
+
+  table.audit-table td:nth-child(1) {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--text-light);
+    width: 20px;
+    text-align: center;
+  }
+
+  table.audit-table td:nth-child(2) {
+    font-weight: 600;
+    color: var(--primary-dark);
+    width: 28%;
+  }
+
+  table.audit-table td:nth-child(3) {
+    width: 22%;
+  }
+
+  table.audit-table td:nth-child(4) {
+    color: var(--text-muted);
+    width: 48%;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1.5px 5px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 600;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .badge-just-me {
+    background: var(--badge-just-me-bg);
+    color: var(--badge-just-me-text);
+    border-color: var(--badge-just-me-border);
+  }
+
+  .badge-delegate {
+    background: var(--badge-delegate-bg);
+    color: var(--badge-delegate-text);
+    border-color: var(--badge-delegate-border);
+  }
+
+  .badge-collab {
+    background: var(--badge-collab-bg);
+    color: var(--badge-collab-text);
+    border-color: var(--badge-collab-border);
+  }
+
+  .badge-auto {
+    background: var(--badge-auto-bg);
+    color: var(--badge-auto-text);
+    border-color: var(--badge-auto-border);
+  }
+
+  /* Page Footer */
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 5px;
+    margin-top: 6px;
+    font-size: 7pt;
+    color: var(--text-light);
+  }
+
+  /* Target Tasks (Page 2) */
+  .target-task-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin-bottom: 9px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    page-break-inside: avoid;
+  }
+
+  .task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .task-card-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .task-num-pill {
+    background: var(--accent);
+    color: white;
+    font-size: 7pt;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .task-meta-label {
+    font-size: 7pt;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .task-block {
+    margin-top: 4px;
+  }
+
+  .task-block-title {
+    font-size: 7.8pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1px;
+  }
+
+  .task-block-content {
+    font-size: 8pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  .criteria-list {
+    list-style: none;
+    margin-top: 3px;
+  }
+
+  .criteria-list li {
+    position: relative;
+    padding-left: 13px;
+    font-size: 7.8pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+    margin-bottom: 2.5px;
+  }
+
+  .criteria-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 7.5pt;
+  }
+
+  .criteria-list li strong {
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+
+  .governance-callout {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin-top: 4px;
+    font-size: 7.5pt;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1: AUDIT & WORKFLOW CLASSIFICATION -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>AI Workflow Audit — FL-01</h1>
+          <div class="subtitle">FlyRank AI Fluency Track &bull; Baseline Workflow Analysis &amp; Delegation Strategy</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-01</div><br>
+          <span>Date: August 2026</span> &bull; <span>Status: Approved Baseline</span>
+        </div>
+      </header>
+
+      <!-- AI Fluency Principles -->
+      <section class="principles-card">
+        <div class="principles-title">AI Fluency Principles &amp; Governance Note</div>
+        <div class="principles-text">
+          Artificial Intelligence is utilized as an intelligent multiplier and iterative collaborator across technical scaffolding, boilerplate generation, literature synthesis, and administrative triage. However, core engineering architecture, creative taste, nuanced professional communications, and graded academic assessments strictly remain under authoritative human ownership, manual verification, and critical oversight.
+        </div>
+      </section>
+
+      <!-- Workflow Audit Table -->
+      <section>
+        <div class="section-title">
+          <span>Recurring Task Classification Matrix</span>
+        </div>
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 4%;">#</th>
+              <th style="width: 28%;">Recurring task</th>
+              <th style="width: 23%;">Classification</th>
+              <th style="width: 45%;">Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>Academic Coursework &amp; Graded Exams</td>
+              <td><span class="badge badge-just-me">Just me</span></td>
+              <td>Guarantees academic integrity and verifies unassisted mastery of underlying theoretical concepts.</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td>Final UI/UX Direction &amp; Portfolio Curation</td>
+              <td><span class="badge badge-just-me">Just me</span></td>
+              <td>Preserves authentic personal design taste, brand identity, and creative artistic standards.</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td>Live Technical Interviews &amp; Client Negotiations</td>
+              <td><span class="badge badge-just-me">Just me</span></td>
+              <td>Demands spontaneous real-time problem-solving, emotional intelligence, and authentic trust-building.</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td>CRUST Platform Feature Scaffolding</td>
+              <td><span class="badge badge-collab">Collaborate with AI</span></td>
+              <td>Speeds up full-stack CRUD, state management patterns, and interactive pizza builder mechanics.</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td>EaseMotion-css Keyframes &amp; CSS Math</td>
+              <td><span class="badge badge-delegate">Delegate to AI with review</span></td>
+              <td>Automates repetitive cubic-bezier timing calculations and multi-browser vendor prefixes with review.</td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td>UI/UX Portfolio Component Edge-Cases</td>
+              <td><span class="badge badge-collab">Collaborate with AI</span></td>
+              <td>Brainstorms accessibility states, responsive layout permutations, and dark-mode color balance.</td>
+            </tr>
+            <tr>
+              <td>07</td>
+              <td>Internship Application Materials Alignment</td>
+              <td><span class="badge badge-delegate">Delegate to AI with review</span></td>
+              <td>Tailors project descriptions to job requirements, audited manually for truthful representation.</td>
+            </tr>
+            <tr>
+              <td>08</td>
+              <td>Recruiter Outreach &amp; InMail Drafting</td>
+              <td><span class="badge badge-delegate">Delegate to AI with review</span></td>
+              <td>Generates contextual conversation starters, edited to retain a genuine individual voice.</td>
+            </tr>
+            <tr>
+              <td>09</td>
+              <td>International Client Prospecting &amp; Pitches</td>
+              <td><span class="badge badge-collab">Collaborate with AI</span></td>
+              <td>Structures freelance proposal scopes and technical deliverables based on client requirements.</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Research Paper &amp; Conference Evaluation</td>
+              <td><span class="badge badge-collab">Collaborate with AI</span></td>
+              <td>Synthesizes dense academic literature, methodology trade-offs, and track relevance.</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>Programming Concept &amp; Algorithm Study</td>
+              <td><span class="badge badge-collab">Collaborate with AI</span></td>
+              <td>Serves as an interactive Socratic sounding board for data structures and system design fundamentals.</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>Git Commit Messages &amp; PR Summaries</td>
+              <td><span class="badge badge-delegate">Delegate to AI with review</span></td>
+              <td>Drafts standard conventional commit logs from diffs, reviewed before staging to keep history clean.</td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>CI/CD Linting, Typecheck &amp; Test Actions</td>
+              <td><span class="badge badge-auto">Fully automate</span></td>
+              <td>Executes deterministic static analysis, formatting checks, and test suites via GitHub Actions.</td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>Application &amp; Deadline Calendar Sync</td>
+              <td><span class="badge badge-auto">Fully automate</span></td>
+              <td>Logs submission dates, automated status transitions, and reminder triggers via webhooks.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <footer class="doc-footer">
+      <span>AI Workflow Audit &bull; FL-01 Submission</span>
+      <span>Confidential &bull; Evaluator Copy</span>
+      <span>Page 1 of 2</span>
+    </footer>
+  </div>
+
+  <!-- PAGE 2: TARGET TASKS & CRITERIA -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>Three FL-02 &rarr; FL-04 Target Tasks</h1>
+          <div class="subtitle">Deep-Dive Implementation Targets &bull; Verification Framework &amp; Success Criteria</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Action Plan: FL-02 &rarr; FL-04</div><br>
+          <span>Track: Execution Milestones</span>
+        </div>
+      </header>
+
+      <!-- Target Task 1 -->
+      <div class="target-task-card">
+        <div class="task-card-header">
+          <div class="task-card-title">
+            <span class="task-num-pill">01</span>
+            <span>CRUST Development</span>
+          </div>
+          <span class="task-meta-label">Full-Stack Web Application</span>
+        </div>
+        <div class="task-block">
+          <div class="task-block-title">Specific Task Description:</div>
+          <div class="task-block-content">
+            End-to-end development of the CRUST pizza platform, encompassing dynamic pizza customization state logic, client cart workflows, and the admin catalog management portal.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">What “Done Well” Means:</div>
+          <div class="task-block-content">
+            A resilient, type-safe full-stack application featuring fluid real-time pricing recalculations, zero cart synchronization errors, and an administrative panel that enables rapid catalog operations without friction.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">Measurable Success Criteria:</div>
+          <ul class="criteria-list">
+            <li><strong>Interactive Builder Latency:</strong> Pizza configuration re-renders with &lt;50ms UI update latency across crust, size, and multi-topping state transitions.</li>
+            <li><strong>Admin Catalog Operations:</strong> Admin dashboard supports instant search/filtering across 15+ menu items with &lt;100ms response time and validated CRUD mutation handling.</li>
+            <li><strong>Type Safety &amp; Build Integrity:</strong> Zero TypeScript build errors (0 strict-mode warnings) across all shared API schema definitions and UI state hooks.</li>
+            <li><strong>Core Performance Standards:</strong> Lighthouse Performance score &ge;90 on desktop/mobile with First Contentful Paint (FCP) &lt;1.2s.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Target Task 2 -->
+      <div class="target-task-card">
+        <div class="task-card-header">
+          <div class="task-card-title">
+            <span class="task-num-pill">02</span>
+            <span>UI/UX Portfolio Improvement</span>
+          </div>
+          <span class="task-meta-label">Design Engineering &amp; Showcase</span>
+        </div>
+        <div class="task-block">
+          <div class="task-block-title">Specific Task Description:</div>
+          <div class="task-block-content">
+            Refactoring and expanding interactive portfolio components, embedding EaseMotion-css animation presets, and refining responsive visual polish across case study presentations.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">What “Done Well” Means:</div>
+          <div class="task-block-content">
+            A showcase of production-ready frontend components demonstrating exceptional aesthetic craft, buttery 60 FPS animation performance, strict accessibility compliance, and clean documentation.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">Measurable Success Criteria:</div>
+          <ul class="criteria-list">
+            <li><strong>Component Showcase Coverage:</strong> Develop and document at least 6 modular, interactive UI components with integrated live previews and copyable code snippets.</li>
+            <li><strong>Accessibility Standard:</strong> 100% WCAG 2.1 AA compliance verified via automated audit (axe-core/Lighthouse Accessibility &ge;95) with zero contrast or keyboard focus traps.</li>
+            <li><strong>Animation Frame Stability:</strong> Maintain steady 60 FPS across all interactive transitions with Cumulative Layout Shift (CLS) = 0.</li>
+            <li><strong>Responsive Fidelity:</strong> Flawless rendering validated across standard viewport breakpoints (375px mobile, 768px tablet, 1440px+ desktop).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Target Task 3 -->
+      <div class="target-task-card">
+        <div class="task-card-header">
+          <div class="task-card-title">
+            <span class="task-num-pill">03</span>
+            <span>Research &amp; Conference Evaluation</span>
+          </div>
+          <span class="task-meta-label">Academic &amp; Industry Analysis</span>
+        </div>
+        <div class="task-block">
+          <div class="task-block-title">Specific Task Description:</div>
+          <div class="task-block-content">
+            Establishing an evaluation framework to track leading computer science conferences (HCI, UI Engineering, Web Systems), filter Call for Papers (CFP) deadlines, and extract actionable research findings.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">What “Done Well” Means:</div>
+          <div class="task-block-content">
+            An organized, structured tracking matrix translating academic publications into practical engineering insights while proactively managing submission, workshop, and review timelines with zero missed deadlines.
+          </div>
+        </div>
+        <div class="task-block" style="margin-top: 3px;">
+          <div class="task-block-title">Measurable Success Criteria:</div>
+          <ul class="criteria-list">
+            <li><strong>Conference Pipeline Database:</strong> Catalog and track at least 8 target venues with verified metrics (deadlines, acceptance rates, core topics, publication tiers).</li>
+            <li><strong>Structured Literature Syntheses:</strong> Complete 10 standardized paper analysis briefs capturing problem statement, technical methodology, and applied takeaways.</li>
+            <li><strong>Automated Milestone Alerts:</strong> Configure automated notifications for all target deadlines at 30, 14, and 3-day thresholds without manual reminder overhead.</li>
+            <li><strong>Actionable Insight Synthesis:</strong> Deliver a concise matrix mapping at least 3 research-backed design or architectural patterns directly into active projects.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="governance-callout">
+        <span><strong>Audit Execution Guarantee:</strong> All delegated &amp; collaborative AI outputs are subject to human inspection and verification.</span>
+        <span><strong>Track:</strong> FL-01 &rarr; FL-04</span>
+      </div>
+    </div>
+
+    <footer class="doc-footer">
+      <span>AI Workflow Audit &bull; FL-01 Submission</span>
+      <span>Confidential &bull; Evaluator Copy</span>
+      <span>Page 2 of 2</span>
+    </footer>
+  </div>
+
+</body>
+</html>

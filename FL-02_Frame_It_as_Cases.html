@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FL-02 — Frame It as Cases</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #1e293b;
+    --primary-dark: #0f172a;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --bg-alt: #f8fafc;
+    --card-bg: #ffffff;
+    --gold: #b45309;
+    --gold-bg: #fef3c7;
+    --green: #047857;
+    --green-bg: #ecfdf5;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background: #ffffff;
+    line-height: 1.45;
+    font-size: 8.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  .page {
+    width: 100%;
+    min-height: auto;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 2px solid var(--primary-dark);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .doc-header-left h1 {
+    font-size: 15pt;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .doc-header-left .subtitle {
+    font-size: 8pt;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-size: 7.5pt;
+    color: var(--text-light);
+    line-height: 1.35;
+  }
+
+  .meta-tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: var(--primary);
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+  }
+
+  /* Voice Card */
+  .voice-card {
+    background: #f8fafc;
+    border-left: 3.5px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-top: 1px solid #f1f5f9;
+    border-right: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .voice-title {
+    font-size: 7.8pt;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .voice-tagline {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+  }
+
+  .voice-instruction {
+    font-size: 7.8pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+    font-style: italic;
+    background: #ffffff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Case Study Card */
+  .case-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin-bottom: 9px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    page-break-inside: avoid;
+  }
+
+  .case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .case-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .case-num-pill {
+    background: var(--accent);
+    color: white;
+    font-size: 7pt;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .case-tags {
+    display: flex;
+    gap: 4px;
+  }
+
+  .tag-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6.8pt;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: var(--text-muted);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Three Beats */
+  .beat-block {
+    margin-top: 5px;
+  }
+
+  .beat-title {
+    font-size: 7.8pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+
+  .beat-title-problem { color: #b91c1c; }
+  .beat-title-did { color: #1d4ed8; }
+  .beat-title-outcome { color: #047857; }
+
+  .beat-content {
+    font-size: 7.9pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  .beat-list {
+    list-style: none;
+    margin-top: 2px;
+  }
+
+  .beat-list li {
+    position: relative;
+    padding-left: 12px;
+    font-size: 7.8pt;
+    color: var(--text-muted);
+    line-height: 1.35;
+    margin-bottom: 2px;
+  }
+
+  .beat-list li::before {
+    content: "•";
+    position: absolute;
+    left: 2px;
+    color: var(--text-light);
+    font-weight: 700;
+  }
+
+  .beat-list li strong {
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+
+  /* Two-column layout */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+
+  /* Callouts */
+  .section-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .compare-box {
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 7.8pt;
+    line-height: 1.35;
+  }
+
+  .compare-before {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+  }
+
+  .compare-after {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+  }
+
+  .compare-header {
+    font-weight: 700;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+
+  /* Checkbox List */
+  .checklist {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 10px;
+  }
+
+  .checklist li {
+    font-size: 7.5pt;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .checklist-check {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 8pt;
+  }
+
+  /* Page Footer */
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 5px;
+    margin-top: 6px;
+    font-size: 7pt;
+    color: var(--text-light);
+  }
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1: VOICE CARD, CASE STUDY 1 & CASE STUDY 2 -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>FL-02 — Frame It as Cases</h1>
+          <div class="subtitle">FlyRank AI Fluency Track &bull; Case Study Framing, Voice Standardization &amp; Portfolio Copy</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-02</div><br>
+          <span>Author: Zaid Saifi</span> &bull; <span>Date: August 2026</span>
+        </div>
+      </header>
+
+      <!-- 1. Voice Card -->
+      <section class="voice-card">
+        <div class="voice-title">1. Portfolio Voice Card</div>
+        <div class="voice-tagline">“Direct, thoughtful, technical, clear, human, no-buzzwords.”</div>
+        <div class="voice-instruction">
+          <strong>Claude Project Standing Instruction:</strong> “Write in my voice: direct, thoughtful, technical, clear, and human. Avoid buzzwords, exaggerated claims, generic portfolio language, and claims I cannot personally support. Prefer specific decisions, concrete implementation details, and honest outcomes.”
+        </div>
+      </section>
+
+      <div class="section-title">
+        <span>Featured Case Studies (3-Beat Architecture)</span>
+      </div>
+
+      <!-- Case Study 1: FinTrac AI -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-title">
+            <span class="case-num-pill">01</span>
+            <span>FinTrac AI — Financial Decision Operating System</span>
+          </div>
+          <div class="case-tags">
+            <span class="tag-badge">Next.js 14</span>
+            <span class="tag-badge">TypeScript</span>
+            <span class="tag-badge">Tailwind CSS</span>
+            <span class="tag-badge">Framer Motion</span>
+            <span class="tag-badge">Radix UI</span>
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-problem">Beat 1 &bull; The Problem</div>
+          <div class="beat-content">
+            Personal budgeting applications typically function as passive historical spreadsheets, displaying past transactions without answering: <em>“If I change a habit today, how does that impact my long-term goals?”</em> When recommending budget cuts, apps enforce equal, rigid percentage reductions across every category, ignoring behavioral friction—cutting groceries creates high daily fatigue, while cutting unused subscriptions creates almost none. The challenge was building an interface that models spending friction, explains recommendations transparently, and lets users simulate trade-offs in seconds.
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-did">Beat 2 &bull; What I Did</div>
+          <ul class="beat-list">
+            <li><strong>Liquid Glass Design System:</strong> Engineered translucent surfaces using layered CSS <code>backdrop-filter</code> blur and semantic elevation tokens, limiting composite layers to ensure smooth mobile rendering.</li>
+            <li><strong>Future Simulator:</strong> Built an interactive slider using Radix UI and Framer Motion that recalculates and animates projected goal dates in real time upon dragging.</li>
+            <li><strong>Prioritization Engine &amp; Explainability:</strong> Wrote deterministic client ranking rules to surface exactly one high-impact Hero Action at the top, paired with a mandatory “Why am I seeing this?” transparent breakdown on every automated insight.</li>
+            <li><strong>AI Review &amp; Edit:</strong> Used AI to scaffold state permutations, but rejected multi-tiered AI cards in favor of hand-coded deterministic priority logic and concise plain-language projections.</li>
+          </ul>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-outcome">Beat 3 &bull; What Came of It</div>
+          <div class="beat-content">
+            Reduced the user journey from opening the app to taking a concrete financial decision from several minutes down to under 10 seconds. Standardized the Liquid Glass design tokens across desktop and mobile, and achieved a 98/100 Lighthouse Accessibility score with zero contrast issues or focus traps.
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Study 2: RetroLab -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-title">
+            <span class="case-num-pill">02</span>
+            <span>RetroLab — Real-Time Browser Pixel, Dither &amp; CRT Shader Lab</span>
+          </div>
+          <div class="case-tags">
+            <span class="tag-badge">React 19</span>
+            <span class="tag-badge">TypeScript</span>
+            <span class="tag-badge">Canvas 2D API</span>
+            <span class="tag-badge">Uint8ClampedArray</span>
+            <span class="tag-badge">Framer Motion</span>
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-problem">Beat 1 &bull; The Problem</div>
+          <div class="beat-content">
+            Creating authentic retro aesthetics (Floyd-Steinberg dithering, Voronoi cellular quantization, halftone dot matrix, Sobel CRT scanlines) usually requires heavy desktop tools like Photoshop or slow server-side processing pipelines. This adds latency to creative experimentation and forces users to upload personal images to remote servers. The goal was building a 100% client-side graphics lab executing shader algorithms with zero network latency.
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-did">Beat 2 &bull; What I Did</div>
+          <ul class="beat-list">
+            <li><strong>Direct Buffer Manipulation:</strong> Handled all pixel math directly on 1D <code>Uint8ClampedArray</code> typed arrays (<code>ImageData</code>) to bypass DOM/SVG overhead.</li>
+            <li><strong>In-Place Buffer Mutation:</strong> Modified existing pixel buffers in-place during recalculation rather than creating new objects, eliminating garbage collection frame drops during continuous slider adjustments.</li>
+            <li><strong>Dual-Resolution Pipeline:</strong> Downsamples previews during active slider drags for sub-16ms feedback, rendering full resolution upon release. Implemented custom 1x–8x nearest-neighbor scaling for pixel-crisp exports.</li>
+            <li><strong>AI Review &amp; Edit:</strong> AI-generated kernel loops used nested arrays that froze the main thread on &gt;1200px images; I refactored the algorithms into flat 1D indexed iterations with strict memory bounds.</li>
+          </ul>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-outcome">Beat 3 &bull; What Came of It</div>
+          <div class="beat-content">
+            Delivered a production browser application running at a sustained 60 FPS with sub-16ms preview feedback across all four algorithm pipelines, achieving 100% client privacy with 0% server compute load.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="doc-footer">
+      <span>FL-02 Deliverable &bull; FlyRank AI Fluency Track</span>
+      <span>Zaid Saifi &bull; UI/UX &amp; Frontend Systems Engineer</span>
+      <span>Page 1 of 2</span>
+    </footer>
+  </div>
+
+  <!-- PAGE 2: CASE 3, CASE 4, BIO, CONTACT, BEFORE/AFTER & CHECKLIST -->
+  <div class="page">
+    <div>
+      <header class="doc-header">
+        <div class="doc-header-left">
+          <h1>FL-02 — Frame It as Cases (Cont.)</h1>
+          <div class="subtitle">Case Studies, Profile Bio, Conversion Architecture &amp; Editorial Verification</div>
+        </div>
+        <div class="doc-meta">
+          <div class="meta-tag">Deliverable: FL-02</div><br>
+          <span>Track: Final Delivery</span>
+        </div>
+      </header>
+
+      <!-- Case Study 3: SalesSphere -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-title">
+            <span class="case-num-pill">03</span>
+            <span>SalesSphere — 100K+ Record Enterprise Analytics Dashboard</span>
+          </div>
+          <div class="case-tags">
+            <span class="tag-badge">React 19</span>
+            <span class="tag-badge">TypeScript</span>
+            <span class="tag-badge">Tailwind v4</span>
+            <span class="tag-badge">TanStack Virtual</span>
+            <span class="tag-badge">Zustand</span>
+            <span class="tag-badge">Recharts</span>
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-problem">Beat 1 &bull; The Problem</div>
+          <div class="beat-content">
+            Enterprise sales operators frequently analyze datasets exceeding 100,000 transaction records. Rendering massive un-virtualized tables alongside dynamic charts causes browser DOM bloat, jank, and frozen tabs during multi-column filtering. The challenge was building an interface supporting real-time data slicing while sustaining 60 FPS.
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-did">Beat 2 &bull; What I Did</div>
+          <ul class="beat-list">
+            <li><strong>5-Layer Architecture:</strong> Decoupled data handling from views (Repository &rarr; Transformation &rarr; Analytics &rarr; Decision &rarr; Presentation) to avoid redundant chart recalculations.</li>
+            <li><strong>Virtual List Rendering:</strong> Integrated TanStack Virtual to render only active viewport table rows, paired with centralized Zustand stores for instantaneous multi-column filtering and CSV exports.</li>
+            <li><strong>AI Review &amp; Edit:</strong> Rejected an AI-generated speculative “AI command center” in favor of a clean, business-first analytics layout inspired by Stripe Analytics and Power BI.</li>
+          </ul>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-outcome">Beat 3 &bull; What Came of It</div>
+          <div class="beat-content">
+            Sustained 60 FPS table scrolling across 100K+ records with a compact 285KB JavaScript bundle, achieving a 95+ Lighthouse score and WCAG 2.1 AA compliant color contrast.
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Study 4: ARTEFACT -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-title">
+            <span class="case-num-pill">04</span>
+            <span>ARTEFACT — Interactive Digital Atelier Portfolio System</span>
+          </div>
+          <div class="case-tags">
+            <span class="tag-badge">React 19</span>
+            <span class="tag-badge">Vite</span>
+            <span class="tag-badge">Three.js / GLSL</span>
+            <span class="tag-badge">Framer Motion</span>
+            <span class="tag-badge">Web Audio</span>
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-problem">Beat 1 &bull; The Problem</div>
+          <div class="beat-content">
+            Most digital portfolios are static resume grids that describe craft in bullet points rather than demonstrating it through live interaction. The goal was translating the physical tactility of an architect’s atelier into a 120 FPS web experience with zero scroll-jacking and full accessibility.
+          </div>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-did">Beat 2 &bull; What I Did</div>
+          <ul class="beat-list">
+            <li><strong>Tactile Vinyl &amp; Audio Engine:</strong> Engineered a 33⅓ RPM vinyl player with Web Audio API sync, dynamic tonearm physics, and damped spring sleeve retraction.</li>
+            <li><strong>Kinetic Proximity &amp; GLSL Shaders:</strong> Built spatial variable typography calculating Euclidean pointer distance to font axes ('wght' 300&rarr;900) and a zero-re-render GLSL noise scroll dissolve.</li>
+            <li><strong>AI Review &amp; Edit:</strong> Caught and fixed an AI canvas bug that clipped confetti on mobile resize by binding width to parent element dimensions and adding RAF cleanup hooks.</li>
+          </ul>
+        </div>
+
+        <div class="beat-block">
+          <div class="beat-title beat-title-outcome">Beat 3 &bull; What Came of It</div>
+          <div class="beat-content">
+            Achieved native 120Hz momentum scrolling on mobile (<code>touch-action: pan-y pinch-zoom</code>), zero layout shift, and WCAG 2.1 AA compliance across all interactive forms.
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid for Bio, Contact & Before/After -->
+      <div class="grid-2" style="margin-top: 4px;">
+        <!-- Bio & Contact Column -->
+        <div>
+          <div class="section-title"><span>About / Bio</span></div>
+          <div style="font-size: 7.7pt; color: var(--text-muted); line-height: 1.35; margin-bottom: 8px;">
+            I am a UI/UX designer and frontend systems engineer pursuing my B.Tech in CS (AI &amp; ML) at ABES Engineering College, with developer internships at FlyRank and Thiranex. I design interfaces in Figma and build them into production with React, TypeScript, and modern CSS—turning complex workflows into fast, accessible, and tactile experiences.
+          </div>
+
+          <div class="section-title"><span>Contact / CTA</span></div>
+          <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 7px 9px;">
+            <div style="font-weight: 700; font-size: 8pt; color: var(--primary-dark); margin-bottom: 2px;">
+              Ready to build something thoughtful?
+            </div>
+            <div style="font-size: 7.5pt; color: var(--text-muted); line-height: 1.3; margin-bottom: 4px;">
+              I collaborate with product teams and startups to build high-performance web apps and design systems.
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="display: inline-block; background: var(--primary-dark); color: white; font-weight: 700; font-size: 6.8pt; padding: 2px 7px; border-radius: 3px; text-transform: uppercase;">
+                Contact me about a project or opportunity &rarr;
+              </span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 6.8pt; color: var(--text-muted);">
+                zaidsaifi150105@gmail.com
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Before / After & Checklist Column -->
+        <div>
+          <div class="section-title"><span>Before &amp; After — AI Copy vs My Voice</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px;">
+            <div class="compare-box compare-before">
+              <div class="compare-header">Before — Generic AI</div>
+              “I am a passionate, results-driven full-stack developer and UI/UX visionary dedicated to leveraging cutting-edge technologies to craft seamless, innovative digital experiences that empower users and drive transformative business growth.”
+            </div>
+            <div class="compare-box compare-after">
+              <div class="compare-header">After — My Voice</div>
+              “I design and build digital products that make complex workflows feel simple—from fintech coaching platforms to real-time browser graphics tools. I write the interface code myself using React, TypeScript, and Tailwind CSS, focusing on sub-16ms rendering, accessible navigation, and clear data hierarchy.”
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Editorial Checklist -->
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; margin-top: 6px;">
+        <div style="font-size: 7.2pt; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px;">
+          Final Editorial Verification Check
+        </div>
+        <ul class="checklist">
+          <li><span class="checklist-check">✓</span> 3-beat structure on every case study</li>
+          <li><span class="checklist-check">✓</span> 100% supported by actual repo code</li>
+          <li><span class="checklist-check">✓</span> Zero invented metrics or clients</li>
+          <li><span class="checklist-check">✓</span> Focused on ONE audience &amp; action</li>
+          <li><span class="checklist-check">✓</span> Generic AI buzzwords removed</li>
+          <li><span class="checklist-check">✓</span> Verified ready for FL-02 submission</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <footer class="doc-footer">
+      <span>FL-02 Deliverable &bull; FlyRank AI Fluency Track</span>
+      <span>Zaid Saifi &bull; UI/UX &amp; Frontend Systems Engineer</span>
+      <span>Page 2 of 2</span>
+    </footer>
+  </div>
+
+</body>
+</html>
