@@ -1,0 +1,321 @@
+<svg width="1440" height="4200" viewBox="0 0 1440 4200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .font-sans { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .font-serif { font-family: 'DM Serif Display', Georgia, serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <filter id="dark-shadow" x="-10" y="-5" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- 0. BASE CANVAS (Obsidian Dark) -->
+  <rect width="1440" height="4200" fill="#111110" />
+
+  <!-- Grid Guide Texture -->
+  <g id="Grid-Texture-Dark" opacity="0.12">
+    <line x1="96" y1="0" x2="96" y2="4200" stroke="#B8925A" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="1344" y1="0" x2="1344" y2="4200" stroke="#B8925A" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="720" y1="0" x2="720" y2="4200" stroke="#B8925A" stroke-width="0.5" stroke-dasharray="6 6" />
+  </g>
+
+  <!-- 1. FLOATING NAVBAR PILL -->
+  <g id="Navbar-Dark" filter="url(#dark-shadow)">
+    <rect x="420" y="28" width="600" height="52" rx="26" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    
+    <text x="452" y="59" class="font-sans" font-weight="700" font-size="14" fill="#FAF6EE" letter-spacing="2">ARTEFACT</text>
+    <circle cx="536" cy="54" r="3" fill="#B8925A" />
+    
+    <text x="560" y="59" class="font-sans" font-weight="600" font-size="13" fill="#FAF6EE">Home</text>
+    <text x="625" y="59" class="font-sans" font-weight="500" font-size="13" fill="#A69F94">Work</text>
+    <text x="685" y="59" class="font-sans" font-weight="500" font-size="13" fill="#A69F94">Process</text>
+    <text x="760" y="59" class="font-sans" font-weight="500" font-size="13" fill="#A69F94">About</text>
+
+    <rect x="890" y="36" width="112" height="36" rx="18" fill="#B8925A" />
+    <text x="946" y="58" class="font-sans" font-weight="600" font-size="12" fill="#111110" text-anchor="middle">Connect ➔</text>
+  </g>
+
+  <!-- 2. HERO SECTION -->
+  <g id="Hero-Section-Dark">
+    <!-- Status Badge -->
+    <rect x="96" y="140" width="410" height="32" rx="16" fill="#1C1A17" stroke="#B8925A" stroke-width="1" stroke-opacity="0.4" />
+    <circle cx="114" cy="156" r="4" fill="#B8925A" />
+    <text x="128" y="160" class="font-mono" font-weight="600" font-size="11" fill="#B8925A" letter-spacing="0.5">● AVAILABLE FOR Q2/Q3 ROLES · NEW DELHI / REMOTE</text>
+
+    <!-- Display Headlines -->
+    <text x="96" y="240" class="font-serif" font-size="64" font-weight="400" fill="#FAF6EE" letter-spacing="-1.5">CRAFTING TACTILE</text>
+    <text x="96" y="312" class="font-serif" font-size="64" font-weight="400" fill="#FAF6EE" letter-spacing="-1.5">DIGITAL ARTIFACTS.</text>
+
+    <!-- Description -->
+    <text x="96" y="368" class="font-sans" font-weight="600" font-size="18" fill="#B8925A">UI/UX Designer · Product Designer · Front-End Engineer</text>
+    <text x="96" y="400" class="font-sans" font-weight="400" font-size="16" fill="#A69F94">Merging high-craft editorial design systems with production frontend architecture.</text>
+    <text x="96" y="426" class="font-sans" font-weight="400" font-size="16" fill="#A69F94">Translating intricate human friction points into fluid, responsive, tactile web applications.</text>
+
+    <!-- CTA Buttons -->
+    <rect x="96" y="465" width="180" height="48" rx="8" fill="#FAF6EE" />
+    <text x="186" y="495" class="font-sans" font-weight="600" font-size="14" fill="#111110" text-anchor="middle">Explore Archive ➔</text>
+
+    <rect x="292" y="465" width="190" height="48" rx="8" fill="none" stroke="#2E2D2A" stroke-width="1.5" />
+    <text x="387" y="495" class="font-sans" font-weight="600" font-size="14" fill="#FAF6EE" text-anchor="middle">Download Dossier CV</text>
+
+    <!-- Metrics Strip -->
+    <line x1="96" y1="560" x2="1344" y2="560" stroke="#2E2D2A" stroke-width="1" />
+    <text x="96" y="606" class="font-sans" font-weight="800" font-size="28" fill="#FAF6EE">5+ YRS</text>
+    <text x="96" y="630" class="font-sans" font-weight="500" font-size="12" fill="#888177">PRODUCT &amp; UI CRAFT</text>
+
+    <text x="410" y="606" class="font-sans" font-weight="800" font-size="28" fill="#FAF6EE">14+</text>
+    <text x="410" y="630" class="font-sans" font-weight="500" font-size="12" fill="#888177">PRODUCTION CASE STUDIES</text>
+
+    <text x="730" y="606" class="font-sans" font-weight="800" font-size="28" fill="#FAF6EE">100%</text>
+    <text x="730" y="630" class="font-sans" font-weight="500" font-size="12" fill="#888177">REACT &amp; TSX ARCHITECTURE</text>
+
+    <text x="1050" y="606" class="font-sans" font-weight="800" font-size="28" fill="#B8925A">99/100</text>
+    <text x="1050" y="630" class="font-sans" font-weight="500" font-size="12" fill="#888177">LIGHTHOUSE CRAFT METRIC</text>
+    <line x1="96" y1="660" x2="1344" y2="660" stroke="#2E2D2A" stroke-width="1" />
+  </g>
+
+  <!-- 3. WORK ARCHIVE -->
+  <g id="Section-01-Work-Dark">
+    <text x="96" y="720" class="font-mono" font-weight="700" font-size="13" fill="#B8925A" letter-spacing="1.5">01 / CURATED WORK ARCHIVE</text>
+    <text x="96" y="760" class="font-serif" font-size="36" font-weight="400" fill="#FAF6EE">Selected Production Projects</text>
+
+    <!-- Filter Chips -->
+    <rect x="870" y="728" width="60" height="34" rx="17" fill="#FAF6EE" />
+    <text x="900" y="750" class="font-sans" font-weight="600" font-size="12" fill="#111110" text-anchor="middle">All</text>
+
+    <rect x="940" y="728" width="75" height="34" rx="17" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="977" y="750" class="font-sans" font-weight="500" font-size="12" fill="#A69F94" text-anchor="middle">UI/UX</text>
+
+    <rect x="1025" y="728" width="90" height="34" rx="17" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="1070" y="750" class="font-sans" font-weight="500" font-size="12" fill="#A69F94" text-anchor="middle">Web App</text>
+
+    <rect x="1125" y="728" width="85" height="34" rx="17" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="1167" y="750" class="font-sans" font-weight="500" font-size="12" fill="#A69F94" text-anchor="middle">Branding</text>
+
+    <rect x="1220" y="728" width="95" height="34" rx="17" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="1267" y="750" class="font-sans" font-weight="500" font-size="12" fill="#A69F94" text-anchor="middle">Data Vis</text>
+
+    <!-- CARD 1: RetroLab -->
+    <g id="Card-RetroLab-Dark" filter="url(#dark-shadow)">
+      <rect x="96" y="800" width="600" height="460" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+      <rect x="120" y="824" width="552" height="230" rx="10" fill="#262624" />
+      <text x="396" y="945" class="font-sans" font-size="16" font-weight="600" fill="#888177" text-anchor="middle">🖼️ RetroLab Shader &amp; Dithering Preview</text>
+
+      <text x="120" y="1090" class="font-mono" font-size="11" font-weight="700" fill="#B8925A" letter-spacing="1">FRONTEND ENGINEERING · 2026</text>
+      <text x="120" y="1120" class="font-sans" font-size="22" font-weight="700" fill="#FAF6EE">RetroLab</text>
+      <text x="120" y="1150" class="font-sans" font-size="13" font-weight="400" fill="#A69F94">Real-time browser retro graphics laboratory for pixel art, dithering, and CRT shaders.</text>
+
+      <rect x="120" y="1175" width="105" height="24" rx="4" fill="#24221E" />
+      <text x="172" y="1191" class="font-sans" font-size="10" font-weight="500" fill="#B8925A" text-anchor="middle">Creative Coding</text>
+
+      <line x1="120" y1="1220" x2="648" y2="1220" stroke="#262624" stroke-width="1" />
+      <text x="120" y="1242" class="font-mono" font-size="11" font-weight="700" fill="#B8925A">⚡ 60 FPS ZERO-LATENCY PIPELINE</text>
+      <text x="648" y="1242" class="font-sans" font-size="12" font-weight="700" fill="#FAF6EE" text-anchor="end">View Case Study ➔</text>
+    </g>
+
+    <!-- CARD 2: FinTrac AI -->
+    <g id="Card-FinTrac-Dark" filter="url(#dark-shadow)">
+      <rect x="744" y="800" width="600" height="460" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+      <rect x="768" y="824" width="552" height="230" rx="10" fill="#262624" />
+      <text x="1044" y="945" class="font-sans" font-size="16" font-weight="600" fill="#888177" text-anchor="middle">🖼️ FinTrac Behavioral Coaching Dashboard</text>
+
+      <text x="768" y="1090" class="font-mono" font-size="11" font-weight="700" fill="#B8925A" letter-spacing="1">PRODUCT DESIGN (UI/UX) · 2026</text>
+      <text x="768" y="1120" class="font-sans" font-size="22" font-weight="700" fill="#FAF6EE">FinTrac AI</text>
+      <text x="768" y="1150" class="font-sans" font-size="13" font-weight="400" fill="#A69F94">Behavioral financial coaching solving churn via tactile friction sliders and instant feedback.</text>
+
+      <rect x="768" y="1175" width="70" height="24" rx="4" fill="#24221E" />
+      <text x="803" y="1191" class="font-sans" font-size="10" font-weight="500" fill="#B8925A" text-anchor="middle">FinTech</text>
+
+      <line x1="768" y1="1220" x2="1296" y2="1220" stroke="#262624" stroke-width="1" />
+      <text x="768" y="1242" class="font-mono" font-size="11" font-weight="700" fill="#B8925A">⚡ 97% RETENTION RATE AT MONTH 12</text>
+      <text x="1296" y="1242" class="font-sans" font-size="12" font-weight="700" fill="#FAF6EE" text-anchor="end">View Case Study ➔</text>
+    </g>
+
+    <!-- CARD 3: SalesSphere -->
+    <g id="Card-SalesSphere-Dark" filter="url(#dark-shadow)">
+      <rect x="96" y="1290" width="600" height="460" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+      <rect x="120" y="1314" width="552" height="230" rx="10" fill="#262624" />
+      <text x="396" y="1435" class="font-sans" font-size="16" font-weight="600" fill="#888177" text-anchor="middle">🖼️ SalesSphere 100K+ Data Points Table</text>
+
+      <text x="120" y="1580" class="font-mono" font-size="11" font-weight="700" fill="#B8925A" letter-spacing="1">DATA VISUALIZATION · 2026</text>
+      <text x="120" y="1610" class="font-sans" font-size="22" font-weight="700" fill="#FAF6EE">SalesSphere</text>
+      <text x="120" y="1640" class="font-sans" font-size="13" font-weight="400" fill="#A69F94">Enterprise analytics dashboard virtualizing 100,000+ financial rows with sub-16ms frames.</text>
+
+      <line x1="120" y1="1710" x2="648" y2="1710" stroke="#262624" stroke-width="1" />
+      <text x="120" y="1732" class="font-mono" font-size="11" font-weight="700" fill="#B8925A">⚡ 100,000 ROWS SMOOTH 60 FPS</text>
+      <text x="648" y="1732" class="font-sans" font-size="12" font-weight="700" fill="#FAF6EE" text-anchor="end">View Case Study ➔</text>
+    </g>
+
+    <!-- CARD 4: Peach & Paper -->
+    <g id="Card-PeachPaper-Dark" filter="url(#dark-shadow)">
+      <rect x="744" y="1290" width="600" height="460" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+      <rect x="768" y="1314" width="552" height="230" rx="10" fill="#262624" />
+      <text x="1044" y="1435" class="font-sans" font-size="16" font-weight="600" fill="#888177" text-anchor="middle">🖼️ Peach &amp; Paper Tactile Watercolor Log</text>
+
+      <text x="768" y="1580" class="font-mono" font-size="11" font-weight="700" fill="#B8925A" letter-spacing="1">CREATIVE STORYTELLING · 2026</text>
+      <text x="768" y="1610" class="font-sans" font-size="22" font-weight="700" fill="#FAF6EE">Peach &amp; Paper</text>
+      <text x="768" y="1640" class="font-sans" font-size="13" font-weight="400" fill="#A69F94">Nostalgic digital journaling transforming memories into tactile receipts and watercolor ink.</text>
+
+      <line x1="768" y1="1710" x2="1296" y2="1710" stroke="#262624" stroke-width="1" />
+      <text x="768" y="1732" class="font-mono" font-size="11" font-weight="700" fill="#B8925A">⚡ 9.2:1 PAPER CONTRAST RATIO</text>
+      <text x="1296" y="1732" class="font-sans" font-size="12" font-weight="700" fill="#FAF6EE" text-anchor="end">View Case Study ➔</text>
+    </g>
+  </g>
+
+  <!-- 4. METHODOLOGY -->
+  <g id="Section-02-Process-Dark">
+    <text x="96" y="1840" class="font-mono" font-weight="700" font-size="13" fill="#B8925A" letter-spacing="1.5">02 / METHODOLOGY &amp; CRAFT</text>
+    <text x="96" y="1880" class="font-serif" font-size="36" font-weight="400" fill="#FAF6EE">The Four Channels of Delivery</text>
+
+    <!-- Phase 1 -->
+    <rect x="96" y="1920" width="280" height="220" rx="12" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="124" y="1960" class="font-mono" font-size="28" font-weight="800" fill="#B8925A">01</text>
+    <text x="124" y="1995" class="font-sans" font-size="16" font-weight="700" fill="#FAF6EE">Structural Discovery</text>
+    <text x="124" y="2025" class="font-sans" font-size="12" font-weight="400" fill="#A69F94">Content hierarchies, user journeys, friction mapping, and constraints before sketching.</text>
+
+    <!-- Phase 2 -->
+    <rect x="402" y="1920" width="280" height="220" rx="12" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="430" y="1960" class="font-mono" font-size="28" font-weight="800" fill="#B8925A">02</text>
+    <text x="430" y="1995" class="font-sans" font-size="16" font-weight="700" fill="#FAF6EE">Aesthetic Framing (Figma)</text>
+    <text x="430" y="2025" class="font-sans" font-size="12" font-weight="400" fill="#A69F94">Sculpting tactile interfaces, typography pairings, strict design tokens, and glassmorphism.</text>
+
+    <!-- Phase 3 -->
+    <rect x="708" y="1920" width="280" height="220" rx="12" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="736" y="1960" class="font-mono" font-size="28" font-weight="800" fill="#B8925A">03</text>
+    <text x="736" y="1995" class="font-sans" font-size="16" font-weight="700" fill="#FAF6EE">Technical Synthesis (React)</text>
+    <text x="736" y="2025" class="font-sans" font-size="12" font-weight="400" fill="#A69F94">Translating Figma vectors into hand-crafted TypeScript, responsive Tailwind, and Framer Motion.</text>
+
+    <!-- Phase 4 -->
+    <rect x="1014" y="1920" width="280" height="220" rx="12" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="1042" y="1960" class="font-mono" font-size="28" font-weight="800" fill="#B8925A">04</text>
+    <text x="1042" y="1995" class="font-sans" font-size="16" font-weight="700" fill="#FAF6EE">Rigor &amp; Optimization</text>
+    <text x="1042" y="2025" class="font-sans" font-size="12" font-weight="400" fill="#A69F94">Tree shaking, bundle compression, linting, accessibility, and ensuring 100% Lighthouse audit.</text>
+  </g>
+
+  <!-- 5. BIOGRAPHY, TIMELINE & SKILLS -->
+  <g id="Section-03-About-Dark">
+    <text x="96" y="2220" class="font-mono" font-weight="700" font-size="13" fill="#B8925A" letter-spacing="1.5">03 / BIOGRAPHY &amp; CAPABILITIES</text>
+    <text x="96" y="2260" class="font-serif" font-size="36" font-weight="400" fill="#FAF6EE">Dual-Discipline Background</text>
+
+    <!-- Bio Card -->
+    <rect x="96" y="2290" width="1248" height="240" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="136" y="2340" class="font-sans" font-size="18" font-weight="700" fill="#FAF6EE">Zaid Saifi (Zaids)</text>
+    <text x="136" y="2365" class="font-mono" font-size="12" font-weight="600" fill="#B8925A">PRODUCT DESIGNER &amp; FRONT-END ENGINEER · NEW DELHI</text>
+    <text x="136" y="2405" class="font-sans" font-size="14" font-weight="400" fill="#A69F94">Specializing in interactive product interfaces, design systems, and creative engineering.</text>
+    <text x="136" y="2430" class="font-sans" font-size="14" font-weight="400" fill="#A69F94">Bridging the gap between Figma artboards and production-ready React / Next.js code.</text>
+    <text x="136" y="2455" class="font-sans" font-size="14" font-weight="400" fill="#A69F94">Studying B.Tech CS (AI &amp; ML) at ABES Engineering College while shipping production web applications.</text>
+
+    <!-- Career Timeline -->
+    <rect x="96" y="2560" width="600" height="520" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="136" y="2605" class="font-mono" font-size="12" font-weight="700" fill="#B8925A" letter-spacing="1">CAREER &amp; INTERNSHIP TIMELINE</text>
+
+    <text x="136" y="2650" class="font-mono" font-size="11" font-weight="600" fill="#B8925A">2026 – PRESENT</text>
+    <text x="136" y="2675" class="font-sans" font-size="15" font-weight="700" fill="#FAF6EE">AI Web Developer Intern · FlyRank</text>
+    <text x="136" y="2700" class="font-sans" font-size="12" font-weight="400" fill="#888177">Developing AI-powered interfaces, Next.js components, and AI-integrated user experiences.</text>
+
+    <line x1="136" y1="2730" x2="656" y2="2730" stroke="#262624" stroke-width="1" />
+    <text x="136" y="2765" class="font-mono" font-size="11" font-weight="600" fill="#B8925A">2026 – PRESENT</text>
+    <text x="136" y="2790" class="font-sans" font-size="15" font-weight="700" fill="#FAF6EE">Web Developer Intern · Thiranex</text>
+    <text x="136" y="2815" class="font-sans" font-size="12" font-weight="400" fill="#888177">Designing responsive interfaces, scalable frontend architecture, and performance tuning.</text>
+
+    <line x1="136" y1="2845" x2="656" y2="2845" stroke="#262624" stroke-width="1" />
+    <text x="136" y="2880" class="font-mono" font-size="11" font-weight="600" fill="#B8925A">2024 – PRESENT</text>
+    <text x="136" y="2905" class="font-sans" font-size="15" font-weight="700" fill="#FAF6EE">Independent Creative Developer</text>
+    <text x="136" y="2930" class="font-sans" font-size="12" font-weight="400" fill="#888177">Creator of FinTrac AI, RetroLab, SalesSphere, and Peach &amp; Paper.</text>
+
+    <!-- Technical Skills -->
+    <rect x="744" y="2560" width="600" height="520" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+    <text x="784" y="2605" class="font-mono" font-size="12" font-weight="700" fill="#B8925A" letter-spacing="1">CORE TECHNICAL PROFICIENCY</text>
+
+    <text x="784" y="2650" class="font-sans" font-size="15" font-weight="700" fill="#FAF6EE">🎨 Design &amp; Motion</text>
+    <g id="Skills-1-Dark">
+      <rect x="784" y="2670" width="130" height="28" rx="6" fill="#24221E" />
+      <text x="849" y="2688" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">UI/UX Design</text>
+
+      <rect x="924" y="2670" width="130" height="28" rx="6" fill="#24221E" />
+      <text x="989" y="2688" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">Figma Systems</text>
+
+      <rect x="1064" y="2670" width="140" height="28" rx="6" fill="#24221E" />
+      <text x="1134" y="2688" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">Framer Motion</text>
+    </g>
+
+    <text x="784" y="2750" class="font-sans" font-size="15" font-weight="700" fill="#FAF6EE">💻 Frontend Engineering</text>
+    <g id="Skills-2-Dark">
+      <rect x="784" y="2770" width="120" height="28" rx="6" fill="#24221E" />
+      <text x="844" y="2788" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">React 19 / TS</text>
+
+      <rect x="914" y="2770" width="110" height="28" rx="6" fill="#24221E" />
+      <text x="969" y="2788" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">Next.js 14</text>
+
+      <rect x="1034" y="2770" width="130" height="28" rx="6" fill="#24221E" />
+      <text x="1099" y="2788" class="font-sans" font-size="11" font-weight="600" fill="#B8925A" text-anchor="middle">Tailwind CSS v4</text>
+    </g>
+
+    <!-- Download CV Button -->
+    <rect x="784" y="2970" width="260" height="48" rx="8" fill="#B8925A" />
+    <text x="914" y="3000" class="font-sans" font-size="13" font-weight="700" fill="#111110" text-anchor="middle">Download Complete CV ➔</text>
+  </g>
+
+  <!-- 6. DIRECT DISPATCH / CONNECT -->
+  <g id="Section-04-Connect-Dark">
+    <text x="96" y="3150" class="font-mono" font-weight="700" font-size="13" fill="#B8925A" letter-spacing="1.5">04 / DIRECT DISPATCH</text>
+    <text x="96" y="3190" class="font-serif" font-size="36" font-weight="400" fill="#FAF6EE">Initiate Collaboration</text>
+
+    <rect x="96" y="3220" width="1248" height="580" rx="16" fill="#1C1C1A" stroke="#2E2D2A" stroke-width="1" />
+
+    <!-- Info -->
+    <text x="144" y="3280" class="font-serif" font-size="26" font-weight="400" fill="#FAF6EE">Let's craft the next digital artifact.</text>
+    <text x="144" y="3315" class="font-sans" font-size="14" font-weight="400" fill="#A69F94">Currently accepting senior/contract UI/UX design and frontend roles worldwide.</text>
+
+    <text x="144" y="3370" class="font-mono" font-size="11" font-weight="700" fill="#B8925A" letter-spacing="1">DIRECT CHANNELS</text>
+    <text x="144" y="3405" class="font-sans" font-size="14" font-weight="600" fill="#FAF6EE">✉️ zaidsaifi150105@gmail.com</text>
+    <text x="144" y="3435" class="font-sans" font-size="14" font-weight="600" fill="#FAF6EE">🐙 github.com/zaid1234-11</text>
+    <text x="144" y="3465" class="font-sans" font-size="14" font-weight="600" fill="#FAF6EE">💼 linkedin.com/in/zaid-saifi</text>
+
+    <!-- Inputs -->
+    <text x="680" y="3280" class="font-mono" font-size="11" font-weight="700" fill="#888177">PROJECT NATURE</text>
+    <rect x="680" y="3295" width="120" height="32" rx="6" fill="#B8925A" />
+    <text x="740" y="3316" class="font-sans" font-size="11" font-weight="600" fill="#111110" text-anchor="middle">UI/UX Design</text>
+
+    <rect x="810" y="3295" width="140" height="32" rx="6" fill="#24221E" />
+    <text x="880" y="3316" class="font-sans" font-size="11" font-weight="500" fill="#A69F94" text-anchor="middle">Full Brand Identity</text>
+
+    <text x="680" y="3365" class="font-mono" font-size="11" font-weight="700" fill="#888177">YOUR NAME</text>
+    <rect x="680" y="3380" width="580" height="46" rx="8" fill="#111110" stroke="#2E2D2A" stroke-width="1" />
+    <text x="700" y="3408" class="font-sans" font-size="13" font-weight="400" fill="#666">e.g. Elena Vance</text>
+
+    <text x="680" y="3460" class="font-mono" font-size="11" font-weight="700" fill="#888177">EMAIL ADDRESS</text>
+    <rect x="680" y="3475" width="580" height="46" rx="8" fill="#111110" stroke="#2E2D2A" stroke-width="1" />
+    <text x="700" y="3503" class="font-sans" font-size="13" font-weight="400" fill="#666">elena@company.com</text>
+
+    <text x="680" y="3555" class="font-mono" font-size="11" font-weight="700" fill="#888177">VENTURE BRIEF</text>
+    <rect x="680" y="3570" width="580" height="100" rx="8" fill="#111110" stroke="#2E2D2A" stroke-width="1" />
+    <text x="700" y="3600" class="font-sans" font-size="13" font-weight="400" fill="#666">Tell me about your product requirements, deadlines, and goals...</text>
+
+    <rect x="680" y="3695" width="580" height="52" rx="8" fill="#B8925A" />
+    <text x="970" y="3727" class="font-sans" font-size="14" font-weight="700" fill="#111110" text-anchor="middle">Transmit Dispatch ➔</text>
+  </g>
+
+  <!-- 7. FOOTER -->
+  <g id="Footer-Dark">
+    <line x1="96" y1="3900" x2="1344" y2="3900" stroke="#2E2D2A" stroke-width="1" />
+    
+    <text x="96" y="3960" class="font-sans" font-size="16" font-weight="800" fill="#FAF6EE" letter-spacing="2">ARTEFACT</text>
+    <text x="96" y="3990" class="font-sans" font-size="12" font-weight="400" fill="#888177">Meticulous craftsmanship in digital interfaces. Merging raw visual weight with reactive frontend logic.</text>
+
+    <text x="680" y="3960" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">INDEX</text>
+    <text x="680" y="3985" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">00. Hero Gate</text>
+    <text x="680" y="4010" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">01. Archive Work</text>
+    <text x="680" y="4035" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">02. Methodology</text>
+    <text x="680" y="4060" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">03. Biography</text>
+
+    <text x="880" y="3960" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">TRANSMIT</text>
+    <text x="880" y="3985" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">GitHub Code</text>
+    <text x="880" y="4010" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">Direct Dispatch</text>
+    <text x="880" y="4035" class="font-sans" font-size="12" font-weight="500" fill="#A69F94">zaidsaifi150105@gmail.com</text>
+
+    <text x="1344" y="3960" class="font-mono" font-size="11" font-weight="600" fill="#B8925A" text-anchor="end">SAN FRANCISCO / NEW DELHI · 2026</text>
+    <text x="1344" y="3990" class="font-sans" font-size="12" font-weight="400" fill="#888177" text-anchor="end">© 2026 ARTEFACT. Hand-coded with TSX + Tailwind CSS.</text>
+  </g>
+</svg>

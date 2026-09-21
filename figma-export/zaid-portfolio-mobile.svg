@@ -1,0 +1,220 @@
+<svg width="390" height="3800" viewBox="0 0 390 3800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .font-sans { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .font-serif { font-family: 'DM Serif Display', Georgia, serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <filter id="m-shadow" x="-10" y="-5" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1c1c1b" flood-opacity="0.06" />
+    </filter>
+  </defs>
+
+  <rect width="390" height="3800" fill="#FAF6EE" />
+
+  <!-- iOS Status Bar -->
+  <g id="Status-Bar">
+    <text x="24" y="32" class="font-sans" font-size="14" font-weight="600" fill="#1C1C1B">9:41</text>
+    <circle cx="330" cy="28" r="3" fill="#1C1C1B" />
+    <circle cx="340" cy="28" r="4" fill="#1C1C1B" />
+    <rect x="352" y="22" width="20" height="11" rx="3" stroke="#1C1C1B" stroke-width="1.5" />
+    <rect x="354" y="24" width="12" height="7" rx="1.5" fill="#1C1C1B" />
+  </g>
+
+  <!-- Mobile Header -->
+  <g id="Mobile-Header">
+    <text x="20" y="78" class="font-sans" font-weight="800" font-size="16" fill="#1C1C1B" letter-spacing="2">ARTEFACT</text>
+    <circle cx="120" cy="73" r="3" fill="#B8925A" />
+    
+    <rect x="274" y="58" width="96" height="34" rx="17" fill="#1C1C1B" />
+    <text x="322" y="79" class="font-sans" font-weight="600" font-size="11" fill="#FAF6EE" text-anchor="middle">Connect ➔</text>
+  </g>
+
+  <!-- Hero Section -->
+  <g id="Mobile-Hero">
+    <rect x="20" y="112" width="350" height="28" rx="14" fill="#EFE7D8" stroke="#B8925A" stroke-width="1" stroke-opacity="0.4" />
+    <circle cx="34" cy="126" r="3" fill="#B8925A" />
+    <text x="46" y="130" class="font-mono" font-size="9" font-weight="600" fill="#B8925A">AVAILABLE FOR Q2/Q3 ROLES · REMOTE</text>
+
+    <text x="20" y="184" class="font-serif" font-size="38" font-weight="400" fill="#1C1C1B" letter-spacing="-1">CRAFTING</text>
+    <text x="20" y="226" class="font-serif" font-size="38" font-weight="400" fill="#1C1C1B" letter-spacing="-1">TACTILE DIGITAL</text>
+    <text x="20" y="268" class="font-serif" font-size="38" font-weight="400" fill="#1C1C1B" letter-spacing="-1">ARTIFACTS.</text>
+
+    <text x="20" y="306" class="font-sans" font-weight="600" font-size="13" fill="#B8925A">Product Designer &amp; UI Engineer</text>
+    <text x="20" y="332" class="font-sans" font-size="12" font-weight="400" fill="#605951">Merging high-craft editorial design systems with</text>
+    <text x="20" y="350" class="font-sans" font-size="12" font-weight="400" fill="#605951">production frontend architecture.</text>
+
+    <!-- CTAs -->
+    <rect x="20" y="378" width="350" height="46" rx="8" fill="#1C1C1B" />
+    <text x="195" y="406" class="font-sans" font-weight="600" font-size="13" fill="#FAF6EE" text-anchor="middle">Explore Work Archive ➔</text>
+
+    <rect x="20" y="434" width="350" height="46" rx="8" fill="none" stroke="#D2C7B6" stroke-width="1" />
+    <text x="195" y="462" class="font-sans" font-weight="600" font-size="13" fill="#1C1C1B" text-anchor="middle">Download Dossier CV</text>
+
+    <!-- Metrics Stack -->
+    <rect x="20" y="500" width="168" height="64" rx="8" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="36" y="528" class="font-sans" font-weight="800" font-size="20" fill="#1C1C1B">5+ YRS</text>
+    <text x="36" y="546" class="font-sans" font-weight="500" font-size="10" fill="#7A7268">PRODUCT CRAFT</text>
+
+    <rect x="202" y="500" width="168" height="64" rx="8" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="218" y="528" class="font-sans" font-weight="800" font-size="20" fill="#1C1C1B">14+</text>
+    <text x="218" y="546" class="font-sans" font-weight="500" font-size="10" fill="#7A7268">PRODUCTION APPS</text>
+  </g>
+
+  <!-- Work Archive Section -->
+  <g id="Mobile-Work">
+    <text x="20" y="600" class="font-mono" font-weight="700" font-size="11" fill="#B8925A" letter-spacing="1">01 / WORK ARCHIVE</text>
+    <text x="20" y="630" class="font-serif" font-size="26" font-weight="400" fill="#1C1C1B">Selected Projects</text>
+
+    <!-- Filter chips -->
+    <rect x="20" y="648" width="50" height="28" rx="14" fill="#1C1C1B" />
+    <text x="45" y="666" class="font-sans" font-size="11" font-weight="600" fill="#FAF6EE" text-anchor="middle">All</text>
+
+    <rect x="76" y="648" width="64" height="28" rx="14" fill="#EFE7D8" />
+    <text x="108" y="666" class="font-sans" font-size="11" font-weight="500" fill="#6A635B" text-anchor="middle">UI/UX</text>
+
+    <rect x="146" y="648" width="76" height="28" rx="14" fill="#EFE7D8" />
+    <text x="184" y="666" class="font-sans" font-size="11" font-weight="500" fill="#6A635B" text-anchor="middle">Web App</text>
+
+    <rect x="228" y="648" width="74" height="28" rx="14" fill="#EFE7D8" />
+    <text x="265" y="666" class="font-sans" font-size="11" font-weight="500" fill="#6A635B" text-anchor="middle">Branding</text>
+
+    <!-- Mobile Card 1: RetroLab -->
+    <g id="M-Card-1" filter="url(#m-shadow)">
+      <rect x="20" y="694" width="350" height="380" rx="14" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+      <rect x="36" y="710" width="318" height="150" rx="8" fill="#EAE2D5" />
+      <text x="195" y="790" class="font-sans" font-size="13" font-weight="600" fill="#8C827A" text-anchor="middle">🖼️ RetroLab Shader Preview</text>
+
+      <text x="36" y="884" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">FRONTEND ENGINEERING · 2026</text>
+      <text x="36" y="910" class="font-sans" font-size="18" font-weight="700" fill="#1C1C1B">RetroLab</text>
+      <text x="36" y="932" class="font-sans" font-size="12" font-weight="400" fill="#6A635B">Real-time retro graphics laboratory for pixel art and CRT shaders.</text>
+      
+      <line x1="36" y1="1020" x2="354" y2="1020" stroke="#F0E8DC" stroke-width="1" />
+      <text x="36" y="1046" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">⚡ 60 FPS ZERO-LATENCY</text>
+      <text x="354" y="1046" class="font-sans" font-size="11" font-weight="700" fill="#1C1C1B" text-anchor="end">View ➔</text>
+    </g>
+
+    <!-- Mobile Card 2: FinTrac AI -->
+    <g id="M-Card-2" filter="url(#m-shadow)">
+      <rect x="20" y="1094" width="350" height="380" rx="14" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+      <rect x="36" y="1110" width="318" height="150" rx="8" fill="#EAE2D5" />
+      <text x="195" y="1190" class="font-sans" font-size="13" font-weight="600" fill="#8C827A" text-anchor="middle">🖼️ FinTrac Behavioral Dashboard</text>
+
+      <text x="36" y="1284" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">PRODUCT DESIGN (UI/UX) · 2026</text>
+      <text x="36" y="1310" class="font-sans" font-size="18" font-weight="700" fill="#1C1C1B">FinTrac AI</text>
+      <text x="36" y="1332" class="font-sans" font-size="12" font-weight="400" fill="#6A635B">Behavioral financial coaching solving churn via tactile friction sliders.</text>
+      
+      <line x1="36" y1="1420" x2="354" y2="1420" stroke="#F0E8DC" stroke-width="1" />
+      <text x="36" y="1446" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">⚡ 97% MONTH 12 RETENTION</text>
+      <text x="354" y="1446" class="font-sans" font-size="11" font-weight="700" fill="#1C1C1B" text-anchor="end">View ➔</text>
+    </g>
+
+    <!-- Mobile Card 3: SalesSphere -->
+    <g id="M-Card-3" filter="url(#m-shadow)">
+      <rect x="20" y="1494" width="350" height="380" rx="14" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+      <rect x="36" y="1510" width="318" height="150" rx="8" fill="#EAE2D5" />
+      <text x="195" y="1590" class="font-sans" font-size="13" font-weight="600" fill="#8C827A" text-anchor="middle">🖼️ SalesSphere 100K+ Rows</text>
+
+      <text x="36" y="1684" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">DATA VISUALIZATION · 2026</text>
+      <text x="36" y="1710" class="font-sans" font-size="18" font-weight="700" fill="#1C1C1B">SalesSphere</text>
+      <text x="36" y="1732" class="font-sans" font-size="12" font-weight="400" fill="#6A635B">Virtualizing 100,000+ financial records at 60 frames per second.</text>
+      
+      <line x1="36" y1="1820" x2="354" y2="1820" stroke="#F0E8DC" stroke-width="1" />
+      <text x="36" y="1846" class="font-mono" font-size="10" font-weight="700" fill="#B8925A">⚡ 100K+ ROWS SMOOTH</text>
+      <text x="354" y="1846" class="font-sans" font-size="11" font-weight="700" fill="#1C1C1B" text-anchor="end">View ➔</text>
+    </g>
+  </g>
+
+  <!-- Process Section -->
+  <g id="Mobile-Process">
+    <text x="20" y="1930" class="font-mono" font-weight="700" font-size="11" fill="#B8925A" letter-spacing="1">02 / METHODOLOGY</text>
+    <text x="20" y="1960" class="font-serif" font-size="26" font-weight="400" fill="#1C1C1B">Four Phases</text>
+
+    <!-- Step 1 -->
+    <rect x="20" y="1984" width="350" height="100" rx="10" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="36" y="2016" class="font-mono" font-size="20" font-weight="800" fill="#B8925A">01</text>
+    <text x="74" y="2016" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Structural Discovery</text>
+    <text x="36" y="2042" class="font-sans" font-size="11" font-weight="400" fill="#605951">Hierarchies, friction mapping, user journey blueprints.</text>
+
+    <!-- Step 2 -->
+    <rect x="20" y="2096" width="350" height="100" rx="10" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="36" y="2128" class="font-mono" font-size="20" font-weight="800" fill="#B8925A">02</text>
+    <text x="74" y="2128" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Aesthetic Framing (Figma)</text>
+    <text x="36" y="2154" class="font-sans" font-size="11" font-weight="400" fill="#605951">High-contrast tokens, tactile glass, typography pairings.</text>
+
+    <!-- Step 3 -->
+    <rect x="20" y="2208" width="350" height="100" rx="10" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="36" y="2240" class="font-mono" font-size="20" font-weight="800" fill="#B8925A">03</text>
+    <text x="74" y="2240" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Technical Synthesis (React)</text>
+    <text x="36" y="2266" class="font-sans" font-size="11" font-weight="400" fill="#605951">Clean TSX, Tailwind v4, and performant Framer Motion.</text>
+
+    <!-- Step 4 -->
+    <rect x="20" y="2320" width="350" height="100" rx="10" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+    <text x="36" y="2352" class="font-mono" font-size="20" font-weight="800" fill="#B8925A">04</text>
+    <text x="74" y="2352" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Rigor &amp; Optimization</text>
+    <text x="36" y="2378" class="font-sans" font-size="11" font-weight="400" fill="#605951">Bundle size minimization, 100% Lighthouse scores.</text>
+  </g>
+
+  <!-- Biography & Career Timeline -->
+  <g id="Mobile-About">
+    <text x="20" y="2470" class="font-mono" font-weight="700" font-size="11" fill="#B8925A" letter-spacing="1">03 / BIOGRAPHY</text>
+    <text x="20" y="2500" class="font-serif" font-size="26" font-weight="400" fill="#1C1C1B">Career Timeline</text>
+
+    <rect x="20" y="2524" width="350" height="500" rx="14" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+
+    <text x="36" y="2560" class="font-mono" font-size="10" font-weight="600" fill="#B8925A">2026 – PRESENT</text>
+    <text x="36" y="2582" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">AI Web Developer Intern · FlyRank</text>
+    <text x="36" y="2604" class="font-sans" font-size="11" font-weight="400" fill="#605951">Developing AI interfaces and Next.js components.</text>
+
+    <line x1="36" y1="2630" x2="334" y2="2630" stroke="#F0E8DC" stroke-width="1" />
+    <text x="36" y="2660" class="font-mono" font-size="10" font-weight="600" fill="#B8925A">2026 – PRESENT</text>
+    <text x="36" y="2682" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Web Developer Intern · Thiranex</text>
+    <text x="36" y="2704" class="font-sans" font-size="11" font-weight="400" fill="#605951">Responsive interfaces, frontend architecture.</text>
+
+    <line x1="36" y1="2730" x2="334" y2="2730" stroke="#F0E8DC" stroke-width="1" />
+    <text x="36" y="2760" class="font-mono" font-size="10" font-weight="600" fill="#B8925A">2024 – PRESENT</text>
+    <text x="36" y="2782" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">Independent Creative Developer</text>
+    <text x="36" y="2804" class="font-sans" font-size="11" font-weight="400" fill="#605951">FinTrac AI, RetroLab, SalesSphere creator.</text>
+
+    <line x1="36" y1="2830" x2="334" y2="2830" stroke="#F0E8DC" stroke-width="1" />
+    <text x="36" y="2860" class="font-mono" font-size="10" font-weight="600" fill="#B8925A">2023 – PRESENT</text>
+    <text x="36" y="2882" class="font-sans" font-size="14" font-weight="700" fill="#1C1C1B">B.Tech CS (AI &amp; ML) · ABES</text>
+
+    <rect x="36" y="2940" width="318" height="44" rx="8" fill="#1C1C1B" />
+    <text x="195" y="2967" class="font-sans" font-size="12" font-weight="700" fill="#FAF6EE" text-anchor="middle">Download Dossier CV ➔</text>
+  </g>
+
+  <!-- Connect Form Section -->
+  <g id="Mobile-Connect">
+    <text x="20" y="3070" class="font-mono" font-weight="700" font-size="11" fill="#B8925A" letter-spacing="1">04 / CONNECT</text>
+    <text x="20" y="3100" class="font-serif" font-size="26" font-weight="400" fill="#1C1C1B">Direct Dispatch</text>
+
+    <rect x="20" y="3124" width="350" height="480" rx="14" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1" />
+
+    <text x="36" y="3160" class="font-mono" font-size="10" font-weight="700" fill="#7A7268">YOUR NAME</text>
+    <rect x="36" y="3172" width="318" height="42" rx="6" fill="#FAF6EE" stroke="#E8DFD1" stroke-width="1" />
+    <text x="50" y="3198" class="font-sans" font-size="12" fill="#888">Elena Vance</text>
+
+    <text x="36" y="3240" class="font-mono" font-size="10" font-weight="700" fill="#7A7268">EMAIL ADDRESS</text>
+    <rect x="36" y="3252" width="318" height="42" rx="6" fill="#FAF6EE" stroke="#E8DFD1" stroke-width="1" />
+    <text x="50" y="3278" class="font-sans" font-size="12" fill="#888">elena@company.com</text>
+
+    <text x="36" y="3320" class="font-mono" font-size="10" font-weight="700" fill="#7A7268">MESSAGE</text>
+    <rect x="36" y="3332" width="318" height="80" rx="6" fill="#FAF6EE" stroke="#E8DFD1" stroke-width="1" />
+    <text x="50" y="3358" class="font-sans" font-size="12" fill="#888">Tell me about your product...</text>
+
+    <rect x="36" y="3430" width="318" height="46" rx="8" fill="#1C1C1B" />
+    <text x="195" y="3458" class="font-sans" font-size="13" font-weight="700" fill="#FAF6EE" text-anchor="middle">Transmit Message ➔</text>
+
+    <text x="36" y="3520" class="font-sans" font-size="12" font-weight="600" fill="#1C1C1B">✉️ zaidsaifi150105@gmail.com</text>
+    <text x="36" y="3546" class="font-sans" font-size="12" font-weight="600" fill="#1C1C1B">🐙 github.com/zaid1234-11</text>
+  </g>
+
+  <!-- Mobile Footer -->
+  <g id="Mobile-Footer">
+    <line x1="20" y1="3650" x2="370" y2="3650" stroke="#E8DFD1" stroke-width="1" />
+    <text x="20" y="3690" class="font-sans" font-size="14" font-weight="800" fill="#1C1C1B" letter-spacing="2">ARTEFACT</text>
+    <text x="20" y="3715" class="font-sans" font-size="11" font-weight="400" fill="#7A7268">Hand-coded UI/UX portfolio with React &amp; Tailwind.</text>
+    <text x="20" y="3740" class="font-mono" font-size="10" font-weight="600" fill="#B8925A">© 2026 ZAID SAIFI · ALL RIGHTS RESERVED</text>
+  </g>
+</svg>

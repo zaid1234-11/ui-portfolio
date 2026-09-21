@@ -1,0 +1,210 @@
+<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .font-sans { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <filter id="dashCardShadow" x="-10" y="-5" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1440" height="960" fill="#0F172A" />
+
+  <!-- ======================================================== -->
+  <!-- SIDEBAR NAVIGATION -->
+  <!-- ======================================================== -->
+  <g id="Sidebar">
+    <rect x="0" y="0" width="260" height="960" fill="#1E293B" />
+    <line x1="260" y1="0" x2="260" y2="960" stroke="#334155" stroke-width="1" />
+
+    <!-- Brand Header -->
+    <text x="24" y="52" class="font-sans" font-size="20" font-weight="800" fill="#F8FAFC">CRUST 🍕</text>
+    <text x="24" y="74" class="font-sans" font-size="11" font-weight="500" fill="#94A3B8">Kitchen Operations Portal</text>
+    <line x1="24" y1="94" x2="236" y2="94" stroke="#334155" stroke-width="1" />
+
+    <!-- Nav Items -->
+    <!-- Item 1: Active Orders (Selected) -->
+    <rect x="16" y="112" width="228" height="42" rx="8" fill="#EA580C" />
+    <text x="36" y="138" class="font-sans" font-size="13" font-weight="700" fill="#FFFFFF">Active Orders</text>
+    <rect x="196" y="123" width="28" height="20" rx="4" fill="#9A3412" />
+    <text x="210" y="137" class="font-mono" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">14</text>
+
+    <!-- Item 2: Kitchen Display (KDS) -->
+    <rect x="16" y="162" width="228" height="42" rx="8" fill="none" />
+    <text x="36" y="188" class="font-sans" font-size="13" font-weight="500" fill="#CBD5E1">Kitchen Display (KDS)</text>
+    <rect x="188" y="173" width="36" height="20" rx="4" fill="#10B981" />
+    <text x="206" y="187" class="font-mono" font-size="9" font-weight="700" fill="#FFFFFF" text-anchor="middle">LIVE</text>
+
+    <!-- Item 3: Menu & Inventory -->
+    <rect x="16" y="212" width="228" height="42" rx="8" fill="none" />
+    <text x="36" y="238" class="font-sans" font-size="13" font-weight="500" fill="#94A3B8">Menu &amp; Inventory</text>
+
+    <!-- Item 4: Prep Timers -->
+    <rect x="16" y="262" width="228" height="42" rx="8" fill="none" />
+    <text x="36" y="288" class="font-sans" font-size="13" font-weight="500" fill="#94A3B8">Prep Timers</text>
+    <rect x="174" y="273" width="50" height="20" rx="4" fill="#334155" />
+    <text x="199" y="287" class="font-mono" font-size="9" font-weight="600" fill="#FBBF24" text-anchor="middle">3 Alert</text>
+
+    <!-- Item 5: Dispatch & Drivers -->
+    <rect x="16" y="312" width="228" height="42" rx="8" fill="none" />
+    <text x="36" y="338" class="font-sans" font-size="13" font-weight="500" fill="#94A3B8">Dispatch &amp; Drivers</text>
+    <rect x="202" y="323" width="22" height="20" rx="4" fill="#334155" />
+    <text x="213" y="337" class="font-mono" font-size="10" font-weight="600" fill="#94A3B8" text-anchor="middle">6</text>
+
+    <!-- Item 6: Daily Analytics -->
+    <rect x="16" y="362" width="228" height="42" rx="8" fill="none" />
+    <text x="36" y="388" class="font-sans" font-size="13" font-weight="500" fill="#94A3B8">Daily Analytics</text>
+
+    <!-- Station Info Card at Bottom of Sidebar -->
+    <rect x="16" y="840" width="228" height="88" rx="10" fill="#0F172A" stroke="#334155" stroke-width="1" />
+    <circle cx="36" cy="868" r="5" fill="#10B981" />
+    <text x="50" y="872" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">Station 1 · Wood Hearth</text>
+    <text x="50" y="894" class="font-sans" font-size="10" font-weight="400" fill="#94A3B8">Sous Chef: Alex R.</text>
+    <text x="50" y="910" class="font-mono" font-size="10" font-weight="600" fill="#EA580C">Target: 5m / pizza</text>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ======================================================== -->
+  <g id="Main-Area">
+    <!-- Top Bar -->
+    <g id="Top-Bar">
+      <text x="296" y="52" class="font-sans" font-size="24" font-weight="800" fill="#F8FAFC">Live Kitchen Queue</text>
+      <text x="296" y="76" class="font-sans" font-size="13" font-weight="400" fill="#94A3B8">Real-time stone-fired order routing &amp; ticket synchronization</text>
+
+      <!-- Status Indicator Pill -->
+      <rect x="1170" y="36" width="220" height="38" rx="19" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <circle cx="1192" cy="55" r="5" fill="#10B981" />
+      <text x="1208" y="59" class="font-mono" font-size="11" font-weight="700" fill="#10B981">OVEN ONLINE · 485°C</text>
+    </g>
+
+    <!-- ======================================================== -->
+    <!-- METRICS CARDS -->
+    <!-- ======================================================== -->
+    <g id="Metrics-Row">
+      <!-- Metric 1 -->
+      <rect x="296" y="104" width="256" height="84" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="320" y="132" class="font-sans" font-size="12" font-weight="500" fill="#94A3B8">Active Tickets</text>
+      <text x="320" y="168" class="font-mono" font-size="28" font-weight="800" fill="#EA580C">14</text>
+
+      <!-- Metric 2 -->
+      <rect x="576" y="104" width="256" height="84" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="600" y="132" class="font-sans" font-size="12" font-weight="500" fill="#94A3B8">Avg Bake Time</text>
+      <text x="600" y="168" class="font-mono" font-size="28" font-weight="800" fill="#10B981">4m 20s</text>
+
+      <!-- Metric 3 -->
+      <rect x="856" y="104" width="256" height="84" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="880" y="132" class="font-sans" font-size="12" font-weight="500" fill="#94A3B8">Ready for Pickup</text>
+      <text x="880" y="168" class="font-mono" font-size="28" font-weight="800" fill="#3B82F6">5 Orders</text>
+
+      <!-- Metric 4 -->
+      <rect x="1136" y="104" width="254" height="84" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="1160" y="132" class="font-sans" font-size="12" font-weight="500" fill="#94A3B8">Oven Capacity</text>
+      <text x="1160" y="168" class="font-mono" font-size="28" font-weight="800" fill="#EC4899">88% (7/8)</text>
+    </g>
+
+    <!-- ======================================================== -->
+    <!-- LIVE ORDER TICKETS GRID -->
+    <!-- ======================================================== -->
+    <g id="Tickets-Grid">
+      <!-- TICKET 1 -->
+      <g id="Ticket-4092" filter="url(#dashCardShadow)">
+        <rect x="296" y="216" width="348" height="520" rx="14" fill="#1E293B" stroke="#334155" stroke-width="1" />
+
+        <!-- Header -->
+        <text x="320" y="252" class="font-mono" font-size="20" font-weight="800" fill="#F8FAFC">#4092</text>
+        <rect x="526" y="234" width="94" height="26" rx="4" fill="#EAB308" />
+        <text x="573" y="251" class="font-mono" font-size="10" font-weight="800" fill="#000000" text-anchor="middle">PREPARING</text>
+
+        <text x="320" y="282" class="font-sans" font-size="13" font-weight="600" fill="#E2E8F0">Elena Rostova</text>
+        <text x="320" y="302" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Dine-In · Table 04 · Server: Marco</text>
+
+        <rect x="320" y="318" width="130" height="24" rx="4" fill="#334155" />
+        <text x="385" y="334" class="font-mono" font-size="11" font-weight="600" fill="#EAB308" text-anchor="middle">⏱ 06:14 elapsed</text>
+
+        <line x1="320" y1="360" x2="620" y2="360" stroke="#334155" stroke-width="1" />
+
+        <!-- Items -->
+        <text x="320" y="390" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1x Truffle Wild Funghi Pizza</text>
+        <text x="340" y="410" class="font-sans" font-size="11" font-weight="500" fill="#EA580C">+ Extra Basil, Well-Done Crust</text>
+
+        <text x="320" y="445" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">2x Burrata &amp; Heirloom Tomato</text>
+        <text x="340" y="465" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Dressed with aged Modena balsamic</text>
+
+        <text x="320" y="500" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1x San Pellegrino Aranciata</text>
+
+        <line x1="320" y1="620" x2="620" y2="620" stroke="#334155" stroke-width="1" />
+
+        <!-- Action Button -->
+        <rect x="320" y="645" width="300" height="44" rx="8" fill="#EA580C" />
+        <text x="470" y="672" class="font-sans" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">Advance to Oven ➔</text>
+      </g>
+
+      <!-- TICKET 2 -->
+      <g id="Ticket-4093" filter="url(#dashCardShadow)">
+        <rect x="670" y="216" width="348" height="520" rx="14" fill="#1E293B" stroke="#EA580C" stroke-width="1.5" />
+
+        <!-- Header -->
+        <text x="694" y="252" class="font-mono" font-size="20" font-weight="800" fill="#F8FAFC">#4093</text>
+        <rect x="906" y="234" width="88" height="26" rx="4" fill="#EA580C" />
+        <text x="950" y="251" class="font-mono" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">IN OVEN 2</text>
+
+        <text x="694" y="282" class="font-sans" font-size="13" font-weight="600" fill="#E2E8F0">Marcus Vance</text>
+        <text x="694" y="302" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Takeout Pickup · Scheduled 18:45</text>
+
+        <rect x="694" y="318" width="130" height="24" rx="4" fill="#334155" />
+        <text x="759" y="334" class="font-mono" font-size="11" font-weight="600" fill="#EA580C" text-anchor="middle">⏱ 02:45 in stone</text>
+
+        <line x1="694" y1="360" x2="994" y2="360" stroke="#334155" stroke-width="1" />
+
+        <!-- Items -->
+        <text x="694" y="390" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">2x Spicy Calabrian Diavola</text>
+        <text x="714" y="410" class="font-sans" font-size="11" font-weight="500" fill="#EA580C">+ Hot Honey Drizzle</text>
+
+        <text x="694" y="445" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1x Garlic Herb Dough Knots</text>
+        <text x="714" y="465" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Side marinara cup included</text>
+
+        <text x="694" y="500" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">2x Craft IPA Cans (Cold)</text>
+
+        <line x1="694" y1="620" x2="994" y2="620" stroke="#334155" stroke-width="1" />
+
+        <!-- Action Button -->
+        <rect x="694" y="645" width="300" height="44" rx="8" fill="#10B981" />
+        <text x="844" y="672" class="font-sans" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">Mark as Baked &amp; Boxed ✓</text>
+      </g>
+
+      <!-- TICKET 3 -->
+      <g id="Ticket-4094" filter="url(#dashCardShadow)">
+        <rect x="1042" y="216" width="348" height="520" rx="14" fill="#1E293B" stroke="#334155" stroke-width="1" />
+
+        <!-- Header -->
+        <text x="1066" y="252" class="font-mono" font-size="20" font-weight="800" fill="#F8FAFC">#4094</text>
+        <rect x="1274" y="234" width="92" height="26" rx="4" fill="#3B82F6" />
+        <text x="1320" y="251" class="font-mono" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">NEW ORDER</text>
+
+        <text x="1066" y="282" class="font-sans" font-size="13" font-weight="600" fill="#E2E8F0">Aria Chen</text>
+        <text x="1066" y="302" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Express Courier Delivery · UberEats</text>
+
+        <rect x="1066" y="318" width="130" height="24" rx="4" fill="#334155" />
+        <text x="1131" y="334" class="font-mono" font-size="11" font-weight="600" fill="#3B82F6" text-anchor="middle">⏱ 00:50 received</text>
+
+        <line x1="1066" y1="360" x2="1366" y2="360" stroke="#334155" stroke-width="1" />
+
+        <!-- Items -->
+        <text x="1066" y="390" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1x Margherita D.O.P</text>
+        <text x="1086" y="410" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">San Marzano tomatoes, buffalo mozzarella</text>
+
+        <text x="1066" y="445" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1x Tiramisu Della Casa</text>
+        <text x="1086" y="465" class="font-sans" font-size="11" font-weight="400" fill="#94A3B8">Fresh mascarpone, espresso soaked savoiardi</text>
+
+        <line x1="1066" y1="620" x2="1366" y2="620" stroke="#334155" stroke-width="1" />
+
+        <!-- Action Button -->
+        <rect x="1066" y="645" width="300" height="44" rx="8" fill="#EA580C" />
+        <text x="1216" y="672" class="font-sans" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">Accept &amp; Start Prep ➔</text>
+      </g>
+    </g>
+  </g>
+</svg>
