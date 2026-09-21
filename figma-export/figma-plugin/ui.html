@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Zaid Saifi Portfolio to Figma Builder</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background: #191817;
+      color: #faf6ee;
+      padding: 16px;
+      font-size: 12px;
+      user-select: none;
+    }
+    .header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #2e2c28;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #faf6ee;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .subtitle {
+      font-size: 11px;
+      color: #a69f94;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+    .badge {
+      display: inline-block;
+      background: #332716;
+      color: #b8925a;
+      border: 1px solid rgba(184, 146, 90, 0.3);
+      font-size: 9px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #b8925a;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn {
+      background: #242220;
+      border: 1px solid #363330;
+      color: #faf6ee;
+      padding: 11px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: left;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn:hover {
+      background: #2e2b28;
+      border-color: #b8925a;
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background: #b8925a;
+      border-color: #b8925a;
+      color: #111110;
+      font-weight: 700;
+    }
+    .btn-primary:hover {
+      background: #ca9f64;
+    }
+    .btn .desc {
+      font-size: 10px;
+      color: #a69f94;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .btn-primary .desc {
+      color: rgba(17, 17, 16, 0.75);
+    }
+    .status {
+      margin-top: 16px;
+      padding: 10px 12px;
+      background: #141312;
+      border: 1px solid #2e2c28;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #a69f94;
+      text-align: center;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .status.success {
+      color: #4ade80;
+      border-color: #22543d;
+      background: #14281c;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <span>✨ Zaid Saifi UI Portfolio</span>
+      <span class="badge">ARTEFACT</span>
+    </div>
+    <div class="subtitle">Convert your portfolio frontend into 100% native Figma Auto-Layout frames.</div>
+  </div>
+
+  <div class="section-label">Full Portfolio Screens</div>
+  <div class="button-group">
+    <button class="btn btn-primary" id="btn-portfolio-light">
+      <div>
+        <div>Ivory Light Edition (Desktop 1440px)</div>
+        <div class="desc">Hero, Archive (4 Projects), Process, About & Connect Form</div>
+      </div>
+      <span>➔</span>
+    </button>
+    <button class="btn" id="btn-portfolio-dark">
+      <div>
+        <div>Obsidian Dark Edition (Desktop 1440px)</div>
+        <div class="desc">Dark luxury aesthetic with gold accents and dark grid</div>
+      </div>
+      <span>➔</span>
+    </button>
+    <button class="btn" id="btn-portfolio-mobile">
+      <div>
+        <div>Mobile Responsive Screen (390px iPhone)</div>
+        <div class="desc">Stacked mobile layout with responsive cards & touch navigation</div>
+      </div>
+      <span>➔</span>
+    </button>
+  </div>
+
+  <div class="section-label">Case Study Detail</div>
+  <div class="button-group">
+    <button class="btn" id="btn-case-study">
+      <div>
+        <div>In-Depth Case Study Screen (1440px)</div>
+        <div class="desc">Hero banner, Problem, Approach, Architecture & Outcomes</div>
+      </div>
+      <span>➔</span>
+    </button>
+  </div>
+
+  <div class="section-label">Design Tokens</div>
+  <button class="btn" id="btn-styles" style="width: 100%;">
+    <div>
+      <div>Sync Portfolio Color & Text Styles</div>
+      <div class="desc">Creates #FAF6EE, #111110, #B8925A local styles in Figma</div>
+    </div>
+    <span>🎨</span>
+  </button>
+
+  <div class="status" id="status-text">Click any screen above to build into Figma canvas</div>
+
+  <script>
+    function setStatus(text, isSuccess) {
+      const el = document.getElementById('status-text');
+      el.textContent = text;
+      if (isSuccess) {
+        el.classList.add('success');
+      } else {
+        el.classList.remove('success');
+      }
+    }
+
+    document.getElementById('btn-portfolio-light').onclick = () => {
+      setStatus('Generating Ivory Portfolio Auto-Layout Frame...');
+      parent.postMessage({ pluginMessage: { type: 'create-portfolio', theme: 'light' } }, '*');
+    };
+
+    document.getElementById('btn-portfolio-dark').onclick = () => {
+      setStatus('Generating Obsidian Dark Portfolio Frame...');
+      parent.postMessage({ pluginMessage: { type: 'create-portfolio', theme: 'dark' } }, '*');
+    };
+
+    document.getElementById('btn-portfolio-mobile').onclick = () => {
+      setStatus('Generating Mobile 390px Portfolio Frame...');
+      parent.postMessage({ pluginMessage: { type: 'create-mobile' } }, '*');
+    };
+
+    document.getElementById('btn-case-study').onclick = () => {
+      setStatus('Generating Dedicated Case Study Detail Screen...');
+      parent.postMessage({ pluginMessage: { type: 'create-case-study' } }, '*');
+    };
+
+    document.getElementById('btn-styles').onclick = () => {
+      setStatus('Creating Figma Color Styles...');
+      parent.postMessage({ pluginMessage: { type: 'create-styles' } }, '*');
+    };
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (msg && msg.type === 'complete') {
+        setStatus('✓ ' + msg.message, true);
+      }
+    };
+  </script>
+</body>
+</html>
