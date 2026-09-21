@@ -24,6 +24,21 @@ function PortfolioApp() {
 
   const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
 
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     if (themeMode === 'dark') {
