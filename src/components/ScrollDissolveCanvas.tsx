@@ -25,6 +25,7 @@ export default function ScrollDissolveCanvas({
 }: ScrollDissolveCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const materialRef = useRef<ShaderMaterial | null>(null);
   const textureRef = useRef<Texture | null>(null);
 
@@ -261,9 +262,13 @@ export default function ScrollDissolveCanvas({
         materialRef.current.uniforms.u_isDark.value = isDark ? 1.0 : 0.0;
 
         const target = calculateTargetProgress();
-        // Luxurious, silky-smooth inertial damping (eliminates abrupt jumps)
         currentProgress += (target - currentProgress) * 0.06;
         materialRef.current.uniforms.u_progress.value = currentProgress;
+
+        // Keep underlying fallback image synced with progress during exit
+        if (imgRef.current) {
+          imgRef.current.style.opacity = String(Math.max(0, 1.0 - currentProgress * 1.5));
+        }
       }
 
       renderer.render(scene, camera);
@@ -272,6 +277,7 @@ export default function ScrollDissolveCanvas({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      if (resizeTimer) clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
       geometry.dispose();
       material.dispose();
@@ -285,9 +291,24 @@ export default function ScrollDissolveCanvas({
       ref={containerRef}
       className={`relative w-full h-full pointer-events-none overflow-hidden ${className}`}
     >
+      {/* 1. Underlying native base image (guarantees zero blank gaps, instant load & flawless framing) */}
+      <figure className="absolute inset-0 z-0 m-0 p-0 pointer-events-none">
+        <img
+          ref={imgRef}
+          src={imageSrc}
+          alt="Hero background"
+          draggable={false}
+          className="w-full h-full object-cover select-none pointer-events-none"
+          style={{
+            objectPosition: 'center 50%',
+          }}
+        />
+      </figure>
+
+      {/* 2. WebGL Dissolve Canvas layer */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full z-10 pointer-events-none"
       />
     </div>
   );
