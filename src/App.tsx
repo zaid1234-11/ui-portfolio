@@ -215,7 +215,7 @@ function PortfolioApp() {
           style={isPageTransitioning && !isMobile ? { perspective: '2000px', transformStyle: 'preserve-3d' } : {}}
           className="relative z-20 min-h-screen"
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             {selectedProject ? (
               /* Immersive Dedicated Case Study Screen (turns like a physical page from the right on desktop, smooth 2D crossfade on mobile) */
               <motion.div
