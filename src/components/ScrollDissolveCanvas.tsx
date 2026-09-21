@@ -46,7 +46,8 @@ export default function ScrollDissolveCanvas({
 
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
-    renderer.setSize(width, height);
+    // updateStyle = false keeps canvas sizing managed strictly by CSS w-full h-full inset-0
+    renderer.setSize(width, height, false);
 
     const camera = new PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 1;
@@ -201,13 +202,19 @@ export default function ScrollDissolveCanvas({
     const mesh = new Mesh(geometry, material);
     scene.add(mesh);
 
-    // 4. Update sizes & aspect ratios
+    // 4. Debounced resize handler with updateStyle: false
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
     const handleResize = () => {
-      if (!container) return;
-      const w = container.clientWidth || window.innerWidth;
-      const h = container.clientHeight || window.innerHeight;
-      renderer.setSize(w, h);
-      uniforms.u_containerAspect.value = w / h;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!container) return;
+        const w = container.clientWidth || window.innerWidth;
+        const h = container.clientHeight || window.innerHeight;
+        renderer.setSize(w, h, false);
+        if (materialRef.current) {
+          materialRef.current.uniforms.u_containerAspect.value = w / h;
+        }
+      }, 100);
     };
     window.addEventListener('resize', handleResize);
 
