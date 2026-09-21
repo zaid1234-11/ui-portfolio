@@ -254,7 +254,15 @@ export default function ScrollDissolveCanvas({
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      // Gentle, slow-motion viscous wave flow
+
+      // Check if hero is within viewport range before running GPU shader render
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        if (rect.bottom <= -50 || rect.top >= window.innerHeight + 50) {
+          return; // Skip rendering when completely out of view to save mobile battery
+        }
+      }
+
       clockTime += 0.007;
 
       if (materialRef.current) {
