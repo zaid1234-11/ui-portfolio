@@ -218,32 +218,32 @@ export default function ScrollDissolveCanvas({
     };
     window.addEventListener('resize', handleResize);
 
-    // 5. Native high-performance scroll measurement (zero React re-renders)
+    // 5. Native scroll measurement: Hero is completely intact during reading,
+    // only dissolves when scrolling off-screen into the Work section
     const calculateTargetProgress = (): number => {
-      const btn = document.getElementById('hero-explore-btn-light-mobile') || document.getElementById('hero-explore-btn');
-      if (btn) {
-        const btnRect = btn.getBoundingClientRect();
-        // Start threshold: when explore buttons reach ~80% viewport height
-        const startThreshold = window.innerHeight * 0.80;
-        // Completion Boundary: fully reaches 100% dissolution precisely when buttons reach just below the navbar at ~2% screen height
+      const hero = document.getElementById('hero');
+      if (hero) {
+        const rect = hero.getBoundingClientRect();
+        // Start dissolving only when hero bottom approaches upper viewport (exit threshold)
+        const startThreshold = window.innerHeight * 0.55;
         const endThreshold = window.innerHeight * 0.02;
 
-        if (btnRect.top >= startThreshold) {
-          return 0;
+        if (rect.bottom >= startThreshold) {
+          return 0; // Hero content is fully active — zero dissolve, 100% solid image
         }
-        if (btnRect.top <= endThreshold) {
-          return 1.0;
+        if (rect.bottom <= endThreshold) {
+          return 1.0; // Hero has scrolled past — complete dissolve
         }
 
         const scrollDistance = startThreshold - endThreshold;
-        const rawProgress = (startThreshold - btnRect.top) / scrollDistance;
+        const rawProgress = (startThreshold - rect.bottom) / scrollDistance;
         return Math.max(0, Math.min(1, rawProgress));
       }
       if (!container) return 0;
       const rect = container.getBoundingClientRect();
       const heroHeight = container.offsetHeight || window.innerHeight;
       const raw = Math.max(0, Math.min(1, -rect.top / heroHeight));
-      return Math.max(0, Math.min(1, (raw - 0.25) / 0.55));
+      return Math.max(0, Math.min(1, (raw - 0.4) / 0.5));
     };
 
     // 6. 120fps Animation frame loop with smooth spring lerp
