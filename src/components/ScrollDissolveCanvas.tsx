@@ -25,7 +25,6 @@ export default function ScrollDissolveCanvas({
 }: ScrollDissolveCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
   const materialRef = useRef<ShaderMaterial | null>(null);
   const textureRef = useRef<Texture | null>(null);
 
@@ -47,8 +46,7 @@ export default function ScrollDissolveCanvas({
 
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
-    // updateStyle = false keeps canvas sizing managed strictly by CSS w-full h-full inset-0
-    renderer.setSize(width, height, false);
+    renderer.setSize(width, height);
 
     const camera = new PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 1;
@@ -203,48 +201,42 @@ export default function ScrollDissolveCanvas({
     const mesh = new Mesh(geometry, material);
     scene.add(mesh);
 
-    // 4. Debounced resize handler with updateStyle: false
-    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    // 4. Update sizes & aspect ratios
     const handleResize = () => {
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        if (!container) return;
-        const w = container.clientWidth || window.innerWidth;
-        const h = container.clientHeight || window.innerHeight;
-        renderer.setSize(w, h, false);
-        if (materialRef.current) {
-          materialRef.current.uniforms.u_containerAspect.value = w / h;
-        }
-      }, 100);
+      if (!container) return;
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      renderer.setSize(w, h);
+      uniforms.u_containerAspect.value = w / h;
     };
     window.addEventListener('resize', handleResize);
 
-    // 5. Native scroll measurement: Hero is completely intact during reading,
-    // only dissolves when scrolling off-screen into the Work section
+    // 5. Native high-performance scroll measurement (zero React re-renders)
     const calculateTargetProgress = (): number => {
-      const hero = document.getElementById('hero');
-      if (hero) {
-        const rect = hero.getBoundingClientRect();
-        // Start dissolving only when hero bottom approaches upper viewport (exit threshold)
-        const startThreshold = window.innerHeight * 0.55;
+      const btn = document.getElementById('hero-explore-btn-light-mobile') || document.getElementById('hero-explore-btn');
+      if (btn) {
+        const btnRect = btn.getBoundingClientRect();
+        // Start threshold: when explore buttons reach ~80% viewport height
+        const startThreshold = window.innerHeight * 0.80;
+        // Completion Boundary: fully reaches 100% dissolution precisely when buttons reach just below the navbar at ~2% screen height
         const endThreshold = window.innerHeight * 0.02;
 
-        if (rect.bottom >= startThreshold) {
-          return 0; // Hero content is fully active — zero dissolve, 100% solid image
+        if (btnRect.top >= startThreshold) {
+          return 0;
         }
-        if (rect.bottom <= endThreshold) {
-          return 1.0; // Hero has scrolled past — complete dissolve
+        if (btnRect.top <= endThreshold) {
+          return 1.0;
         }
 
         const scrollDistance = startThreshold - endThreshold;
-        const rawProgress = (startThreshold - rect.bottom) / scrollDistance;
+        const rawProgress = (startThreshold - btnRect.top) / scrollDistance;
         return Math.max(0, Math.min(1, rawProgress));
       }
       if (!container) return 0;
       const rect = container.getBoundingClientRect();
       const heroHeight = container.offsetHeight || window.innerHeight;
       const raw = Math.max(0, Math.min(1, -rect.top / heroHeight));
-      return Math.max(0, Math.min(1, (raw - 0.4) / 0.5));
+      return Math.max(0, Math.min(1, (raw - 0.25) / 0.55));
     };
 
     // 6. 120fps Animation frame loop with smooth spring lerp
@@ -254,15 +246,7 @@ export default function ScrollDissolveCanvas({
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-
-      // Check if hero is within viewport range before running GPU shader render
-      if (container) {
-        const rect = container.getBoundingClientRect();
-        if (rect.bottom <= -50 || rect.top >= window.innerHeight + 50) {
-          return; // Skip rendering when completely out of view to save mobile battery
-        }
-      }
-
+      // Gentle, slow-motion viscous wave flow
       clockTime += 0.007;
 
       if (materialRef.current) {
@@ -270,13 +254,9 @@ export default function ScrollDissolveCanvas({
         materialRef.current.uniforms.u_isDark.value = isDark ? 1.0 : 0.0;
 
         const target = calculateTargetProgress();
+        // Luxurious, silky-smooth inertial damping (eliminates abrupt jumps)
         currentProgress += (target - currentProgress) * 0.06;
         materialRef.current.uniforms.u_progress.value = currentProgress;
-
-        // Keep underlying fallback image synced with progress during exit
-        if (imgRef.current) {
-          imgRef.current.style.opacity = String(Math.max(0, 1.0 - currentProgress * 1.5));
-        }
       }
 
       renderer.render(scene, camera);
@@ -285,7 +265,6 @@ export default function ScrollDissolveCanvas({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      if (resizeTimer) clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
       geometry.dispose();
       material.dispose();
@@ -299,24 +278,9 @@ export default function ScrollDissolveCanvas({
       ref={containerRef}
       className={`relative w-full h-full pointer-events-none overflow-hidden ${className}`}
     >
-      {/* 1. Underlying native base image (guarantees zero blank gaps, instant load & flawless framing) */}
-      <figure className="absolute inset-0 z-0 m-0 p-0 pointer-events-none">
-        <img
-          ref={imgRef}
-          src={imageSrc}
-          alt="Hero background"
-          draggable={false}
-          className="w-full h-full object-cover select-none pointer-events-none"
-          style={{
-            objectPosition: 'center 50%',
-          }}
-        />
-      </figure>
-
-      {/* 2. WebGL Dissolve Canvas layer */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full z-10 pointer-events-none"
+        className="absolute inset-0 w-full h-full"
       />
     </div>
   );

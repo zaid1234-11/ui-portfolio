@@ -24,21 +24,6 @@ function PortfolioApp() {
 
   const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
 
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 768;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   useEffect(() => {
     const root = document.documentElement;
     if (themeMode === 'dark') {
@@ -212,22 +197,22 @@ function PortfolioApp() {
 
         {/* 4. Immersive View Routing with Physical Page Turn */}
         <div
-          style={isPageTransitioning && !isMobile ? { perspective: '2000px', transformStyle: 'preserve-3d' } : {}}
+          style={isPageTransitioning ? { perspective: '2000px', transformStyle: 'preserve-3d' } : {}}
           className="relative z-20 min-h-screen"
         >
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence mode="wait">
             {selectedProject ? (
-              /* Immersive Dedicated Case Study Screen (turns like a physical page from the right on desktop, smooth 2D crossfade on mobile) */
+              /* Immersive Dedicated Case Study Screen (turns like a physical page from the right) */
               <motion.div
                 key={`case-study-${selectedProject.id}`}
-                initial={isMobile ? { opacity: 0, y: 15 } : { rotateY: 90, opacity: 0, scale: 0.98 }}
-                animate={isMobile ? { opacity: 1, y: 0 } : { rotateY: 0, opacity: 1, scale: 1 }}
-                exit={isMobile ? { opacity: 0, y: -15 } : { rotateY: 90, opacity: 0, scale: 0.98 }}
-                transition={{ duration: isMobile ? 0.35 : 0.85, ease: [0.25, 1, 0.5, 1] }}
+                initial={{ rotateY: 90, opacity: 0, scale: 0.98 }}
+                animate={{ rotateY: 0, opacity: 1, scale: 1 }}
+                exit={{ rotateY: 90, opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1] }}
                 onAnimationStart={() => setIsPageTransitioning(true)}
                 onAnimationComplete={() => setIsPageTransitioning(false)}
-                style={isPageTransitioning && !isMobile ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
-                className={isMobile ? "w-full" : "w-full origin-left"}
+                style={isPageTransitioning ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
+                className="w-full origin-left"
               >
                 <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-ivory-dim/50 font-mono text-xs tracking-widest uppercase">Loading Case Study...</div>}>
                   <CaseStudyDetail
@@ -241,17 +226,17 @@ function PortfolioApp() {
                 </Suspense>
               </motion.div>
             ) : (
-              /* Standard Architectural Modular Home Presentation (turns back like a physical page on desktop, smooth 2D crossfade on mobile) */
+              /* Standard Architectural Modular Home Presentation (turns back like a physical page to the left) */
               <motion.div
                 key="portfolio-home"
-                initial={isMobile ? { opacity: 0 } : { rotateY: -90, opacity: 0, scale: 0.98 }}
-                animate={isMobile ? { opacity: 1 } : { rotateY: 0, opacity: 1, scale: 1 }}
-                exit={isMobile ? { opacity: 0 } : { rotateY: -90, opacity: 0, scale: 0.98 }}
-                transition={{ duration: isMobile ? 0.35 : 0.85, ease: [0.25, 1, 0.5, 1] }}
+                initial={{ rotateY: -90, opacity: 0, scale: 0.98 }}
+                animate={{ rotateY: 0, opacity: 1, scale: 1 }}
+                exit={{ rotateY: -90, opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1] }}
                 onAnimationStart={() => setIsPageTransitioning(true)}
                 onAnimationComplete={() => setIsPageTransitioning(false)}
-                style={isPageTransitioning && !isMobile ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
-                className={isMobile ? "w-full relative" : "w-full origin-left relative"}
+                style={isPageTransitioning ? { transformOrigin: 'left center', backfaceVisibility: 'hidden' } : { transform: 'none' }}
+                className="w-full origin-left relative"
               >
                 <main className="relative">
                   {/* Hero Segment */}
